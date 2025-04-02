@@ -198,17 +198,51 @@ Another approach to variate generated texts is to define different **scenarios**
 for further info see the excellent articles by Hamel Husain: [A framework for generating realistic test data](https://hamel.dev/blog/posts/field-guide/#a-framework-for-generating-realistic-test-data)
 
 
+So we execute the following command n times (10000 times, or more) to create the dataset:
 
+```python
+response = client.chat.completions.create(
+    #model="gpt-4o",
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": system_prompt},
+        # {"role": "user", "content": prompt}
+    ],
+    max_tokens=3000,
+    n=1,
+    response_format={ "type": "text" },
+    stop=None,
+    temperature=1.0
+)
+content = response.choices[0].message.content
+```
+Choose temperature=1.0 to maximize the creativity of LLM.
 
+Theorically if execute the command 10k times, we will have a dataset of 30k texts, but in practice will have a minor number of texts, because the LLM will generate texts that are not valid sometimes, during the iterations.
+(in my case it was capable of about 26k valid texts)
 
-to be continued...
+With some postprocessing we can transform the dataset to have only valid texts in openai valid format:
 
+example:
+```json   
+{"messages": 
+    [
+        {
+            "role": "system", 
+            "content": "\nEach response line matches the following format:\nFIELD identifier^^^value\n\nGive a response with the following lines only, with values inferred from USER_DATA:\n\nFIELD name^^^The name of type text\nFIELD age^^^The age of type number\nFIELD height^^^The height of type number\nFIELD weight^^^The weight of type number\nFIELD symptoms^^^The symptoms of type text\nFIELD medical_condition^^^The medical_condition of type text\nEND_RESPONSE\n\nDo not explain how the values were determined.\nFor fields without any corresponding information in USER_DATA, use value NO_DATA.\n"
+        },
+        {
+            "role": "user",
+            "content": "\nUSER_DATA:Il paziente Marco ha 35 anni, è alto 180 cm e pesa 75 kg. Si è recato in ospedale per dolore al petto e affaticamento. Durante l'esame è emerso che ha la pressione alta e l'elettrocardiogramma ha mostrato anomalie. Sarà sottoposto a ulteriori controlli per valutare la sua condizione cardiaca.\n"
+        },
+        {
+            "role": "assistant",
+            "content": "FIELD name^^^Marco\n\nFIELD age^^^35\n\nFIELD height^^^180\n\nFIELD weight^^^75\n\nFIELD symptoms^^^dolore al petto e affaticamento\n\nFIELD medical_condition^^^pressione alta, anomalie all'elettrocardiogramma\n"
+        }
+    ]
+}
 
-
-
-
-
-
+```
 
 
 
