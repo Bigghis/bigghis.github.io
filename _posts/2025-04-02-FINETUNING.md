@@ -165,12 +165,11 @@ We want to fine-tune the models to see if we can improve the model performances.
 ### Fine-tuning
 The idea is to fine-tune the models using a **synthetic dataset** created by a larger LLM (gpt-3.5-turbo)
 
-We use [axolotl](https://axolotl-ai-cloud.github.io/axolotl/) to fine-tune the models on a dual GPU NVIDIA RTX 3090 (24GB VRAM on each card) PC using a synthetic dataset created from another LLM. 
-
+We use [axolotl](https://axolotl-ai-cloud.github.io/axolotl/) to fine-tune the models on a dual GPU NVIDIA RTX 3090 (24GB VRAM on each card) PC using a synthetic dataset created by the large gpt-3.5-turbo model.
 #### Synthetic dataset creation
 
-We need a dataset containing generic texts that can be used across various forms. 
-Ideally we consider: user data forms, clinical cases, gym card plans, hotel bookings, taxes forms, etc.
+We need a dataset containing generic texts that can be used across various HTML forms. 
+We consider, ideally: user data forms, clinical cases, gym card plans, hotel bookings, taxes forms, etc.
 
 ```python
     system_prompt = """
@@ -218,7 +217,7 @@ content = response.choices[0].message.content
 ```
 Choose temperature=1.0 to maximize the creativity of LLM.
 
-Theorically if execute the command 10k times, we will have a dataset of 30k texts, but in practice will have a minor number of texts, because the LLM will generate texts that are not valid sometimes, during the iterations.
+Theorically if execute the command 10k times, we will have a dataset of 30k texts, but in practice will have a minor number of texts, because sometimes the LLM will generate texts that are not valid, during the iterations.
 (in my case it was capable of about 26k valid texts)
 
 With some postprocessing we can transform the dataset to have only valid texts in openai valid format:
@@ -246,10 +245,12 @@ example:
 
 now we can try to fine-tune the models, with 26k texts dataset in openai format.
 
+#### Llama-3.2-1B-Instruct fine-tuning process with LoRA (low-rank adaptation)
+
 **Axolotl** simplifies the process and provides simple commands to fine-tune the models.
 
 The axolotl settings file is `config.yaml`.
-in this example we have settings to use the **Llama-3.2-1B-Instruct** model, taken dataset from `/path-to/dataset.jsonl` file.
+in this example settings are for the **Llama-3.2-1B-Instruct** model, taken dataset from `/path-to/dataset.jsonl` file.
 The dataset is in openai format and we explicitly mapped to the `message_property_mappings` property.
 
 We use **LoRA** fine tuning mode, with 
@@ -264,7 +265,7 @@ Can link a wandb project `wandb-project-name` to the fine tuning process to moni
 To successfully run the fine tuning process on my machine I had to reduce the **mini batch** to 1. 
 
 In this example we perform training for 10 epochs and use a **learning rate** of 0.0002. 
-However, the learning rate it's not fixed value, because the model is trained with **adamw_bnb_8bit** optimizer that uses a cosine **learning rate scheduler**. 
+However, the learning rate it's not a fixed value, because the model is trained with **adamw_bnb_8bit** optimizer that uses a cosine **learning rate scheduler**. 
 In substance the learning rate variates like cosine function.
 
 ```yaml
@@ -366,7 +367,7 @@ At the end of the fine tuning process have obtained these results:
 The training loss continues to decrease throughout the training cycle, but after 5 epochs the decrease is not significant.
 The evaluation loss is higher than the training loss, as usual, and after circa 5 epochs becomes to increase, so we could stop the training process after 5 epochs. 
 
-
+..to be continued
 
 
 
