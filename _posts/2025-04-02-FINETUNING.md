@@ -7,11 +7,9 @@ tags: [a.i.]
 comments: false
 ---
 
-## Fine Tuning
+### Project Overview
 
 Form filling is a common task that can be automated using Large Language Models (LLMs). This project focuses on developing a system that can automatically extract relevant information from unstructured text and populate form fields intelligently.
-
-### Project Overview
 
 
 The system may works in two ways:
@@ -96,3 +94,20 @@ FIELD addressLine1^^^....
 ``` 
 
 So it's straightforward to parse the response and populate the form fields!
+
+### Using private/local LLM models
+
+The system can be extended to use private/local LLM models by adding a new backend for the local model and a new form-filler backend.
+
+> **Tip**: Why use private/local LLM models? 
+> For privacy reasons, user data is not sent to the cloud, so it's private and secure.
+
+
+
+
+
+
+
+
+
+
