@@ -244,6 +244,128 @@ example:
 
 ```
 
+now we can try to fine-tune the models, with 26k texts dataset in openai format.
+
+**Axolotl** simplifies the process and provides simple commands to fine-tune the models.
+
+The axolotl settings file is `config.yaml`.
+in this example we have settings to use the **Llama-3.2-1B-Instruct** model, taken dataset from `/path-to/dataset.jsonl` file.
+The dataset is in openai format and we explicitly mapped to the `message_property_mappings` property.
+
+We use **LoRA** fine tuning mode, with 
+a **rank** of 32, **alpha** 16 and a random **dropout** of 5%.
+The tuned model will be saved in the `./outputs/lora-out` folder.
+
+To save memory usage we use **8bit quantization** and a **gradient accumulation** steps of 4.
+
+To speed up the process and use dual GPUs we use **deepspeed** with the `zero1.json` configuration and run axolotl via `accelerate`.
+Can link a wandb project `wandb-project-name` to the fine tuning process to monitor the process and the results.
+
+To successfully run the fine tuning process on my machine I had to reduce the **mini batch** to 1. 
+
+In this example we perform training for 10 epochs and use a **learning rate** of 0.0002. 
+However, the learning rate it's not fixed value, because the model is trained with **adamw_bnb_8bit** optimizer that uses a cosine **learning rate scheduler**. 
+In substance the learning rate variates like cosine function.
+
+```yaml
+base_model: meta-llama/Llama-3.2-1B-Instruct
+model_type: LlamaForCausalLM
+tokenizer_type: AutoTokenizer
+
+load_in_8bit: true
+load_in_4bit: false
+strict: false
+
+datasets:
+  - path: /path-to/dataset.jsonl
+    type: chat_template
+    field_messages: messages
+    message_property_mappings:
+      role: role
+      content: content
+    roles:
+      system:
+        - system
+      user:
+        - user
+      assistant:
+        - assistant
+dataset_prepared_path:
+val_set_size: 0.05
+output_dir: ./outputs/lora-out
+
+sequence_len: 4096
+sample_packing: true
+eval_sample_packing: false
+pad_to_sequence_len: true
+
+adapter: lora
+lora_model_dir:
+lora_r: 32
+lora_alpha: 16
+lora_dropout: 0.05
+lora_target_linear: true
+lora_fan_in_fan_out:
+lora_modules_to_save:
+  - embed_tokens
+  - lm_head
+
+wandb_project: wandb-project-name
+wandb_entity:
+wandb_watch:
+wandb_name:
+wandb_log_model:
+
+gradient_accumulation_steps: 4
+micro_batch_size: 1
+num_epochs: 10
+optimizer: adamw_bnb_8bit
+lr_scheduler: cosine
+learning_rate: 0.0002
+
+train_on_inputs: false
+group_by_length: false
+bf16: auto
+fp16:
+tf32: false
+
+gradient_checkpointing: true
+early_stopping_patience:
+resume_from_checkpoint:
+local_rank:
+logging_steps: 1
+xformers_attention:
+flash_attention: true
+s2_attention:
+
+warmup_steps: 10
+evals_per_epoch: 4
+eval_table_size:
+eval_max_new_tokens: 128
+saves_per_epoch: 1
+debug:
+deepspeed: /path-to/axolotl/deepspeed_configs/zero1.json
+weight_decay: 0.0
+fsdp:
+fsdp_config:
+special_tokens:
+   pad_token: <|end_of_text|>
+```
+to run the fine tuning process we use the following command:
+
+```bash
+(env) [user@pc]$ export CUDA_VISIBLE_DEVICES=2
+(env) [user@pc]$ accelerate launch -m axolotl.cli.train config.yml
+```
+
+At the end of the fine tuning process have obtained these results:
+
+
+![Training Metrics](/assets/images/loss1B.png)  
+
+The training loss continues to decrease throughout the training cycle, but after 5 epochs the decrease is not significant.
+The evaluation loss is higher than the training loss, as usual, and after circa 5 epochs becomes to increase, so we could stop the training process after 5 epochs. 
+
 
 
 
