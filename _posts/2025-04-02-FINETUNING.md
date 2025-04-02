@@ -245,13 +245,12 @@ example:
 
 now we can try to fine-tune the models, with 26k texts dataset in openai format.
 
-#### Llama-3.2-1B-Instruct fine-tuning process with LoRA (low-rank adaptation)
+#### Fine-tuning process with LoRA (low-rank adaptation)
 
-**Axolotl** simplifies the process and provides simple commands to fine-tune the models.
+**Axolotl** simplifies the process and provides simple commands to fine-tune the models, the settings file is `config.yaml`.
 
-The axolotl settings file is `config.yaml`.
-in this example settings are for the **Llama-3.2-1B-Instruct** model, taken dataset from `/path-to/dataset.jsonl` file.
-The dataset is in openai format and we explicitly mapped to the `message_property_mappings` property.
+The dataset is in openai format and we explicitly mapped to the `message_property_mappings` and `roles` properties.
+We have choosen to split the dataset in 95% for training and 5% for validation (`val_set_size`).
 
 We use **LoRA** fine tuning mode, with 
 a **rank** of 32, **alpha** 16 and a random **dropout** of 5%.
@@ -267,6 +266,8 @@ To successfully run the fine tuning process on my machine I had to reduce the **
 In this example we perform training for 10 epochs and use a **learning rate** of 0.0002. 
 However, the learning rate it's not a fixed value, because the model is trained with **adamw_bnb_8bit** optimizer that uses a cosine **learning rate scheduler**. 
 In substance the learning rate variates like cosine function.
+
+in this example settings are for the **Llama-3.2-1B-Instruct** model, taken dataset from `/path-to/dataset.jsonl` file. 
 
 ```yaml
 base_model: meta-llama/Llama-3.2-1B-Instruct
@@ -364,8 +365,8 @@ At the end of the fine tuning process have obtained these results:
 
 ![Training Metrics](/assets/images/loss1B.png)  
 
-The training loss continues to decrease throughout the training cycle, but after 5 epochs the decrease is not significant.
-The evaluation loss is higher than the training loss, as usual, and after circa 5 epochs becomes to increase, so we could stop the training process after 5 epochs. 
+The training loss on training set continues to decrease throughout the training cycle, but after 5 epochs the decrease is not significant.
+The evaluation loss on validation set is higher than the training loss, as usual, and after circa 5 epochs becomes to increase, so we could stop the training process after 5 epochs. 
 
 ..to be continued
 
