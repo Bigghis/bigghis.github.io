@@ -29,25 +29,70 @@ The system may works in two ways:
 
 ### Demo Application
 
-I have created a demo Angular application to test the copy-paste functionality sending the text to an LLM.
+I have created a demo Angular application to test the copy-paste functionality sending the text to an LLM, 
 
 
 ![Text Copy-Paste Demo](/assets/images/smartform.gif)
 _A demonstration of the text copy-paste functionality_
 
 
-The demo application can use any various LLM model to extract the information from the text, because have created backends for **OpenAI**, **Mistral** and **LLaMA** APIs in the Angular form-filler backends library.
+The demo application can use any various LLM model to extract the information from the text, because have created backends for **OpenAI**, **Mistral** and **LLaMA** APIs in the Angular form-filler backends library, 
+inspired by the [smart-form-filler](https://github.com/thinktecture-labs/smart-form-filler) project.
 
 Testing with canonical LLM models has shown very good results. While all models perform well, `gpt-3.5-turbo` from OpenAI tends to provide slightly more accurate field extraction compared to `llama3.1-8b` and `mistral-large-latest`, though both produce satisfactory results for form-filling purposes. So one can experiment with different models to find the best suitable model for the task.
 
-You can find the demo application in GitHub project  [Smart form](https://github.com/Bigghis/smart-form).
+You can find the demo application in GitHub project  [smart form](https://github.com/Bigghis/smart-form).
 
 #### System prompt to instruct LLM
 
 For testing purposes, I used the same system prompt across all LLM backends (OpenAI, Mistral, and LLaMA) to ensure a fair comparison of their capabilities. This standardized approach helps maintain consistency in how each model processes and extracts information from the input text.
 
+the prompt is the same generic prompt taken from the [smart-form-filler](https://github.com/thinktecture-labs/smart-form-filler) project.
 
 
+**system prompt** pseudocode:
+```python
+    "role": "system",
+    "content": """Each response line matches the following format:FIELD identifier^^^value
+    Give a response with the following lines only, with values inferred from USER_DATA:
+    FIELD firstName^^^The firstName of type string
+    FIELD lastName^^^The lastName of type string
+    FIELD phoneNumber^^^The phoneNumber of type string
+    FIELD addressLine1^^^The addressLine1 of type string
+    FIELD addressLine2^^^The addressLine2 of type string
+    FIELD email^^^The email of type string
+    FIELD city^^^The city of type string
+    FIELD state^^^The state of type string
+    FIELD zip^^^The zip of type string
+    FIELD country^^^The country of type string
+    FIELD birthDate^^^The birthDate of type string
+    FIELD birthPlace^^^The birthPlace of type string
+    FIELD birthCountry^^^The birthCountry of type string
+    END_RESPONSE
+    Do not explain how the values were determined. # to not divagate the LLM from the task
+    Trying to deduce state where do he lives.   # this is a hint for the LLM to deduce the state
+    Trying to deduce birth country also.       # this is a hint for the LLM to deduce the birth country
+    For fields without any corresponding information in USER_DATA, use value NO_DATA.
 
+```
 
+The fields list can be build dynamically reading the form fields, so can be adapted to any form type.
 
+the **user prompt** is the text copied from the user or the speech converted to text, and can be formatted in this simple way:
+
+```python
+"role": "user",
+"content": """USER_DATA: <text>""" # Sono Mario Rossi e vivo a Milano da tre anni...
+
+```
+
+After sending the prompts to the LLM, via API, the response will be in the following format:
+
+```python
+"role": "assistant",
+"content": """FIELD firstName^^^Mario
+FIELD lastName^^^Rossi
+FIELD addressLine1^^^....
+``` 
+
+So it's straightforward to parse the response and populate the form fields!
