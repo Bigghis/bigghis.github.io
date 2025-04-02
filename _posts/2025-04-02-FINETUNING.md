@@ -41,7 +41,7 @@ Testing with canonical LLM models has shown very good results. While all models 
 
 You can find the demo application in GitHub project  [smart form](https://github.com/Bigghis/smart-form).
 
-#### System prompt to instruct LLM
+#### System prompt
 
 For testing purposes, I used the same system prompt across all LLM backends (OpenAI, Mistral, and LLaMA) to ensure a fair comparison of their capabilities. This standardized approach helps maintain consistency in how each model processes and extracts information from the input text.
 
@@ -67,14 +67,16 @@ the prompt is the same generic prompt taken from the [smart-form-filler](https:/
     FIELD birthPlace^^^The birthPlace of type string
     FIELD birthCountry^^^The birthCountry of type string
     END_RESPONSE
-    Do not explain how the values were determined. # to not divagate the LLM from the task
-    Trying to deduce state where do he lives.   # this is a hint for the LLM to deduce the state
+    Do not explain how the values were determined. # to not divagate from the task
+    Trying to deduce state where do he lives.   # this is a hint for the LLM to deduce the living state
     Trying to deduce birth country also.       # this is a hint for the LLM to deduce the birth country
     For fields without any corresponding information in USER_DATA, use value NO_DATA.
 
 ```
 
 The fields list can be build dynamically reading the form fields, so can be adapted to any form type.
+
+#### User prompt
 
 the **user prompt** is the text copied from the user or the speech converted to text, and can be formatted in this simple way:
 
@@ -83,6 +85,8 @@ the **user prompt** is the text copied from the user or the speech converted to 
 "content": """USER_DATA: <text>""" # Sono Mario Rossi e vivo a Milano da tre anni...
 
 ```
+
+#### LLM response
 
 After sending the prompts to the LLM, via API, the response will be in the following format:
 
@@ -99,9 +103,11 @@ So it's straightforward to parse the response and populate the form fields!
 
 The system can be extended to use private/local LLM models by adding a new backend for the local model and a new form-filler backend.
 
-> **Tip**: Why use private/local LLM models? 
-> For privacy reasons, user data is not sent to the cloud, so it's private and secure.
 
+
+> **Why use private/local LLM models?** 
+> For privacy reasons, because user data is not sent to the cloud, so it's private and secure.
+{: .prompt-tip }
 
 
 
