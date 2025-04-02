@@ -9,7 +9,7 @@ comments: false
 
 ### Project Overview
 
-Form filling is a common task that can be automated using Large Language Models (LLMs). This project focuses on developing a system that can automatically extract relevant information from unstructured text and populate form fields intelligently.
+Form filling is a common task that can be automated using Large Language Models (LLMs). This project focuses on developing a system that can automatically extract relevant information from unstructured text and populate HTML form fields intelligently.
 
 
 The system may works in two ways:
@@ -27,19 +27,19 @@ The system may works in two ways:
 
 ### Demo Application
 
-I have created a demo Angular application to test the copy-paste functionality sending the text to an LLM, 
+I have created a demo Angular application to test the copy-paste functionality sending the text to an LLM.
 
 
 ![Text Copy-Paste Demo](/assets/images/smartform.gif)
 _A demonstration of the text copy-paste functionality_
 
 
-The demo application can use any LLM model to extract the information from the text, because have created backends for **OpenAI**, **Mistral** and **LLaMA** APIs in the Angular form-filler backends library, 
+The demo application can use any LLM model to extract the information by the text, because have created backends for **OpenAI**, **Mistral** and **LLaMA** APIs in the Angular form-filler backends library, 
 inspired by the [smart-form-filler](https://github.com/thinktecture-labs/smart-form-filler) project.
 
 Testing with canonical LLM models has shown very good results. 
-I have tested with `gpt-3.5-turbo` from OpenAI, `llama3.1-8b` and `mistral-large-latest` from LLaMA and Mistral.
-While all models perform well, `gpt-3.5-turbo` from OpenAI tends to provide slightly more accurate field extraction compared to `llama3.1-8b` and `mistral-large-latest`, though both produce satisfactory results for form-filling purposes. So one can experiment with different models to find the best suitable model for the task.
+I have tested with `gpt-3.5-turbo` `llama3.1-8b` and `mistral-large-latest`.
+While all models perform well, `gpt-3.5-turbo` tends to provide slightly more accurate field extraction compared to `llama3.1-8b` and `mistral-large-latest`, though both produce satisfactory results for form-filling purposes. So one can experiment with different models to find the best suitable model for the task.
 
 You can find the demo application in GitHub project  [smart form](https://github.com/Bigghis/smart-form).
 
@@ -47,7 +47,7 @@ You can find the demo application in GitHub project  [smart form](https://github
 
 For testing purposes, I used the same system prompt across all LLM backends (OpenAI, Mistral, and LLaMA) to ensure a fair comparison of their capabilities. This standardized approach helps maintain consistency in how each model processes and extracts information from the input text.
 
-the prompt is the same generic prompt taken from the [smart-form-filler](https://github.com/thinktecture-labs/smart-form-filler) project.
+the prompt is the same generic prompt from the [smart-form-filler](https://github.com/thinktecture-labs/smart-form-filler) project.
 
 
 **system prompt** pseudocode:
@@ -69,7 +69,7 @@ the prompt is the same generic prompt taken from the [smart-form-filler](https:/
     FIELD birthPlace^^^The birthPlace of type string
     FIELD birthCountry^^^The birthCountry of type string
     END_RESPONSE
-    Do not explain how the values were determined. # to not divagate from the task
+    Do not explain how the values were determined. # to not diverge by the task
     Trying to deduce state where do he lives.   # this is a hint for the LLM to deduce the living state
     Trying to deduce birth country also.       # this is a hint for the LLM to deduce the birth country
     For fields without any corresponding information in USER_DATA, use value NO_DATA.
@@ -80,7 +80,7 @@ The fields list can be build dynamically reading the form fields, so can be adap
 
 #### User prompt
 
-the **user prompt** is the text copied from the user or the speech converted to text, and can be formatted in this simple way:
+the **user prompt** is the text copied by the user or the speech converted to text, and can be formatted in this simple way:
 
 ```
 "role": "user",
@@ -163,14 +163,14 @@ With the 3B model the performance is much better, reduced the NO_DATA and the re
 We want to fine-tune the models to see if we can improve the model performances. 
 
 ### Fine-tuning
-The idea is to fine-tune the models using a **synthetic dataset** created from a larger LLM (gpt-3.5-turbo)
+The idea is to fine-tune the models using a **synthetic dataset** created by a larger LLM (gpt-3.5-turbo)
 
 We use [axolotl](https://axolotl-ai-cloud.github.io/axolotl/) to fine-tune the models on a dual GPU NVIDIA RTX 3090 (24GB VRAM on each card) PC using a synthetic dataset created from another LLM. 
 
 #### Synthetic dataset creation
 
-We need a dataset with generic texts that can be used with various forms. 
-Ideally we consider user data forms, clinical cases, gym card plans, hotel bookings, taxes forms, etc.
+We need a dataset containing generic texts that can be used across various forms. 
+Ideally we consider: user data forms, clinical cases, gym card plans, hotel bookings, taxes forms, etc.
 
 ```python
     system_prompt = """
@@ -191,9 +191,9 @@ Ideally we consider user data forms, clinical cases, gym card plans, hotel booki
     generate 3 different texts, separate them with a pipe | symbol
     """
 ```
-As you can see, to variate the generated texts, we generate 3 different texts, separated by the pipe symbol.  
+As you can see, to variate texts, we generate 3 different texts, separated by the pipe symbol.  
 
-Another approach to generate variate texts is to define different **scenarios**, **features**, **users** and generate texts for each combination of them.
+Another approach to variate generated texts is to define different **scenarios**, **features**, **users** and generate texts for each combination of them.
 
 for further info see the excellent articles by Hamel Husain: [A framework for generating realistic test data](https://hamel.dev/blog/posts/field-guide/#a-framework-for-generating-realistic-test-data)
 
