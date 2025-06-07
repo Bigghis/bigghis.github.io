@@ -37,7 +37,7 @@ This allows for a side-by-side comparison between the base model and the fine-tu
 
 ### Creating the csv file
 
-We have a lot of objects like this one, in our synthetic dataset:
+We have a lot of objects with different texts but same structure, in our synthetic dataset:
 
 ```python
 prompts = [{
