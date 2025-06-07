@@ -10,7 +10,7 @@ comments: false
 ### Simple human evaluation of a fine tuned model
 
 
-Now that we have a [fine tuned model](https://bigghis.github.io/posts/FINETUNING/) we need to evaluate it, to test if it better than the original model.
+Now that we have a [fine tuned model](https://bigghis.github.io/posts/FINETUNING/) we need to evaluate it, to test if it's better than the original model.
 
 
 ### Evaluation process
