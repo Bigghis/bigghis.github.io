@@ -7,10 +7,10 @@ tags: [a.i., fine tuning, evaluation]
 comments: false
 ---
 
-### Evaluation of a fine tuned model
+### Simple human evaluation of a fine tuned model
 
 
-Now that we have a [fine tuned model](https://bigghis.github.io/posts/FINETUNING/) we need to evaluate it, to test if it better than the original model in specific task of form filling.
+Now that we have a [fine tuned model](https://bigghis.github.io/posts/FINETUNING/) we need to evaluate it, to test if it better than the original model.
 
 
 ### Evaluation process
@@ -19,7 +19,7 @@ We want compare the performance of the fine tuned model (**Llama-3.2-3B-Instruct
 
 A simple way to evaluate the model is to ask a human to check visually if the model is better than the original model. So to do this in a systematic way, we can use **a list of models outputs for the same user prompts** to evaluate the model.  
 
-Starting from our synthetic dataset, created by ChatGPT 3.5 Turbo, used to fine tune the model, we can create a csv file containing the following columns:
+Starting from our synthetic dataset, created by ChatGPT 3.5 Turbo, used to train the LoRA model, we can create a csv file containing the following columns:
 
 **1) from synthetic dataset:**
 - `system_prompt`: Contains the instructions that are given to the model. It defines the fields to be extracted.
@@ -37,7 +37,7 @@ This allows for a side-by-side comparison between the base model and the fine-tu
 
 We have a lot of objects like this one, in our synthetic dataset:
 
-```json
+```python
 prompts = [{
   "system_prompt": {
     "role": "system",
@@ -55,7 +55,7 @@ prompts = [{
   ...
 }, ...]
 ```
-We need to create a script to execute the inference of the base model and the fine tuned model on the prompts and then create the csv file.
+We need to create a script to run inference from the prompts for base model and for fine tuned model and then create the csv file.
 
 
 ```python
@@ -93,10 +93,13 @@ with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
 
 ```
 
-It produces a csv file like this, a human can view the results and the differences between the models inference responses.
+It produces a csv file like this, a human can view the results and the differences between the models inference responses to decide if the fine tuned model is acceptably better than the base model or not.
 
 ![Human Eval](/assets/images/exampleHumanEvaluation.png)
 
+This is a simple way to evaluate the model, but generally speaking, evaluation of a model is a complicated topic and there are many aspects to consider.
+There is a lot of literature on **benchmarks** that is worth looking into, 
+but for a first simple evaluation of small models on specific tasks, a comparison like the one presented can be useful.
 
 
 
