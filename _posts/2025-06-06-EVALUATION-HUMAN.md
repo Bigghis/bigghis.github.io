@@ -57,11 +57,11 @@ prompts = [{
   ...
 }, ...]
 ```
-We need to create a script to run inference from the prompts for base and fine tuned models and then save the results in a csv file.
-Can implement a **run_model()** function to do this.
-It takes a series of prompts, each with a system message and user input, and sets up a `transformers` library pipeline for text-generation, configured for efficient inference.
-Then it iterates through the prompts, feeding them to the model and collecting the generated responses.
-The final output is a clean list of the model's text replies.
+We need to create a script to run inference from the prompts for base and fine tuned models and then save the results in a csv file.  
+Can implement a `run_model()` function to do this.  
+It takes a series of prompts, each with a system message and user input, and sets up a `transformers` library pipeline for text-generation, configured for inference.  
+Then it iterates through the prompts, feeding them to the model and collecting the generated responses.  
+The final output is a list of the model's text replies.  
 
 ```python
 def run_model(prompts, model, tokenizer, limit=None):
@@ -112,7 +112,7 @@ def run_model(prompts, model, tokenizer, limit=None):
 Now we can create a script to run the inference and create the csv file.
 This script orchestrates the comparison between a base model and its fine-tuned version.
 
-Using the `run_model` function, it generates responses from both models (base and fine tuned) for a list of prompts.
+Using the `run_model()` function, it generates responses from both models (base and fine tuned) for a list of prompts.
 Finally, it compiles the results into a single CSV file.
 Each row of the CSV contains the original prompt, the expected output, and the actual outputs from both the base and the fine-tuned models, allowing for easy side-by-side comparison.
 
