@@ -58,7 +58,63 @@ prompts = [{
 }, ...]
 ```
 We need to create a script to run inference from the prompts for base and fine tuned models and then save the results in a csv file.
+Can implement a **run_model()** function to do this.
+It takes a series of prompts, each with a system message and user input, and sets up a `transformers` library pipeline for text-generation, configured for efficient inference.
+Then it iterates through the prompts, feeding them to the model and collecting the generated responses.
+The final output is a clean list of the model's text replies.
 
+```python
+def run_model(prompts, model, tokenizer, limit=None):
+    """
+    Generate text completions for a list of prompts using the provided model.
+    
+    Args:
+        prompts (list): List of dicts with 'system_prompt' and 'user_prompt' keys
+        model: Hugging Face model instance
+        tokenizer: Hugging Face tokenizer instance  
+        limit (int, optional): Max number of prompts to process
+    
+    Returns:
+        list: Generated assistant responses (strings with normalized newlines)
+    """
+    results = []
+
+    # Create text generation pipeline with optimized settings for inference
+    pipe = pipeline(
+        "text-generation",
+        model=model,
+        tokenizer=tokenizer,
+        torch_dtype=torch.bfloat16,  # Use half precision for memory efficiency
+        device_map="auto",           # Automatically distribute model across available devices
+    )
+
+    for line_num, prompt in enumerate(prompts):
+        if limit and line_num > int(limit):
+            break
+
+        messages = [
+            prompt['system_prompt'],
+            prompt['user_prompt']
+        ]
+
+        outputs = pipe(
+            messages,
+            max_new_tokens=300
+        )
+
+        assistant_response = outputs[0]["generated_text"][-1]['content'].replace('\n\n', '\n')
+
+        results.append(assistant_response)
+
+    return results
+```
+
+Now we can create a script to run the inference and create the csv file.
+This script orchestrates the comparison between a base model and its fine-tuned version.
+
+Using the `run_model` function, it generates responses from both models (base and fine tuned) for a list of prompts.
+Finally, it compiles the results into a single CSV file.
+Each row of the CSV contains the original prompt, the expected output, and the actual outputs from both the base and the fine-tuned models, allowing for easy side-by-side comparison.
 
 ```python
 # 3B model
@@ -71,14 +127,14 @@ LORA_DIR = "/outputs/lora-out/checkpoint-764" # fine tuned model at certain chec
 base_model = AutoModelForCausalLM.from_pretrained(BASE_MODEL, device_map="auto")
 tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
 
-base_results = run_model(prompts, base_model, tokenizer, "base_model", limit)
+base_results = run_model(prompts, base_model, tokenizer, limit)
 
 # then we use fine tuned model:
 # Load the LoRA weights and merge them with the base model:
 lora_model = PeftModel.from_pretrained(base_model, LORA_DIR)
 lora_model = lora_model.merge_and_unload()
 
-lora_results = run_model(prompts, lora_model, tokenizer, "lora_model", limit)
+lora_results = run_model(prompts, lora_model, tokenizer, limit)
 
 # now we can create the csv file:
 with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
