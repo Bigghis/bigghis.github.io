@@ -137,7 +137,7 @@ lora_model = lora_model.merge_and_unload()
 lora_results = run_model(prompts, lora_model, tokenizer, limit)
 
 # now we can create the csv file:
-with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
+with open("output_file.csv", 'w', newline='', encoding='utf-8') as csvfile:
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(['system_prompt', 'user_prompt', 'expected_completion', 'base_result', 'lora_result'])
     for prompt, base_result, lora_result in zip(prompts, base_results, lora_results):
