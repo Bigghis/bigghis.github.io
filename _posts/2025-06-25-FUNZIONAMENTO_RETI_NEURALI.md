@@ -16,7 +16,7 @@ Una rete neurale è un modello matematico, composto da numeri e funzioni matemat
 I numeri sono detti **parametri della rete** o **pesi**, le funzioni sono dette **attivazioni**.  
 Un **Large Language Model (LLM)** è una rete neurale che ha imparato a leggere e scrivere testo.  
 In una prima fase la rete passa attraverso un processo di addestramento, chiamato **training**.  
-In una seconda fase la rete viene utilizzata per fare delle predizioni, il processo viene chiamato **inferenza**.  
+In una seconda fase la rete viene utilizzata per fare delle predizioni (**inferenza**).  
 
 ### Addestramento della rete (Training)
 Prendiamo come esempio un modello di LLM come ChatGPT-4, esso possiede 1800 milioni di parametri.  
