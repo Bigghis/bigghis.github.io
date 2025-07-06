@@ -24,7 +24,7 @@ Usa una rappresentazione matematica chiamata **embedding** per rappresentare le 
 Questi numeri viaggiano attraverso la rete e dopo calcoli matematici diventano parametri della rete.    
 Alla fine i numeri verranno riconvertiti in parole e la rete produrrà una predizione di testo.  
 Addestrare una rete neurale significa trovare i valori dei parametri che permettono alla stessa di fare delle predizioni corrette.   
-L'addestramento consiste nel far vedere alla rete milioni di esempi di testo, in modo che la rete possa imparare a fare delle predizioni corrette, 
+L'addestramento consiste nel far vedere alla rete milioni di esempi di testo, in modo che possa imparare a fare delle predizioni corrette, 
 aggiustando i valori dei parametri.  
 L'addestramento dei moderni LLM avviene in tre sottofasi:
 1. **Pre-training**: viene insegnato alla rete a produrre frasi di senso compiuto.  
@@ -48,7 +48,7 @@ Per questo motivo i suoi parametri devono essere modificati, raffinandoli per co
 Anche detto **supervised learning** perché dando in pasto alla rete molti esempi di testo e le loro risposte, la rete impara a produrre risposte coerenti con i dati di addestramento.  
 L'algoritmo di ottimizzazione usato in questa fase è sempre il **Gradient Descent**.  
 Vengono letti anche stavolta molti esempi di testo, per task specifici, es. chat di dialogo tra utenti, traduzioni di testi da una lingua a un'altra, riassunti di testi, etc.  
-Al termine di questa fase abbiamo aggiunto a GPT la capacità di **chat** (ChatGPT), oltre che la capacità di leggere, scrivere  e tradurretesto in base a un contesto specifico. 
+Al termine di questa fase abbiamo aggiunto a GPT la capacità di **chat** (ChatGPT), oltre che la capacità di leggere, scrivere  e tradurre testo in base a un contesto specifico. 
 
 #### Alignment
 I parametri della rete vengono aggiustati ancora un pò per poter produrre testo coerente con le preferenze umane. Di solito in questa fase si usa l'approccio del **Reinforcement Learning**. 
@@ -57,4 +57,4 @@ Le risposte di un LLM vengono valutate da umani che premiano le risposte ritenut
 
 ### Inferenza   
 Una volta addestrato il modello, possiamo usarlo per fare delle predizioni. Il normale utilizzo che si fa di un LLM, ad esempio quando si chiedono cose a ChatGPT e poi lui risponde, è il processo chiamato **inferenza**. 
-ChatGPT riesce a produrre testo coerente con le richieste fatte dall'utente perché i sui pesi sono stati modificati in fase di addestramento. Nella fase di inferenza non vengono più modificati i pesi, ma si utilizza il modello così come è stato addestrato.  
+ChatGPT riesce a produrre testo coerente con le richieste fatte dall'utente perché i sui pesi sono stati modificati in fase di addestramento. Nella fase di inferenza non vengono più modificati ma si utilizza il modello così come è stato addestrato.  
