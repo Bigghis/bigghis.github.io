@@ -44,12 +44,17 @@ sulla base delle parole precedenti.
 
 #### Fine-tuning (Supervised learning)  
 A questo punto la rete è in grado di produrre frasi, ma non sa chattare, non sa tradurre, non sa produrre riassunti e non sa rispondere a domande specifiche, per esempio.   
-Per questo motivo i suoi parametri devono essere modificati, raffinandoli ancora un po' per compiti specifici.  
+Per questo motivo i suoi parametri devono essere modificati, raffinandoli per compiti specifici.  
 Anche detto **supervised learning** perché dando in pasto alla rete molti esempi di testo e le loro risposte, la rete impara a produrre risposte coerenti con i dati di addestramento.  
 L'algoritmo di ottimizzazione usato in questa fase è sempre il **Gradient Descent**.  
 Vengono letti anche stavolta molti esempi di testo, per task specifici, es. chat di dialogo tra utenti, traduzioni di testi da una lingua a un'altra, riassunti di testi, etc.  
 Al termine di questa fase abbiamo aggiunto a GPT la capacità di **chat** (ChatGPT), oltre che la capacità di leggere, scrivere  e tradurretesto in base a un contesto specifico. 
 
 #### Alignment
-I parametri della rete vengono aggiustati ancora un po per poter produrre testo coerente con le preferenze umane. Di solito in questa fase si usa l'approccio del **Reinforcement Learning**. 
+I parametri della rete vengono aggiustati ancora un pò per poter produrre testo coerente con le preferenze umane. Di solito in questa fase si usa l'approccio del **Reinforcement Learning**. 
 Le risposte di un LLM vengono valutate da umani che premiano le risposte ritenute più opportune rispetto ad altre meno opportune. (**Reinforcement Learning from Human Feedback (RLHF)**.)
+
+
+### Inferenza   
+Una volta addestrato il modello, possiamo usarlo per fare delle predizioni. Il normale utilizzo che si fa di un LLM, ad esempio quando si chiedono cose a ChatGPT e poi lui risponde, è il processo chiamato **inferenza**. 
+ChatGPT riesce a produrre testo coerente con le richieste fatte dall'utente perché i sui pesi sono stati modificati in fase di addestramento. Nella fase di inferenza non vengono più modificati i pesi, ma si utilizza il modello così come è stato addestrato.  
