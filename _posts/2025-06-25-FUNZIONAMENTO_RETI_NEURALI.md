@@ -7,7 +7,7 @@ tags: [Base, Neural Network, LLM]
 comments: false
 ---
 
-DISCLAIMER: Cerchiamo di mettere in ordine dei princìpi generali per il funzionamento delle reti neurali. Quanto elencato è una spiegazione di base e non è un insieme di regole ferree, anche perché la sperimentazione in questo campo è in continua evoluzione, per cui non è detto, ad esempio, che l'allineamento venga sempre effettuato con l'approccio del Reinforcement Learning, piuttosto che con la discesa del gradiente.
+DISCLAIMER: Cerchiamo di mettere in ordine dei princìpi generali per il funzionamento delle reti neurali. Quanto elencato è una spiegazione di base e non un insieme di regole ferree, anche perché la sperimentazione in questo campo è in continua evoluzione. Non è detto, ad esempio, che l'allineamento venga sempre effettuato con l'approccio del Reinforcement Learning, piuttosto che con la discesa del gradiente.
 
 
 ### Funzionamento delle reti neurali
