@@ -55,6 +55,6 @@ I parametri della rete vengono aggiustati ancora un pò per poter produrre testo
 Le risposte di un LLM vengono valutate da umani che premiano le risposte ritenute più opportune rispetto ad altre meno opportune. (**Reinforcement Learning from Human Feedback (RLHF)**.)
 
 
-### Inferenza   
+#### Inferenza   
 Una volta addestrato il modello, possiamo usarlo per fare delle predizioni. Il normale utilizzo che si fa di un LLM, ad esempio quando si chiedono cose a ChatGPT e poi lui risponde, è il processo chiamato **inferenza**. 
 ChatGPT riesce a produrre testo coerente con le richieste fatte dall'utente perché i sui pesi sono stati modificati in fase di addestramento. Nella fase di inferenza non vengono più modificati ma si utilizza il modello così come è stato addestrato.  
