@@ -1,9 +1,9 @@
 ---
 title: "Unit tests"
-description: Unit tests
+description: The first line of defense in evaluating an AI system
 date: 2025-08-10 12:00:00 +0530
 categories: [Evaluation, Unit tests]
-tags: [Evaluation, Unit tests]
+tags: [Evaluation, Unit tests, LangSmith]
 comments: false
 ---
 
@@ -110,14 +110,33 @@ Sometimes **regex-based** unit tests can be rigid and not flexible enough due to
 >  ...and so on.
 {: .prompt-tip }
 
+**Examples of data samples** and how they might be structured to evaluate such an AI application:  
+
+**Scenario 1:** Only one listing matching the user's query was found.
+- Input (user query): "Find 2-bedroom apartments in Milan, Isola area."
+- Expected LLM output: A specific listing that exactly matches the criteria (e.g., "Apartment at Via Verdi 10, Milan, 2 bedrooms, 80 sq m, price X").
+- **Evaluation criterion (unit test)**: Verify that the output contains the exact address and details of the one expected listing.
+
+**Scenario 2:** Multiple listings matching the user's query were found.
+- Input (user query): "Search for houses for sale in Rome, with a garden and more than 3 bedrooms."
+- Expected LLM output: A list of multiple listings matching the criteria (e.g., "Here are 5 listings in Rome with a garden: Via dei Giardini 1, Via delle Rose 5, ...").
+- **Evaluation criterion (unit test)**: Verify that the output is a list (even if formatted as natural language) and that each item in the list matches the specified criteria.
+
+**Scenario 3:** No listings matching the user's query were found.
+- Input (user query): "Find a castle with an Olympic-size pool in central Milan."
+- Expected LLM output: "No listings found matching your criteria."
+- **Evaluation criterion (unit test)**: Verify that the output contains the exact text "No listings found matching your criteria."
+
+
  It's essential, especially if you want to **monitor progress**, to log the results of these unit tests in a database or have a systematic way to track them.  
  You can start with existing tools like **LangSmith** for this, or save in a database and use a dashboard to track the results.  
 Tests can be run in batches on a schedule (e.g., weekly).  
-**It's best not to aim for 100% success**: if all tests pass, the test suite **may not be "difficult" enough** and will not show signs of improvement. **The goal should be a 60–70% success rate** to capture signals.  
+
+**It's best not to aim for 100% success**: if all tests pass, the test suite **may not be "difficult" enough** and will not show signs of improvement.  **The goal should be a 60–70% success rate** to capture signals.  
 Tests that never fail or do not show signs of change can be removed because they are not useful.  
 
 For speed in development, tests are often run locally by developers.  
-For **security checks** (e.g., not exposing private data), it is more appropriate to run them in the **continuous integration/continuous deployment (CI/CD) pipeline**.
+For **security checks** (e.g., not exposing private data), it is more appropriate to run them in the **continuous integration/continuous deployment (CI/CD)** pipeline.
  
 #### Tips and complex aspects
 
