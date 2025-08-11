@@ -89,17 +89,20 @@ def test_no_system_prompt_leak(llm):
 
 #### Approaches for writing unit tests
 
-A recommended approach is to **list all the features** the AI application needs to cover, and then, for each feature, **identify various scenarios the model should handle**. Next, create test data for each scenario.  
+A recommended approach is to **list all the features** the AI application needs to cover, and then, for each feature, **identify various scenarios the model should handle**.  
+Next, create test data for each scenario.  
 If test data are not available, you can create them synthetically.  
-Obviously, the more scenarios you cover, the better.
+Obviously, the more scenarios you cover, the better.  
+As you can see, listing all features of an AI application can be a difficult task.  
+Sometimes **regex-based** unit tests can be rigid and not flexible enough due to the nature of the model's output. The nature of natural-language output can be hard to predict.
 
 
-> **Example: a real estate assistant AI application**
-> This application is used to help users find properties for sale, listings, and more.
+> **Example: a real estate assistant AI application**  
+> This application is used to help users find properties for sale, listings, and more.  
 > For a "real estate listing search" feature, the scenarios could be:
 > - Find only one listing
 > - Find multiple listings
-> - Find no listings
+> - Find no listings  
 > For a "real estate listing contact" feature, the scenarios could be:
 > - Contact the listing agent
 > - Contact the listing agent for a non-existent listing
@@ -116,13 +119,6 @@ Tests that never fail or do not show signs of change can be removed because they
 For speed in development, tests are often run locally by developers.  
 For **security checks** (e.g., not exposing private data), it is more appropriate to run them in the **continuous integration/continuous deployment (CI/CD) pipeline**.
  
-
- #### Limitations
-
-As you can see, listing all features of an AI application can be a difficult task.  
-Sometimes **regex-based** unit tests can be rigid and not flexible enough due to the nature of the model's output. The nature of natural-language output can be hard to predict.
-
-
 #### Tips and complex aspects
 
 **"Look at your data" is the most important point** for writing and examining unit tests.  
