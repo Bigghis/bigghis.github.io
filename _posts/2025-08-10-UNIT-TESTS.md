@@ -122,7 +122,7 @@ For **security checks** (e.g., not exposing private data), it is more appropriat
 #### Tips and complex aspects
 
 **"Look at your data" is the most important point** for writing and examining unit tests.  
-LangSmith is your friend for this ;), because it facilitates **trace analysis**.
+LangSmith is your friend for this 😉, because it facilitates **trace analysis**.
 
 
 > **What is trace analysis?**
