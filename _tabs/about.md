@@ -4,5 +4,4 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-> Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
-{: .prompt-tip }
+This is a diary of notes, experiments, and projects related to my learning journey in deep learning techniques and AI in general.
