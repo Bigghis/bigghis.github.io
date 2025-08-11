@@ -151,4 +151,4 @@ LangSmith is your friend for this 😉, because it facilitates **trace analysis*
 > It's a way to understand the model's behavior and identify any issues or inefficiencies.
 {: .prompt-tip }
 
-It is recommended to start small (e.g., with 30 samples) and iteratively add evaluations as more edge cases are discovered and the task is better understood, preventing evaluations from slowing down the construction process.
+It is recommended to start small (e.g., with 30 samples) and iteratively add evaluations as more edge cases are discovered and the task is better understood, preventing evaluations from slowing down the development process.
