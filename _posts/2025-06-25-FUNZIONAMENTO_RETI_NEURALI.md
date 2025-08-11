@@ -1,5 +1,5 @@
 ---
-title: "How Neural Networks work"
+title: "Come funzionano le reti neurali"
 description: Una semplice spiegazione del funzionamento delle reti neurali
 date: 2025-06-25 12:00:00 +0530
 categories: [Base, Neural Network, LLM]
