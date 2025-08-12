@@ -5,6 +5,7 @@ date: 2025-08-07 12:00:00 +0530
 categories: [Evaluation]
 tags: [Evaluation, Unit tests, LLM as a Judge, Human Evaluation]
 comments: false
+mermaid: true
 ---
 
 
@@ -32,3 +33,43 @@ It consists of having the model's output directly examined by a person or a team
 The human judge is the most reliable way to evaluate the model's performance, and sometimes it's the only way to examine the model's performance.  
 It's expensive, time-consuming, and poorly scalable.
 It can be affected by the human judge's bias, and it is not scalable.
+
+#### The Evaluation workflow
+
+
+```mermaid
+flowchart LR
+  subgraph Evaluation Cycle
+    I["LLM innovations"]
+    U["Unit tests"]
+    L["Logging traces"]
+    E["Eval & curation (automate)"]
+    P["Prompt engineering"]
+    F["Fine-tune w/ curated data"]
+    M["Improve model"]
+  end
+
+  I --> U
+  I --> L
+  U --> E
+  L --> E
+  E --> P
+  E --> F
+  P --> M
+  F --> M
+  M --> I
+
+  UF[/"User feedback / A-B tests"/]
+  R[/"Reward model / Auto-eval"/]
+
+  E -.-> UF
+  E <-.-> R
+
+  classDef emphasized fill:#e9f7ef,stroke:#2ecc71,stroke-width:2px,color:#0b6623;
+  class I,U,L,E,P,F,M emphasized;
+```
+
+Notes:
+- Unit tests and traces surface regressions and dumb failures early.
+- Eval & curation drive both prompting and fine-tuning.
+- Model improvements loop back to kick off the next iteration; feedback and reward models extend automation.
