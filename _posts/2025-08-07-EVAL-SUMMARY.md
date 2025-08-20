@@ -13,7 +13,21 @@ mermaid: true
 
 Evaluation is the process of assessing the performance of a model. It's a **crucial step** in the development of a model, as it allows us to understand how well the model is performing and to identify areas for improvement, starting with the model's data.
 It guarantees model reliability through the iterative process of training and evaluation.  
-Evaluation consists of different techniques; we can divide them into three categories:
+They help you understand whether the model is good enough to be used in production and help you debug the model later when things go wrong.  
+Since they are important, they **should be created early** in the development process, and expanded as the model evolves.
+
+Evaluation is a process that can involve different techniques and workflows.  
+
+Examples:
+How to evaluate a code-generation model (SQL, Python, etc.)?  
+Run the generated code in a sandbox **(execution evaluation)** and compare the output with the expected output.  
+
+> In production, customers may reject an LLM's answers, and it's not easy to deduce the reason for their rejection. Evaluations must account for the fact that clients may ask questions differently from those conducting the evaluations and it's crucial to identify many use cases, trying to replicate the questions asked by customers
+{: .prompt-tip }
+
+
+
+Generally speaking, evaluation consists of different techniques; we can divide them into three categories:
 
 #### Unit Tests 
 [Unit tests](https://bigghis.github.io/posts/UNIT-TESTS/) are the first step in an evaluation process. 
@@ -29,10 +43,10 @@ It's essential to measure the judge LLM's correlation with human judgment.
 
 
 #### Human Evaluation
-It consists of having the model's output directly examined by a person or a team who evaluate its quality.  
-The human judge is the most reliable way to evaluate the model's performance, and sometimes it's the only way to examine the model's performance.  
+It involves having the model's output directly examined by a person or a team who evaluate its quality.  
+The human judge is the most reliable way to evaluate the model's performance, and sometimes it's the only way to assess the model's performance.  
 It's expensive, time-consuming, and poorly scalable.
-It can be affected by the human judge's bias, and it is not scalable.
+It can be affected by the human judge's bias.
 
 #### The Evaluation workflow
 

@@ -144,10 +144,14 @@ For **security checks** (e.g., not exposing private data), it is more appropriat
 LangSmith is your friend for this 😉, because it facilitates **trace analysis**.
 
 
+> **What is a trace?**
+> A trace is a sequence of events.
+> in a LLM system it involves the flow of data, function calls, RAG functionality, model calls, multiturn conversations, etc.
+{: .prompt-tip }
+
 > **What is trace analysis?**
-> Trace analysis is a technique used to analyze the execution of a program or system.
+> Trace analysis is a technique used to analyze traces.
 > It's a structured logging system of **every** step of the generative AI workflow.
-> It involves tracking the flow of data, function calls, RAG functionality, model calls, and more.
 > It's a way to understand the model's behavior and identify any issues or inefficiencies.
 {: .prompt-tip }
 
