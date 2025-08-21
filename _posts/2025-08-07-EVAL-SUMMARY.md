@@ -16,16 +16,18 @@ It guarantees model reliability through the iterative process of training and ev
 They help you understand whether the model is good enough to be used in production and help you debug the model later when things go wrong.  
 Since they are important, they **should be created early** in the development process, and expanded as the model evolves.
 
-Evaluation is a process that can involve different techniques and workflows.  
+Evaluation can involve different techniques and workflows.  
 
 Examples:
 How to evaluate a code-generation model (SQL, Python, etc.)?  
 Run the generated code in a sandbox **(execution evaluation)** and compare the output with the expected output.  
 
+Evaluations are hard because they require you to understand **deeply** the user-stories and the different user inputs.
+
 > In production, customers may reject an LLM's answers, and it's not easy to deduce the reason for their rejection. Evaluations must account for the fact that clients may ask questions differently from those conducting the evaluations and it's crucial to identify many use cases, trying to replicate the questions asked by customers
 {: .prompt-tip }
 
-
+However, building evaluations will teach a lot about the ai application!
 
 Generally speaking, evaluation consists of different techniques; we can divide them into three categories:
 
