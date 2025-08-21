@@ -65,7 +65,7 @@ Questa metrica bilancia l'importanza di precisione e recall ed è preferibile al
 
 
 #### ROC
-ROC (Receiver Operating Characteristic) è una curva che mostra la capacità del modello di distinguere tra classi positive e negative.  
+ROC (**Receiver Operating Characteristic**) è una curva che mostra la capacità del modello di distinguere tra classi positive e negative.  
 Una curva ROC ideale è la seguente, in quanto il modello è in grado di distinguere perfettamente tra classi positive e negative.  
 ![Curva ROC ideale](/assets/images/roc_ideal.svg){: width="300" height="300"}
 
@@ -81,6 +81,6 @@ Il punto che minimizza la distanza dall'angolo in alto a sinistra è la soglia m
 
 
 #### AUC
-AUC (Area Under the Curve) è l'area sotto la curva ROC.  
+AUC (**Area Under the Curve**) è l'area sotto la curva ROC.  
 Un modello perfetto ha un AUC di 1, perché la curva ROC è una linea retta che va dall'angolo in basso a sinistra all'angolo in alto a destra, chiaramente l'AUC di una curva pessima (diagonale) è 0.5.  
 Una qualsiasi curva reale ha un AUC compreso tra 0.5 e 1.  
