@@ -17,7 +17,7 @@ Un **classificatore binario** è un modello che prende in input un'istanza e res
 (Un modello di **regressione**, invece, prende in input un'istanza e restituisce un valore continuo.)  
 Per semplificare, ci concentreremo sui classificatori binari.  
 
-### Matrice di confusione
+#### Matrice di confusione
 
 Una matrice di confusione è una tabella che mostra il numero di istanze classificate in modo corretto o errato.
 
@@ -27,10 +27,10 @@ Quando, in un dataset, il totale dei positivi reali è molto diverso da quello d
 
 
 
-### Metriche di classificazione
+#### Metriche di classificazione
 
 I veri e falsi positivi e negativi vengono usati per calcolare diverse metriche di classificazione.  
-Di solito le metriche vengono calcolate con una soglia (threshold) fissa, per esempio 0.5.  
+Di solito le metriche vengono calcolate con una soglia (**threshold**) fissa, per esempio 0.5.  
 Se il modello restituisce una probabilità maggiore di 0.5, la classe è positiva, altrimenti è negativa.  
 Dopo aver calcolato le metriche, si può cambiare la soglia per vedere come cambiano le metriche, al fine di ottenere le migliori prestazioni possibili del modello.  
 
@@ -84,5 +84,3 @@ Il punto che minimizza la distanza dall'angolo in alto a sinistra è la soglia m
 AUC (Area Under the Curve) è l'area sotto la curva ROC.  
 Un modello perfetto ha un AUC di 1, perché la curva ROC è una linea retta che va dall'angolo in basso a sinistra all'angolo in alto a destra, chiaramente l'AUC di una curva pessima (diagonale) è 0.5.  
 Una qualsiasi curva reale ha un AUC compreso tra 0.5 e 1.  
-
-
