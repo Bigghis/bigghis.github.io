@@ -11,7 +11,7 @@ mermaid: true
 
 ### Classificazione
 
-La classificazione è un problema di machine learning che consiste nel catalogare un'istanza in una delle classi possibili previste.  
+
 La classificazione è un problema di machine learning che consiste nel catalogare un'istanza in una delle classi previste.  
 Un **classificatore binario** è un modello che prende in input un'istanza e restituisce una classe tra due possibili classi; uno **multiclasse**, invece, restituisce una classe tra più di due possibili classi.  
 (Un modello di **regressione**, invece, prende in input un'istanza e restituisce un valore continuo.)  
@@ -59,6 +59,8 @@ La precisione migliora quando diminuisce il numero di falsi positivi, al contrar
 Un modello perfetto ha una precisione di 1, perché tutte le istanze positive sono classificate correttamente.  
 
 #### F1-score
+> **Per una soglia scelta, quanto bene il modello bilancia il fatto di aver avuto ragione nell'identificare i positivi (Precision) e la percentuale di positivi trovati (Recall)?**
+{: .prompt-tip }
 Il F1-score è la **media armonica** di precisione e recall.  
 Un modello perfetto ha un F1-score di 1, perché precisione e recall sono entrambi 1, altrimenti il F1-score è compreso tra 0 e 1 ed è simile al valore peggiore tra precisione e recall. 
 Questa metrica bilancia l'importanza di precisione e recall ed è preferibile alla precisione per i set di dati con classi sbilanciate perché è più robusta.  
@@ -107,7 +109,7 @@ Una qualsiasi curva reale ha un AUC compreso tra 0.5 e 1.
 #### PR AUC
 PR AUC (**Area Under the Curve**) è l'area sotto una curva Precision-Recall.  
 
-Un modello perfetto ha un PR AUC di 1, perché il modello classifica tutte le istanze positive e negative in modo corretto.  
+Un modello perfetto ha un PR AUC di 1.
 
 
 
