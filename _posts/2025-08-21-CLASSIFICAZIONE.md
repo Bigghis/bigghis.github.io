@@ -8,12 +8,35 @@ comments: false
 mermaid: true
 ---
 
+<style>
+/* Page-only size limits for SVG images and Mermaid diagrams */
+.post-content img[src$=".svg"] {
+  display: block;
+  margin: 1rem auto;
+  width: 100%;
+  max-width: 300px; /* adjust as needed */
+  height: auto;
+  max-height: 300px; /* adjust as needed */
+}
+
+.post-content .mermaid,
+.post-content .mermaid svg {
+  display: block;
+  margin: 1rem auto;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 200px; /* adjust as needed */
+  max-height: 200px; /* adjust as needed */
+  overflow: hidden;
+}
+</style>
+
 
 ### Classificazione
 
 La classificazione è un problema di machine learning che consiste nel catalogare un'istanza in una delle classi possibili previste.  
 Un **classificatore binario** è un modello che prende in input un'istanza e restituisce una classe tra due possibili, uno **multiclasse**, invece, restituisce una classe tra più di due possibili.  
-(Un modello di **regressione**, invece, prende in input un'istanza e restituisce un valore continuo.)
+(Un modello di **regressione**, invece, prende in input un'istanza e restituisce un valore continuo.)  
 Per semplificare, ci concentreremo sui classificatori binari.  
 
 ### Matrice di confusione
@@ -43,7 +66,7 @@ Se il modello restituisce una probabilità maggiore di 0.5, la classe è positiv
 Dopo aver calcolato le metriche, si può cambiare la soglia per vedere come cambiano le metriche, al fine di ottenere le migliori prestazioni possibili del modello.  
 
 #### Accuracy
-> Risponde alla domanda: **Quante istanze sono state classificate correttamente?**
+> **Quante istanze sono state classificate correttamente?**
 {: .prompt-tip }
 
 L'accuracy è la proporzione di istanze correttamente classificate rispetto al totale delle istanze.  
@@ -52,14 +75,14 @@ Per dataset fortemente sbilanciati, l'accuracy **non è una buona metrica** per 
 
 
 #### Recall
-> Risponde alla domanda: **Se il riferimento sono le istanze positive, quante di queste istanbze sono state classificate correttamente?**
+> **Se il riferimento sono le istanze positive, quante di queste istanze sono state classificate correttamente?**
 {: .prompt-tip }
 
 Il recall (richiamo) è la proporzione di istanze positive correttamente classificate rispetto al totale delle istanze positive reali.  
 Un modello perfetto ha un recall di 1, perché tutte le istanze positive sono classificate correttamente.  
 
 #### Precision
-> Risponde alla domanda: **Quando il modello ha previsto la classe positiva, qual è stata la percentuale di previsioni corrette?**
+> **Quando il modello ha previsto la classe positiva, qual è stata la percentuale di previsioni corrette?**
 {: .prompt-tip }
 
 La precisione è la proporzione di istanze positive correttamente classificate rispetto al totale delle istanze positive classificate.  
