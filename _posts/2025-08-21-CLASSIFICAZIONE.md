@@ -19,7 +19,7 @@ Per semplificare, ci concentreremo sui classificatori binari.
 
 #### Matrice di confusione
 
-Una matrice di confusione è una tabella che mostra il numero di istanze classificate in modo corretto o errato.
+Una matrice di confusione è una tabella che mostra il numero di istanze classificate in modo corretto o errato.  
 
 ![Matrice di confusione](/assets/images/confusion_matrix.svg){: width="300" height="300"}
 
@@ -75,13 +75,13 @@ Una curva ROC ideale è la seguente, in quanto il modello è in grado di disting
 ![Curva ROC ideale](/assets/images/roc_ideal.svg){: width="300" height="300"}
 
 
-Una pessima curva ROC è la diagonale, in quanto il modello non è in grado di distinguere tra classi positive e negative (modello random).
+Una pessima curva ROC è la diagonale, in quanto il modello non è in grado di distinguere tra classi positive e negative (modello random).  
 ![Curva ROC pessima](/assets/images/roc_bad.svg){: width="300" height="300"}
 
 
 
 In una curva ROC reale, il modello non è in grado di distinguere perfettamente tra classi positive e negative. 
-Il punto che minimizza la distanza dall'angolo in alto a sinistra è la soglia migliore per quel modello.
+Il punto che minimizza la distanza dall'angolo in alto a sinistra è la soglia migliore per quel modello.  
 ![Curva ROC reale](/assets/images/roc_real.svg){: width="300" height="300"}
 
 **ROC AUC** (**Area Under the Curve**) è l'area sotto una curva ROC.  
