@@ -8,29 +8,6 @@ comments: false
 mermaid: true
 ---
 
-<style>
-/* Page-only size limits for SVG images and Mermaid diagrams */
-.post-content img[src$=".svg"] {
-  display: block;
-  margin: 1rem auto;
-  width: 100%;
-  max-width: 300px; /* adjust as needed */
-  height: auto;
-  max-height: 300px; /* adjust as needed */
-}
-
-.post-content .mermaid,
-.post-content .mermaid svg {
-  display: block;
-  margin: 1rem auto;
-  width: 100% !important;
-  height: auto !important;
-  max-width: 200px; /* adjust as needed */
-  max-height: 200px; /* adjust as needed */
-  overflow: hidden;
-}
-</style>
-
 
 ### Classificazione
 
@@ -43,16 +20,7 @@ Per semplificare, ci concentreremo sui classificatori binari.
 
 Una matrice di confusione è una tabella che mostra il numero di istanze classificare in modo corretto o errato.
 
-```mermaid
-quadrantChart
-    title Matrice di confusione
-    x-axis Predetto Negativo --> Predetto Positivo
-    y-axis Reale Negativo --> Reale Positivo
-    quadrant-2 TN 
-    quadrant-1 FP
-    quadrant-3 FN
-    quadrant-4 TP
-```
+![Matrice di confusione](/assets/images/confusion_matrix.svg){: width="300" height="300"}
 
 Quando nel dataset il totale dei poitivi reali è molto diverso dal totale dei negativi reali, la matrice di confusione è **sbilanciata**.  
 
@@ -98,17 +66,17 @@ Questa metrica bilancia l'importanza di precisione e richiamo ed è preferibile 
 #### ROC
 ROC (Receiver Operating Characteristic) è una curva che mostra la capacità del modello di distinguere tra classi positive e negative.  
 Una curva ROC ideale è la seguente, in quanto il modello è in grado di distinguere perfettamente tra classi positive e negative.  
-![Curva ROC ideale](/assets/images/roc_ideal.svg)
+![Curva ROC ideale](/assets/images/roc_ideal.svg){: width="300" height="300"}
 
 
 Una pessima curva ROC è la seguente, in quanto il modello non è in grado di distinguere tra classi positive e negative.  
-![Curva ROC pessima](/assets/images/roc_bad.svg)
+![Curva ROC pessima](/assets/images/roc_bad.svg){: width="300" height="300"}
 
 
 
 Una curva ROC reale è la seguente, in quanto il modello non è in grado di distinguere perfettamente tra classi positive e negative. 
 Il punto che minimizza la distanza con l'angolo in alto a sinistra è la soglia migliore per modello.
-![Curva ROC reale](/assets/images/roc_real.svg)
+![Curva ROC reale](/assets/images/roc_real.svg){: width="300" height="300"}
 
 
 #### AUC

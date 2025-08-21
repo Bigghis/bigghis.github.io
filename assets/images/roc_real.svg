@@ -14,7 +14,7 @@
       .sample { fill: #b22222; stroke: #fff; stroke-width: 2; }
     ]]></style>
   </defs>
-
+  <rect x="0" y="0" width="560" height="420" fill="#ffffff"/>
   <g transform="translate(70,20)">
     <rect x="0" y="0" width="470" height="340" fill="none"/>
 

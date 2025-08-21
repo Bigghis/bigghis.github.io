@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="420" viewBox="0 0 560 420" role="img" aria-labelledby="title desc">
+  <title id="title">Matrice di confusione</title>
+  <desc id="desc">Griglia 2x2 con etichette degli assi: Predetto Negativo → Predetto Positivo, Reale Negativo → Reale Positivo; quadranti TN, FP, FN, TP.</desc>
+
+  <defs>
+    <style type="text/css"><![CDATA[
+      .axis { stroke: #555; stroke-width: 2; }
+      .grid { stroke: #999; stroke-width: 1.5; }
+      .label { fill: #333; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif; font-size: 14px; }
+      .quad { fill: #ffffff; }
+      .quad-alt { fill: #f6f8fa; }
+      .cell-text { fill: #222; font-weight: 600; font-size: 18px; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif; }
+    ]]></style>
+  </defs>
+
+  <rect x="0" y="0" width="560" height="420" fill="#ffffff"/>
+
+  <g transform="translate(70,40)">
+    <rect x="0" y="0" width="470" height="340" fill="none"/>
+
+    <!-- outer border -->
+    <rect x="0" y="0" width="470" height="340" class="axis" fill="none"/>
+    <!-- mid grid lines to create 2x2 -->
+    <line class="grid" x1="235" y1="0" x2="235" y2="340"/>
+    <line class="grid" x1="0" y1="170" x2="470" y2="170"/>
+
+    <!-- alternating backgrounds -->
+    <rect x="0" y="0" width="235" height="170" class="quad"/>
+    <rect x="235" y="0" width="235" height="170" class="quad-alt"/>
+    <rect x="0" y="170" width="235" height="170" class="quad-alt"/>
+    <rect x="235" y="170" width="235" height="170" class="quad"/>
+
+    <!-- axis labels: columns on top, rows on left -->
+    <text class="label" x="117.5" y="-16" text-anchor="middle">Predetto Negativo</text>
+    <text class="label" x="352.5" y="-16" text-anchor="middle">Predetto Positivo</text>
+    <text class="label" x="-50" y="85" transform="rotate(-90 -50,85)" text-anchor="middle">Reale Positivo</text>
+    <text class="label" x="-50" y="255" transform="rotate(-90 -50,255)" text-anchor="middle">Reale Negativo</text>
+
+    <!-- quadrant labels: TL=TN, TR=FP, BL=FN, BR=TP -->
+    <text class="cell-text" x="117.5" y="85" text-anchor="middle" dominant-baseline="middle">TN</text>
+    <text class="cell-text" x="352.5" y="85" text-anchor="middle" dominant-baseline="middle">FP</text>
+    <text class="cell-text" x="117.5" y="255" text-anchor="middle" dominant-baseline="middle">FN</text>
+    <text class="cell-text" x="352.5" y="255" text-anchor="middle" dominant-baseline="middle">TP</text>
+  </g>
+</svg>
+
