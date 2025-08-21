@@ -90,6 +90,8 @@ Il punto che minimizza la distanza dall'angolo in alto a sinistra è la soglia m
 {: .prompt-tip }
 
 PR (**Precision-Recall**) è una curva che mostra la qualità delle classi positive predette.  
+Risponde ad una domanda simile a quella del F1 score, ma mentre l'F1 sore è un punto sulla curva PR, la PR valuta l'intero comportamento del modello per tutte le soglie.
+
 La curva ideale è la seguente, in quanto il modello ha avuto sempre ragione nell'identificare i positivi e li ha trovati tutti.  
 ![Curva PR ideale](/assets/images/pr_ideal.svg){: width="300" height="300"}
 
@@ -108,7 +110,6 @@ Una qualsiasi curva reale ha un AUC compreso tra 0.5 e 1.
 
 #### PR AUC
 PR AUC (**Area Under the Curve**) è l'area sotto una curva Precision-Recall.  
-
 Un modello perfetto ha un PR AUC di 1.
 
 
