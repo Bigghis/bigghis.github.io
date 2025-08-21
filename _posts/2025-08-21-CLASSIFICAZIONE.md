@@ -65,12 +65,15 @@ Questa metrica bilancia l'importanza di precisione e recall ed è preferibile al
 
 
 #### ROC
+> **Quanto il modello riesce a mantenere True Positive Rates (TPR) alti e False Positive Rates (FPR) bassi variando la soglia?**
+{: .prompt-tip }
+
 ROC (**Receiver Operating Characteristic**) è una curva che mostra la capacità del modello di distinguere tra classi positive e negative.  
 Una curva ROC ideale è la seguente, in quanto il modello è in grado di distinguere perfettamente tra classi positive e negative.  
 ![Curva ROC ideale](/assets/images/roc_ideal.svg){: width="300" height="300"}
 
 
-Una pessima curva ROC è la diagonale, in quanto il modello non è in grado di distinguere tra classi positive e negative.  
+Una pessima curva ROC è la diagonale, in quanto il modello non è in grado di distinguere tra classi positive e negative (modello random).
 ![Curva ROC pessima](/assets/images/roc_bad.svg){: width="300" height="300"}
 
 
@@ -80,7 +83,35 @@ Il punto che minimizza la distanza dall'angolo in alto a sinistra è la soglia m
 ![Curva ROC reale](/assets/images/roc_real.svg){: width="300" height="300"}
 
 
-#### AUC
-AUC (**Area Under the Curve**) è l'area sotto la curva ROC.  
-Un modello perfetto ha un AUC di 1, perché la curva ROC è una linea retta che va dall'angolo in basso a sinistra all'angolo in alto a destra, chiaramente l'AUC di una curva pessima (diagonale) è 0.5.  
+#### PR
+> **Quando il modello ha previsto la classe positiva, quante volte ha avuto ragione? (Precision) e quanti veri positivi ha trovato? (Recall)**
+{: .prompt-tip }
+
+PR (**Precision-Recall**) è una curva che mostra la qualità delle classi positive predette.  
+La curva ideale è la seguente, in quanto il modello ha avuto sempre ragione nell'identificare i positivi e li ha trovati tutti.  
+![Curva PR ideale](/assets/images/pr_ideal.svg){: width="300" height="300"}
+
+Nella realtà, più la curva si avvicina all'angolo in alto a destra (1.0,1.0), migliore è il modello.  
+In alternativa, si può pensare che il massimo score F1 corrisponde alla migliore curva PR per il modello.
+
+
+
+
+
+#### ROC AUC
+ROC AUC (**Area Under the Curve**) è l'area sotto una curva ROC.  
+
+Un modello perfetto ha un ROC AUC di 1, perché la curva ROC è una linea retta che va dall'angolo in basso a sinistra all'angolo in alto a destra, chiaramente l'AUC di una curva pessima (diagonale) è 0.5.  
 Una qualsiasi curva reale ha un AUC compreso tra 0.5 e 1.  
+
+#### PR AUC
+PR AUC (**Area Under the Curve**) è l'area sotto una curva Precision-Recall.  
+
+Un modello perfetto ha un PR AUC di 1, perché il modello classifica tutte le istanze positive e negative in modo corretto.  
+
+
+
+
+
+
+
