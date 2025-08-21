@@ -36,7 +36,7 @@
     <line class="tick" x1="-8" y1="0" x2="0" y2="0"/>
     <text class="small" x="-18" y="4" text-anchor="end">1.0</text>
 
-    <path class="roc" d="M 0 340 C 40 300, 120 240, 200 160 S 360 50, 470 0"/>
+    <path class="roc" d="M 0 340 C 20 330, 160 230, 200 160 S 430 20, 470 0"/>
     <!-- Highlight example operating point and diagonal distance to (0,1) corner -->
     <line class="guide" x1="200" y1="160" x2="0" y2="0"/>
     <circle class="sample" cx="200" cy="160" r="6"/>
