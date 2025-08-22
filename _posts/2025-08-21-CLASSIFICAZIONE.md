@@ -23,7 +23,7 @@ Una matrice di confusione è una tabella che mostra il numero di istanze classif
 
 ![Matrice di confusione](/assets/images/confusion_matrix.svg){: width="300" height="300"}
 
-Quando, in un dataset, il totale dei positivi reali è molto diverso da quello dei negativi reali, la matrice di confusione è **sbilanciata**.  
+La matrice si dice **sbilanciata** quando il totale dei positivi reali è molto diverso da quello dei negativi reali.  
 
 
 
@@ -32,7 +32,7 @@ Quando, in un dataset, il totale dei positivi reali è molto diverso da quello d
 I veri e falsi positivi e negativi vengono usati per calcolare diverse metriche di classificazione.  
 Di solito le metriche vengono calcolate con una soglia (**threshold**) fissa, per esempio 0.5.  
 Se il modello restituisce una probabilità maggiore di 0.5, la classe è positiva, altrimenti è negativa.  
-Dopo aver calcolato le metriche, si può cambiare la soglia per vedere come cambiano le metriche, al fine di ottenere le migliori prestazioni possibili del modello.  
+Dopo aver calcolato le metriche, si può variare la soglia per vedere come cambiano le metriche, al fine di ottenere le migliori prestazioni possibili del modello.  
 
 #### Accuracy
 > **Quante istanze sono state classificate correttamente?**
