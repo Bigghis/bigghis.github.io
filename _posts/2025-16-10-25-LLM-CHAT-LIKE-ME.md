@@ -174,6 +174,9 @@ Each conversation is structured as an array of messages with role assignments: *
 Now let's dive into how I actually implemented this transformation process. The `result.json` file exported from Telegram is massive (several hundred megabytes of years of chats), especially if you decided to export all your chats at once. 
 Navigating through this data to find specific conversations and process them systematically was challenging, so I created a utility **parse_chats.py** to parse the JSON and extract to a list the chat names, their types (personal, groups, private, public etc.) and their IDs.
 
+> All the scripts mentioned in this article are available in the project's GitHub repository: [chat-like-me](https://github.com/Bigghis/chat-like-me)
+{: .prompt-info }
+
 
 ``` bash 
 python parse_chats.py --save-all --input result.json  
