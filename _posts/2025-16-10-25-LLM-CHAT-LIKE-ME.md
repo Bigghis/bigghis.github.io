@@ -15,7 +15,7 @@ The goal is to fine-tune **Llama 3.1 8B** using my personal and group chat histo
 
 ### Why Telegram?
 
-I chose to use **Telegram** as my data source for several reasons. First and foremost, I use it frequently for both personal conversations and group chats, which means I have a substantial amount of chat history to work with. 
+I chose to use **Telegram** as my data source for several reasons. First and foremost, I use it frequently from many years for both personal conversations and group chats, which means I have a substantial amount of chat history to work with. 
 
 I find Telegram superior to alternatives like WhatsApp, particularly for this kind of project. Telegram offers a built-in export feature that makes it easy to download your entire chat history in structured formats like JSON, which is perfect for data processing too. The platform is also more developer-friendly, with better tools and APIs for data handling, bots development and so on.  
 
@@ -147,17 +147,6 @@ Once the export is complete, you'll have a large JSON file (potentially hundreds
 ```
 
 
-
-
-**Key elements in the JSON structure:**
-- **`chats.list`**: An array containing all your conversations (both personal and group chats)
-- **`name`**: The name of the chat or contact
-- **`type`**: Either `"personal_chat"` or `"private_group"`
-- **`messages`**: An array of all messages in that conversation
-- **`from`**: The sender's name
-- **`text`**: The actual message content
-- **`date`** and **`date_unixtime`**: Timestamps for each message
-
 This structured format makes it relatively straightforward to parse and extract the conversation data we need for training.
 
   
@@ -169,21 +158,47 @@ Once we have the raw JSON export, we need to transform it into a training-ready 
 
 **Structuring**: When you chat with someone, there's typically a rapid back-and-forth exchange about a specific topic. Then hours might pass before you chat again about something completely different. To maintain logical coherence in the training data, we need to separate these distinct conversation segments. A good approach is to group messages that occur within 5 minutes or more time apart of each other as part of the same conversational topic, while treating gaps longer than an hour as natural breaks between different discussions. This will help the model learns to respond within context rather than mixing unrelated topics.
 
-**Formatting**: The dataset will be formatted using **OpenAI's chat template**, which is a widely-adopted standard format for conversational AI. Each conversation is structured as an array of messages with clear role assignments: "user" for the other person's messages and "assistant" for your messages.
+**Formatting**: The dataset will be formatted using **OpenAI's chat template**, which is a widely-adopted standard format for conversational AI. Each conversation is structured as an array of messages with clear role assignments: **system** for context, **user** for the other person's messages, and **assistant** for your messages. Also include the **name** field to preserve who said what.
 
-Example of a formatted conversation:
+Example of a formatted complete conversation:
 ```json
 {
   "messages": [
-    {"role": "user", "content": "Did you finish the project?"},
-    {"role": "assistant", "content": "Almost done, just some final touches"},
-    {"role": "user", "content": "Great! When can I see it?"},
-    {"role": "assistant", "content": "I'll send it over by tonight"}
+    {
+      "role": "system", 
+      "content": "You are Pasquale, chatting with Lorenzo. Respond naturally in their conversational style."
+    },
+    {
+      "role": "assistant", 
+      "name": "Pasquale", 
+      "content": "sto ventaccio malefico mi ha rotto la persiana ed ho dovuto legarla era aperta...col vento si è chiusa di colpo e SBAM! per XXX"
+    },
+    {
+      "role": "user", 
+      "name": "Lorenzo", 
+      "content": "Daje giù"
+    },
+    {
+      "role": "assistant", 
+      "name": "Pasquale", 
+      "content": "eh :("
+    },
+    {
+      "role": "assistant", 
+      "name": "Pasquale", 
+      "content": "C'è gia a chi è andata peggio col vento…"
+    },
+    {
+      "role": "user", 
+      "name": "Lorenzo", 
+      "content": "Esatto"
+    }
   ]
 }
 ```
 
-This format is clean, human-readable, and compatible with most fine-tuning frameworks including those for Llama models.
+The **system message** is crucial: it tells the model "You are Pasquale, chatting with Lorenzo..." During training, this helps the model learn to associate this context with Pasquale's conversational style with Lorenzo.  
+When the trained model is later used, setting the same system prompt will trigger the model to respond exactly in Pasquale's style when specific Lorenzo user asks questions. It's like giving the model its identity and role for the conversation.
 
 Data quality is crucial—it directly impacts how well the model learns your conversational style.
 
