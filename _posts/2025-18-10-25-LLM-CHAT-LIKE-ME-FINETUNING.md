@@ -235,11 +235,11 @@ weight_decay: 0.0
 - `warmup_ratio: 0.1`: Gradually increases learning rate from 0 to the target over the first 10% of training steps to prevent instability
 - `evals_per_epoch: 1`: Evaluates on validation set once per epoch
 - `saves_per_epoch: 1`: Saves a checkpoint once per epoch
-- `weight_decay: 0.0`: No L2 regularization. LoRA's low rank already provides implicit regularization
+- `weight_decay: 0.0`: No weight decay<sup>(7)</sup> regularization. LoRA's low rank already provides implicit regularization
 
 <sup>(6)</sup> *[loss](https://bigghis.github.io/AI-appunti/guide/loss/intro.html?highlight=loss%20function#output-loss-functions){:target="_blank" rel="noopener"} is a measure of how well the model is performing. It is used to guide the training process and improve the model's performance.*
 
-
+<sup>(7)</sup> *[(weight decay](https://bigghis.github.io/AI-appunti/guide/regularizations/weightdecay.html?highlight=weight#weight-decay){:target="_blank" rel="noopener"} is a technique to prevent overfitting by limiting the values that weights can assume. It adds a penalty proportional to the sum of squared weights to the loss function, pushing weights toward smaller values and stabilizing the model.*
 
 #### DeepSpeed Configuration
 
