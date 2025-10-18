@@ -201,7 +201,7 @@ learning_rate: 0.0002
 - `gradient_accumulation_steps: 2`: Accumulates gradients<sup>(4)</sup> over 2 forward passes before updating weights. This simulates a larger batch size (effective batch size = micro_batch_size × gradient_accumulation_steps × num_gpus = 1 × 2 × 2 = 4) without requiring more memory
 - `micro_batch_size: 1`: Processes one conversation at a time per GPU. With sample packing enabled, this could contain multiple conversations packed into 4096 tokens
 - `num_epochs: 4`: Iterates through the entire dataset 4 times. More epochs can lead to better adaptation but risk overfitting
-- `optimizer: adamw_bnb_8bit`: Uses 8-bit AdamW optimizer (from bitsandbytes library) for memory efficiency
+- `optimizer: adamw_bnb_8bit`: Uses 8-bit AdamW optimizer (from [bitsandbytes](https://github.com/bitsandbytes-foundation/bitsandbytes){:target="_blank" rel="noopener"} library) for memory efficiency
 - `lr_scheduler: cosine`: scheduler<sup>(5)</sup> setting: learning rate<sup>(5)</sup> follows a cosine curve, starting at the specified rate and gradually decreasing to near zero
 - `learning_rate: 0.0002`: Starting learning rate<sup>(6)</sup>. This is relatively standard for LoRA fine-tuning
 
