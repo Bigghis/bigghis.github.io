@@ -188,7 +188,7 @@ This section defines how the model will be adapted:
 
 <sup>(1)</sup> *[dropout](https://bigghis.github.io/AI-appunti/guide/regularizations/dropout.html?highlight=dropout#dropout){:target="_blank" rel="noopener"} is a regularization technique that randomly "turns off" a subset of neurons during training, helping to prevent overfitting by forcing the network to learn more robust features.*
 
-<sup>(2)</sup> *[Overfitting](https://bigghis.github.io/AI-appunti/guide/generics.html?highlight=overfitting#generalizzazioni-del-comportamento-delle-reti-neurali){:target="_blank" rel="noopener"} occurs when a model adapts too closely to the details and noise in the training data, compromising its ability to generalize. The model learns not only the underlying patterns but also random fluctuations and anomalies specific to the training set, resulting in excellent performance on training data but poor performance on new, unseen data.*
+<sup>(2)</sup> *[overfitting](https://bigghis.github.io/AI-appunti/guide/generics.html?highlight=overfitting#generalizzazioni-del-comportamento-delle-reti-neurali){:target="_blank" rel="noopener"} occurs when a model adapts too closely to the details and noise in the training data, compromising its ability to generalize. The model learns not only the underlying patterns but also random fluctuations and anomalies specific to the training set, resulting in excellent performance on training data but poor performance on new, unseen data.*
 
 #### Training Hyperparameters
 
@@ -206,9 +206,11 @@ learning_rate: 0.0002
 - `num_epochs: 4`: Iterates through the entire dataset 4 times. More epochs can lead to better adaptation but risk overfitting
 - `optimizer: adamw_bnb_8bit`: Uses 8-bit AdamW optimizer (from bitsandbytes library) for memory efficiency
 - `lr_scheduler: cosine`: Learning rate follows a cosine curve, starting at the specified rate and gradually decreasing to near zero
-- `learning_rate: 0.0002`: Starting learning rate. This is relatively standard for LoRA fine-tuning
+- `learning_rate: 0.0002`: Starting learning rate<sup>(4)</sup>. This is relatively standard for LoRA fine-tuning
 
-<sup>(3)</sup> *[Gradient accumulation](https://colab.research.google.com/drive/102AQrQf0YJqWTGH0aKDnmZXftSHTQNS_?usp=sharing){:target="_blank" rel="noopener"} is a technique to avoid running out of VRAM during training. Normally, the model weights are updated after every batch using the calculated gradients. With gradient accumulation, instead of updating immediately, the gradients are accumulated (summed) over multiple batches. The model weights are only updated after a specified number of iterations. This allows training with larger effective batch sizes without requiring additional memory.*
+<sup>(3)</sup> *[gradient accumulation](https://colab.research.google.com/drive/102AQrQf0YJqWTGH0aKDnmZXftSHTQNS_?usp=sharing){:target="_blank" rel="noopener"} is a technique to avoid running out of VRAM during training. Normally, the model weights are updated after every batch using the calculated gradients. With gradient accumulation, instead of updating immediately, the gradients are accumulated (summed) over multiple batches. The model weights are only updated after a specified number of iterations. This allows training with larger effective batch sizes without requiring additional memory.*
+
+<sup>(4)</sup> is a hyperparameter that controls how quickly the model learns. Finding correct value [can be difficult](https://bigghis.github.io/AI-appunti/guide/optimizations/learning_rate.html?highlight=learning%20rate#learning-rate){:target="_blank" rel="noopener"} .
 
 #### Training Efficiency Settings
 
@@ -249,7 +251,7 @@ The **ZeRO (Zero Redundancy Optimizer)** technique comes in three stages:
 - **ZeRO-2**: Partitions both optimizer states and gradients. This is what we're using—it provides a good balance between memory savings and communication overhead, making it ideal for 2-GPU setups
 - **ZeRO-3**: Partitions model parameters, optimizer states, and gradients. Maximum memory savings but requires more inter-GPU communication. Best for training very large models across many GPUs (8+)
 
-In my setup I used an[ADAM] optimizer(https://bigghis.github.io/AI-appunti/guide/optimizations/adamoptimizations.html?highlight=adam#adam--adaptive-moment-estimation){:target="_blank" rel="noopener"}. It state maintains two momentum states for each model parameter—a moving average of gradients (first moment) and a moving average of squared gradients (second moment). This optimizer state typically requires about 8 bytes per model weight, which adds substantial memory overhead even with 8-bit quantization.
+In my setup I used an [ADAM](https://bigghis.github.io/AI-appunti/guide/optimizations/adamoptimizations.html?highlight=adam#adam--adaptive-moment-estimation){:target="_blank" rel="noopener"} optimizer. It's state maintains two inner momentum states for each model parameter: a moving average of gradients (first moment) and a moving average of squared gradients (second moment). This optimizer state typically requires about 8 bytes per model weight, which adds substantial memory overhead even with 8-bit quantization.
 
 
 ZeRO-1 only partitions ADAM optimizer states across GPUs, but in my case this wasn't enough to avoid memory saturation. Switching to ZeRO-2 resolved the issue because it partitions both ADAM optimizer states and gradients across the two RTX 3090s.
@@ -283,20 +285,10 @@ These settings configure [Weights & Biases](https://wandb.ai/){:target="_blank" 
 Once the configuration is set, starting the training is straightforward with Axolotl:
 
 ```bash
-accelerate launch -m axolotl.cli.train nousresearch-llama-3.1.yaml
+axolotl train config.yml
 ```
 
-For multi-GPU setups with DeepSpeed:
-```bash
-accelerate launch --config_file deepspeed_config.yaml -m axolotl.cli.train nousresearch-llama-3.1.yaml
-```
-
-During training, you'll see metrics like:
-- **Training loss**: Should decrease over time (indicates learning)
-- **Evaluation loss**: Measures performance on held-out data (helps detect overfitting)
-- **Learning rate**: Follows the cosine schedule, starting high and gradually decreasing
-- **Tokens per second**: Training speed metric
-
-The training process typically takes several hours depending on your hardware and dataset size. 
+The training process typically takes several hours depending on your hardware and dataset size. During training, you can monitor progress in real-time through wandb, which provides comprehensive telemetry and visualization of the training process.
+This real-time monitoring is useful for detecting issues early (like learning rate problems, hardware overheating) and for understanding how well the model is learning from your conversational data. 
 
 
