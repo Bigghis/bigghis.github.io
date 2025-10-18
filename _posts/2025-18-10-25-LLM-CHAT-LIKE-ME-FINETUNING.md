@@ -178,7 +178,7 @@ This section defines how the model will be adapted:
 - `lora_r: 64`: The rank of the LoRA adapter matrices. Higher values (like 64) give the model more capacity to learn patterns but require more memory. Typical values range from 8 to 128
 - `lora_alpha: 32`: Scaling factor that controls how much the adapter influences the base model. The ratio `lora_alpha/lora_r` determines the learning strength
 - `lora_dropout: 0.05`: Applies 5% dropout<sup>(1)</sup> to prevent overfitting<sup>(2)</sup> in the adapter layers
-- `lora_target_linear: true`: Applies LoRA to all linear layers in the transformer blocks (attention and feed-forward)
+- `lora_target_linear: true`: Applies LoRA to all linear layers in the transformer blocks (attention<sup>(3)</sup> and feed-forward)
 - `lora_modules_to_save`: In addition to LoRA adapters, these modules are fully fine-tuned. The embedding (`embed_tokens`) and output (`lm_head`) layers often benefit from full fine-tuning, especially when working with specific vocabulary or domains
 - `peft_use_dora: true`: Enables DoRA (Weight-Decomposed Low-Rank Adaptation), a recent improvement over standard LoRA that separates magnitude and direction updates for better performance
 
@@ -186,6 +186,7 @@ This section defines how the model will be adapted:
 
 <sup>(2)</sup> *[overfitting](https://bigghis.github.io/AI-appunti/guide/generics.html?highlight=overfitting#generalizzazioni-del-comportamento-delle-reti-neurali){:target="_blank" rel="noopener"} occurs when a model adapts too closely to the details and noise in the training data, compromising its ability to generalize. The model learns not only the underlying patterns but also random fluctuations and anomalies specific to the training set, resulting in excellent performance on training data but poor performance on new, unseen data.*
 
+<sup>(3)</sup> *[attention](https://bigghis.github.io/AI-appunti/guide/nn/attention.html){:target="_blank" rel="noopener"} is a mechanism in neural networks that allows the model to focus on relevant parts of the input data. It is used in [transformer models](https://arxiv.org/abs/1706.03762){:target="_blank" rel="noopener"} to process sequences of tokens in parallel, allowing the model to learn relationships between words and phrases in a more efficient way.*
 #### Training Hyperparameters
 
 ```yaml
@@ -197,18 +198,18 @@ lr_scheduler: cosine
 learning_rate: 0.0002
 ```
 
-- `gradient_accumulation_steps: 2`: Accumulates gradients<sup>(3)</sup> over 2 forward passes before updating weights. This simulates a larger batch size (effective batch size = micro_batch_size × gradient_accumulation_steps × num_gpus = 1 × 2 × 2 = 4) without requiring more memory
+- `gradient_accumulation_steps: 2`: Accumulates gradients<sup>(4)</sup> over 2 forward passes before updating weights. This simulates a larger batch size (effective batch size = micro_batch_size × gradient_accumulation_steps × num_gpus = 1 × 2 × 2 = 4) without requiring more memory
 - `micro_batch_size: 1`: Processes one conversation at a time per GPU. With sample packing enabled, this could contain multiple conversations packed into 4096 tokens
 - `num_epochs: 4`: Iterates through the entire dataset 4 times. More epochs can lead to better adaptation but risk overfitting
 - `optimizer: adamw_bnb_8bit`: Uses 8-bit AdamW optimizer (from bitsandbytes library) for memory efficiency
-- `lr_scheduler: cosine`: scheduler<sup>(4)</sup> setting: learning rate<sup>(5)</sup> follows a cosine curve, starting at the specified rate and gradually decreasing to near zero
-- `learning_rate: 0.0002`: Starting learning rate<sup>(5)</sup>. This is relatively standard for LoRA fine-tuning
+- `lr_scheduler: cosine`: scheduler<sup>(5)</sup> setting: learning rate<sup>(5)</sup> follows a cosine curve, starting at the specified rate and gradually decreasing to near zero
+- `learning_rate: 0.0002`: Starting learning rate<sup>(6)</sup>. This is relatively standard for LoRA fine-tuning
 
-<sup>(3)</sup> *[gradient accumulation](https://colab.research.google.com/drive/102AQrQf0YJqWTGH0aKDnmZXftSHTQNS_?usp=sharing){:target="_blank" rel="noopener"} is a technique to avoid running out of VRAM during training. Normally, the model weights are updated after every batch using the calculated gradients. With gradient accumulation, instead of updating immediately, the gradients are accumulated (summed) over multiple batches. The model weights are only updated after a specified number of iterations. This allows training with larger effective batch sizes without requiring additional memory.*
+<sup>(4)</sup> *[gradient accumulation](https://colab.research.google.com/drive/102AQrQf0YJqWTGH0aKDnmZXftSHTQNS_?usp=sharing){:target="_blank" rel="noopener"} is a technique to avoid running out of VRAM during training. Normally, the model weights are updated after every batch using the calculated gradients. With gradient accumulation, instead of updating immediately, the gradients are accumulated (summed) over multiple batches. The model weights are only updated after a specified number of iterations. This allows training with larger effective batch sizes without requiring additional memory.*
 
-<sup>(4)</sup> *A [scheduler](https://bigghis.github.io/AI-appunti/guide/optimizations/learning_rate.html?highlight=scheduler#learning-rate-variabile-scheduler){:target="_blank" rel="noopener"} dynamically adjusts the learning rate during training according to a predefined schedule. The cosine scheduler starts at the specified rate and gradually decreases following a cosine curve, helping achieve better convergence and avoiding issues like overshooting or slow convergence.*
+<sup>(5)</sup> *A [scheduler](https://bigghis.github.io/AI-appunti/guide/optimizations/learning_rate.html?highlight=scheduler#learning-rate-variabile-scheduler){:target="_blank" rel="noopener"} dynamically adjusts the learning rate during training according to a predefined schedule. The cosine scheduler starts at the specified rate and gradually decreases following a cosine curve, helping achieve better convergence and avoiding issues like overshooting or slow convergence.*
 
-<sup>(5)</sup> *Learning rate is a hyperparameter that controls how quickly the model learns. Finding the correct value [can be difficult](https://bigghis.github.io/AI-appunti/guide/optimizations/learning_rate.html?highlight=learning%20rate#learning-rate){:target="_blank" rel="noopener"}—too high can cause instability, too low results in slow convergence.*
+<sup>(6)</sup> *Learning rate is a hyperparameter that controls how quickly the model learns. Finding the correct value [can be difficult](https://bigghis.github.io/AI-appunti/guide/optimizations/learning_rate.html?highlight=learning%20rate#learning-rate){:target="_blank" rel="noopener"}*
 
 #### Training Efficiency Settings
 
@@ -238,7 +239,7 @@ weight_decay: 0.0
 
 <sup>(6)</sup> *[loss](https://bigghis.github.io/AI-appunti/guide/loss/intro.html?highlight=loss%20function#output-loss-functions){:target="_blank" rel="noopener"} is a measure of how well the model is performing. It is used to guide the training process and improve the model's performance.*
 
-<sup>(7)</sup> *[attention](https://bigghis.github.io/AI-appunti/guide/nn/attention.html){:target="_blank" rel="noopener"} is a mechanism in neural networks that allows the model to focus on relevant parts of the input data. It is used in [transformer models](https://arxiv.org/abs/1706.03762){:target="_blank" rel="noopener"} to process sequences of tokens in parallel, allowing the model to learn relationships between words and phrases in a more efficient way.*
+
 
 #### DeepSpeed Configuration
 
@@ -246,7 +247,7 @@ weight_decay: 0.0
 deepspeed: /path/to/deepspeed_configs/zero2.json
 ```
 
-DeepSpeed is a distributed training library that enables efficient multi-GPU training. 
+DeepSpeed is a [distributed training library](https://github.com/deepspeedai/DeepSpeed){:target="_blank" rel="noopener"} that enables efficient multi-GPU training. 
 The **ZeRO (Zero Redundancy Optimizer)** technique comes in three stages:
 
 - **ZeRO-1**: Partitions optimizer states across GPUs. Provides modest memory savings
