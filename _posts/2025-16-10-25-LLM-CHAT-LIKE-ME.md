@@ -226,7 +226,9 @@ The script automatically performs all three transformation steps (Cleaning, Stru
 - `--turn-window` (default: 5): Time window in minutes to group consecutive messages from the same person as a single turn
 - `--conversation-gap` (default: 60): Time gap in minutes that separates distinct conversations
 - `--your-name` (default: Pasquale): Your name in the chats, used to identify which messages are yours (assistant role)
-- `--include-groups`: By default, only personal chats are included. Use this flag to also include group conversations
+- `--include-groups`: By default, only personal chats are included. Use this flag to also include group conversations  
+
+default values working well for me, but you can adjust them to your needs.
 
 **Example usage with custom parameters:**
 
