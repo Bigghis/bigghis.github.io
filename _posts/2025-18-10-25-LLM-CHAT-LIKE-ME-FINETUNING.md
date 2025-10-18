@@ -116,6 +116,11 @@ special_tokens:
 
 The configuration file is organized into several logical sections, each controlling different aspects of the training process.
 
+Let's now explore the configuration sections in more detail where necessary.
+
+> **Note:** The following sections are quite technical. If you're not interested in the configuration details, you can skip ahead to the [Training Process](#training-process) section.
+{: .prompt-info }
+
 #### Base Model and Quantization
 
 ```yaml
@@ -141,7 +146,6 @@ val_set_size: 0.005
 
 The dataset is configured to use Llama 3's chat format with the OpenAI chat-template structure (system/user/assistant roles).   The prepared JSONL file from Part 1 is split into 99.5% training and 0.5% validation data to monitor overfitting during training.
 
-Let's now explore the configuration sections in more detail where necessary.
 
 #### Sequence Length and Packing
 
@@ -221,18 +225,20 @@ saves_per_epoch: 1
 weight_decay: 0.0
 ```
 
-- `train_on_inputs: false`: Only computes loss on assistant responses, not on system prompts or user messages. This focuses learning on your conversational style
+- `train_on_inputs: false`: Only computes loss<sup>(6)</sup> on assistant responses, not on system prompts or user messages. This focuses learning on your conversational style
 - `bf16: true`: Uses bfloat16 precision for training, which balances memory efficiency with numerical stability
 - `tf32: true`: Enables TensorFloat-32 on compatible GPUs (like RTX 3090) for faster matrix operations
 - `gradient_checkpointing: true`: Trades computation for memory by recomputing activations during backward pass instead of storing them all. Essential for training larger models
 - `logging_steps: 1`: Logs training metrics every step (useful for monitoring but can slow things down slightly)
-- `flash_attention: true`: Uses Flash Attention 2, a highly optimized attention<sup>(6)</sup> implementation that significantly speeds up training
+- `flash_attention: true`: Uses Flash Attention 2, a highly optimized attention<sup>(7)</sup> implementation that significantly speeds up training
 - `warmup_ratio: 0.1`: Gradually increases learning rate from 0 to the target over the first 10% of training steps to prevent instability
 - `evals_per_epoch: 1`: Evaluates on validation set once per epoch
 - `saves_per_epoch: 1`: Saves a checkpoint once per epoch
 - `weight_decay: 0.0`: No L2 regularization. LoRA's low rank already provides implicit regularization
 
-<sup>(6)</sup> *[attention](https://bigghis.github.io/AI-appunti/guide/nn/attention.html){:target="_blank" rel="noopener"} is a mechanism in neural networks that allows the model to focus on relevant parts of the input data. It is used in [transformer models](https://arxiv.org/abs/1706.03762){:target="_blank" rel="noopener"} to process sequences of tokens in parallel, allowing the model to learn relationships between words and phrases in a more efficient way.*
+<sup>(6)</sup> *[loss](https://bigghis.github.io/AI-appunti/guide/loss/intro.html?highlight=loss%20function#output-loss-functions){:target="_blank" rel="noopener"} is a measure of how well the model is performing. It is used to guide the training process and improve the model's performance.*
+
+<sup>(7)</sup> *[attention](https://bigghis.github.io/AI-appunti/guide/nn/attention.html){:target="_blank" rel="noopener"} is a mechanism in neural networks that allows the model to focus on relevant parts of the input data. It is used in [transformer models](https://arxiv.org/abs/1706.03762){:target="_blank" rel="noopener"} to process sequences of tokens in parallel, allowing the model to learn relationships between words and phrases in a more efficient way.*
 
 #### DeepSpeed Configuration
 
