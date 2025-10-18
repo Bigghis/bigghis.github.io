@@ -1,6 +1,6 @@
 ---
-title: "\"LLM Chat Like Me\" Project"
-description: A project to create a LLM that can chat like me
+title: "LLM \"Chat Like Me\" Project"
+description: A project to create a LLM that can chat like yourself
 date: 2025-10-16 12:00:00 +0530
 categories: [LLM, Chat, Project, fine-tuning]
 tags: [LLM, Chat, Project, fine-tuning]
@@ -154,11 +154,18 @@ This structured format makes it relatively straightforward to parse and extract 
 
 Once we have the raw JSON export, we need to transform it into a training-ready dataset. The real work begins here because there are several challenges to overcome and we need to be careful with the data quality.
 
+> **Data quality is crucial!** It directly impacts how well the model learns your conversational style.
+{: .prompt-tip }
+
+The transformation process requires three essential steps, all of which are necessary:  
+
 **Cleaning**: Filter out group chats (unless you want multiple personalities), infrequent contacts, automated messages, and non-text content.
 
-**Structuring**: When you chat with someone, there's typically a rapid back-and-forth exchange about a specific topic. Then hours might pass before you chat again about something completely different. To maintain logical coherence in the training data, we need to separate these distinct conversation segments. A good approach is to group messages that occur within 5 minutes or more time apart of each other as part of the same conversational topic, while treating gaps longer than an hour as natural breaks between different discussions. This will help the model learns to respond within context rather than mixing unrelated topics.
+**Structuring**: When you chat with someone, there's typically a rapid back-and-forth exchange about a specific topic. Then hours might pass before you chat again about something completely different. To maintain logical coherence in the training data, we need to separate these distinct conversation segments.  
+A good approach is to **group messages that occur within 5 minutes (turn window)** or more time apart of each other as part of the same conversational topic, while treating gaps longer than an hour as natural breaks between different discussions. This will help the model learns to respond within context rather than mixing unrelated topics.
 
-**Formatting**: The dataset will be formatted using **OpenAI's chat template**, which is a widely-adopted standard format for conversational AI. Each conversation is structured as an array of messages with clear role assignments: **system** for context, **user** for the other person's messages, and **assistant** for your messages. Also include the **name** field to preserve who said what.
+**Formatting**: The dataset will be formatted using **OpenAI's chat template**, which is a widely-adopted standard format for conversational AI. 
+Each conversation is structured as an array of messages with role assignments: **system** for context, **user** for the other person's messages, and **assistant** for your messages. Also include the **name** field to preserve who said what.
 
 Example of a formatted complete conversation:
 ```json
@@ -197,9 +204,83 @@ Example of a formatted complete conversation:
 }
 ```
 
-The **system message** is crucial: it tells the model "You are Pasquale, chatting with Lorenzo..." During training, this helps the model learn to associate this context with Pasquale's conversational style with Lorenzo.  
-When the trained model is later used, setting the same system prompt will trigger the model to respond exactly in Pasquale's style when specific Lorenzo user asks questions. It's like giving the model its identity and role for the conversation.
+The **system message** "You are Pasquale, chatting with Lorenzo..." instructs the model to act as Pasquale when chatting with Lorenzo. 
+During training, this helps the model learn to associate this context with Pasquale's conversational style when chatting with Lorenzo.  
+So, when the trained model is later used, setting the same system prompt will trigger the model to respond in Pasquale's style when specific Lorenzo user asks questions.  
+It's like giving the model its identity and role for the conversation.
 
-Data quality is crucial—it directly impacts how well the model learns your conversational style.
+### Implementation: From exported telegram JSON to dataset
 
+Now let's dive into how I actually implemented this transformation process. The `result.json` file exported from Telegram is massive (several hundred megabytes of years of chats), especially if you decided to export all your chats at once. 
+Navigating through this data to find specific conversations and process them systematically was challenging, so I created a utility **parse_chats.py** to parse the JSON and extract to a list the chat names, their types (personal, groups, private, public etc.) and their IDs.
+
+
+``` bash 
+python parse_chats.py --save-all --input result.json  
+
+example output:
+--------------------------------------------------------------------------------
+Name                                     Type                 ID             
+--------------------------------------------------------------------------------
+
+Giuliana                                 personal_chat        164456975     
+Barbara                                  personal_chat        1141451558     
+Marco                                    personal_chat        626965680       
+Dove per la svolta                       private_group        1437880907   
+
+```
+
+Now that we can easily identify chats of interest, the next step is to extract them into separate JSON files for easier processing. I created another script **extract_conversation.py** to do this:
+
+```bash
+python extract_conversation.py result.json --id 460911860 --output out-specific-id.json
+example output:
+Found conversation:
+  ID: 460911860
+  Name: Lorenzo
+  Type: personal_chat
+  Messages: 379089
+
+
+```
+
+This extracts a single conversation (identified by its ID) from the massive `result.json` into a dedicated file. This makes it much easier to handle each conversation separately and individuate the data for the training process.
+
+
+Once all relevant conversations have been identified and extracted, we can transform them into the chat template format required for training. This is where we apply the cleaning, structuring, and formatting steps described earlier to create the final training dataset.
+
+I created a comprehensive script **prepare_training_data.py** that handles the entire transformation pipeline:
+
+```bash
+python prepare_training_data.py result.json --output training_data.jsonl
+```
+
+**Key Features:**
+
+The script automatically performs all three transformation steps (Cleaning, Structuring, Formatting) and offers several configurable parameters:
+
+- `--min-messages` (default: 20): Filters out contacts with too few messages
+- `--turn-window` (default: 5): Time window in minutes to group consecutive messages from the same person as a single turn
+- `--conversation-gap` (default: 60): Time gap in minutes that separates distinct conversations
+- `--your-name` (default: Pasquale): Your name in the chats, used to identify which messages are yours (assistant role)
+- `--include-groups`: By default, only personal chats are included. Use this flag to also include group conversations
+
+**Example usage with custom parameters:**
+
+```bash
+# Process with stricter filtering (50+ messages) and wider time windows
+python prepare_training_data.py result.json \
+  --min-messages 50 \
+  --turn-window 10 \
+  --conversation-gap 120 \
+  --your-name "Pasquale"
+
+# Include group chats as well
+python prepare_training_data.py result.json --include-groups
+```
+
+The script outputs a **JSONL file** (JSON Lines format) where each line is a complete conversation in the OpenAI chat template format, ready for fine-tuning.
+
+  
+  
 
