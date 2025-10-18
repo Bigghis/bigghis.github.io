@@ -254,11 +254,10 @@ The **ZeRO (Zero Redundancy Optimizer)** technique comes in three stages:
 - **ZeRO-2**: Partitions both optimizer states and gradients. This is what we're using—it provides a good balance between memory savings and communication overhead, making it ideal for 2-GPU setups
 - **ZeRO-3**: Partitions model parameters, optimizer states, and gradients. Maximum memory savings but requires more inter-GPU communication. Best for training very large models across many GPUs (8+)
 
-In my setup I used an [ADAM](https://bigghis.github.io/AI-appunti/guide/optimizations/adamoptimizations.html?highlight=adam#adam--adaptive-moment-estimation){:target="_blank" rel="noopener"} optimizer. It's state maintains two inner momentum states for each model parameter: a moving average of gradients (first moment) and a moving average of squared gradients (second moment). This optimizer state typically requires about 8 bytes per model weight, which adds substantial memory overhead even with 8-bit quantization.
-
-
+In my setup, I used an ADAM<sup>(7)</sup> optimizer (the algorithm that updates model weights during training based on calculated gradients).  
 ZeRO-1 only partitions ADAM optimizer states across GPUs, but in my case this wasn't enough to avoid memory saturation. Switching to ZeRO-2 resolved the issue because it partitions both ADAM optimizer states and gradients across the two RTX 3090s.
 
+<sup>(7)</sup> *[ADAM](https://bigghis.github.io/AI-appunti/guide/optimizations/adamoptimizations.html?highlight=adam#adam--adaptive-moment-estimation){:target="_blank" rel="noopener"} is an optimizer that maintains two inner momentum states for each model parameter: a moving average of gradients (first moment) and a moving average of squared gradients (second moment). This optimizer state typically requires about 8 bytes per model weight, which adds substantial memory overhead even with 8-bit quantization.*
 
 #### Special Tokens
 
