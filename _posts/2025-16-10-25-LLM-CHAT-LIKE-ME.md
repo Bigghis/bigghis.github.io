@@ -1,13 +1,13 @@
 ---
-title: "LLM \"Chat Like Me\" Project"
-description: A project to create a LLM that can chat like yourself
+title: "LLM \"Chat Like Me\" Project 
+description: A project to create a LLM that can chat like yourself - Part 1: Dataset Preparation
 date: 2025-10-16 12:00:00 +0530
 categories: [LLM, Chat, Project, fine-tuning]
 tags: [LLM, Chat, Project, fine-tuning]
 comments: false
 ---
 
-### LLM "Chat Like Me" project
+### LLM "Chat Like Me" project - Part 1
 
 This project is born out of curiosity and a desire to learn how to fine-tune large language models hands-on. It's also a fun experiment to see if I can create an AI that replicates my conversational style :) when I'm chatting with friends, colleagues, etc.
 
@@ -167,47 +167,6 @@ A good approach is to **group messages that occur within 5 minutes (turn window)
 **Formatting**: The dataset will be formatted using **OpenAI's chat template**, which is a widely-adopted standard format for conversational AI. 
 Each conversation is structured as an array of messages with role assignments: **system** for context, **user** for the other person's messages, and **assistant** for your messages. Also include the **name** field to preserve who said what.
 
-Example of a formatted complete conversation:
-```json
-{
-  "messages": [
-    {
-      "role": "system", 
-      "content": "You are Pasquale, chatting with Lorenzo. Respond naturally in their conversational style."
-    },
-    {
-      "role": "assistant", 
-      "name": "Pasquale", 
-      "content": "sto ventaccio malefico mi ha rotto la persiana ed ho dovuto legarla era aperta...col vento si è chiusa di colpo e SBAM! per XXX"
-    },
-    {
-      "role": "user", 
-      "name": "Lorenzo", 
-      "content": "Daje giù"
-    },
-    {
-      "role": "assistant", 
-      "name": "Pasquale", 
-      "content": "eh :("
-    },
-    {
-      "role": "assistant", 
-      "name": "Pasquale", 
-      "content": "C'è gia a chi è andata peggio col vento…"
-    },
-    {
-      "role": "user", 
-      "name": "Lorenzo", 
-      "content": "Esatto"
-    }
-  ]
-}
-```
-
-The **system message** "You are Pasquale, chatting with Lorenzo..." instructs the model to act as Pasquale when chatting with Lorenzo. 
-During training, this helps the model learn to associate this context with Pasquale's conversational style when chatting with Lorenzo.  
-So, when the trained model is later used, setting the same system prompt will trigger the model to respond in Pasquale's style when specific Lorenzo user asks questions.  
-It's like giving the model its identity and role for the conversation.
 
 ### Implementation: From exported telegram JSON to dataset
 
@@ -279,8 +238,54 @@ python prepare_training_data.py result.json \
 python prepare_training_data.py result.json --include-groups
 ```
 
-The script outputs a **JSONL file** (JSON Lines format) where each line is a complete conversation in the OpenAI chat template format, ready for fine-tuning.
+The script outputs a **JSONL file** (JSON Lines format) where each line is a complete conversation in the OpenAI chat template format.
 
+Example of a formatted complete conversation as part of the dataset:
+```json
+{
+  "messages": [
+    {
+      "role": "system", 
+      "content": "You are Pasquale, chatting with Lorenzo. Respond naturally in their conversational style."
+    },
+    {
+      "role": "assistant", 
+      "name": "Pasquale", 
+      "content": "sto ventaccio malefico mi ha rotto la persiana ed ho dovuto legarla era aperta...col vento si è chiusa di colpo e SBAM! per XXX"
+    },
+    {
+      "role": "user", 
+      "name": "Lorenzo", 
+      "content": "Daje giù"
+    },
+    {
+      "role": "assistant", 
+      "name": "Pasquale", 
+      "content": "eh :("
+    },
+    {
+      "role": "assistant", 
+      "name": "Pasquale", 
+      "content": "C'è gia a chi è andata peggio col vento…"
+    },
+    {
+      "role": "user", 
+      "name": "Lorenzo", 
+      "content": "Esatto"
+    }
+  ]
+}
+```
+
+The **system message** "You are Pasquale, chatting with Lorenzo..." instructs the model to act as Pasquale when chatting with Lorenzo. 
+During training, this helps the model learn to associate this context with Pasquale's conversational style when chatting with Lorenzo.  
+So, when the trained model is later used, setting the same system prompt will trigger the model to respond in Pasquale's style when specific Lorenzo user asks questions.  
+It's like giving the model its identity and role for the conversation.
+
+
+Now we are ready to fine-tune the model because we have a valid dataset.
+
+**Continue to Part 2:** [Fine-tuning the Model with the Dataset](https://bigghis.github.io/posts/_posts/2025-18-10-25-LLM-CHAT-LIKE-ME-FINETUNING.md)
   
   
 
