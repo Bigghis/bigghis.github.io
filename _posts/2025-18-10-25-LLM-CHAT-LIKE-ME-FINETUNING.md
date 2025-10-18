@@ -194,12 +194,14 @@ This section defines how the model will be adapted:
 - `adapter: qlora`: Uses QLoRA (Quantized LoRA) technique
 - `lora_r: 64`: The rank of the LoRA adapter matrices. Higher values (like 64) give the model more capacity to learn patterns but require more memory. Typical values range from 8 to 128
 - `lora_alpha: 32`: Scaling factor that controls how much the adapter influences the base model. The ratio `lora_alpha/lora_r` determines the learning strength
-- `lora_dropout: 0.05`: Applies 5% dropout<sup>(1)</sup> to prevent overfitting in the adapter layers
+- `lora_dropout: 0.05`: Applies 5% dropout<sup>(1)</sup> to prevent overfitting<sup>(2)</sup> in the adapter layers
 - `lora_target_linear: true`: Applies LoRA to all linear layers in the transformer blocks (attention and feed-forward)
 - `lora_modules_to_save`: In addition to LoRA adapters, these modules are fully fine-tuned. The embedding (`embed_tokens`) and output (`lm_head`) layers often benefit from full fine-tuning, especially when working with specific vocabulary or domains
 - `peft_use_dora: true`: Enables DoRA (Weight-Decomposed Low-Rank Adaptation), a recent improvement over standard LoRA that separates magnitude and direction updates for better performance
 
 <sup>(1)</sup> *[dropout](https://bigghis.github.io/AI-appunti/guide/regularizations/dropout.html?highlight=dropout#dropout){:target="_blank" rel="noopener"} is a regularization technique that randomly "turns off" a subset of neurons during training, helping to prevent overfitting by forcing the network to learn more robust features.*
+
+<sup>(2)</sup> *[Overfitting](https://bigghis.github.io/AI-appunti/guide/generics.html?highlight=overfitting#generalizzazioni-del-comportamento-delle-reti-neurali){:target="_blank" rel="noopener"} occurs when a model adapts too closely to the details and noise in the training data, compromising its ability to generalize. The model learns not only the underlying patterns but also random fluctuations and anomalies specific to the training set, resulting in excellent performance on training data but poor performance on new, unseen data.*
 
 #### Training Hyperparameters
 
@@ -212,12 +214,14 @@ lr_scheduler: cosine
 learning_rate: 0.0002
 ```
 
-- `gradient_accumulation_steps: 2`: Accumulates gradients over 2 forward passes before updating weights. This simulates a larger batch size (effective batch size = micro_batch_size × gradient_accumulation_steps × num_gpus = 1 × 2 × 2 = 4) without requiring more memory
+- `gradient_accumulation_steps: 2`: Accumulates gradients<sup>(3)</sup> over 2 forward passes before updating weights. This simulates a larger batch size (effective batch size = micro_batch_size × gradient_accumulation_steps × num_gpus = 1 × 2 × 2 = 4) without requiring more memory
 - `micro_batch_size: 1`: Processes one conversation at a time per GPU. With sample packing enabled, this could contain multiple conversations packed into 4096 tokens
 - `num_epochs: 4`: Iterates through the entire dataset 4 times. More epochs can lead to better adaptation but risk overfitting
 - `optimizer: adamw_bnb_8bit`: Uses 8-bit AdamW optimizer (from bitsandbytes library) for memory efficiency
 - `lr_scheduler: cosine`: Learning rate follows a cosine curve, starting at the specified rate and gradually decreasing to near zero
 - `learning_rate: 0.0002`: Starting learning rate. This is relatively standard for LoRA fine-tuning
+
+<sup>(3)</sup> *[Gradient accumulation](https://colab.research.google.com/drive/102AQrQf0YJqWTGH0aKDnmZXftSHTQNS_?usp=sharing){:target="_blank" rel="noopener"} is a technique to avoid running out of VRAM during training. Normally, the model weights are updated after every batch using the calculated gradients. With gradient accumulation, instead of updating immediately, the gradients are accumulated (summed) over multiple batches. The model weights are only updated after a specified number of iterations. This allows training with larger effective batch sizes without requiring additional memory.*
 
 #### Training Efficiency Settings
 
