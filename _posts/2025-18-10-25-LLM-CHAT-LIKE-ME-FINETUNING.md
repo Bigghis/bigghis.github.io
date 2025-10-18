@@ -23,19 +23,6 @@ Instead, we're **fine-tuning a pre-trained model**. This means taking an existin
 For this project, I chose **Meta's Llama 3.1 8B** as the base model. The Llama family of models is open-source and offers decent performance for conversational tasks, making it a practical choice for these experiments.  
 The **8 billion parameters** version strikes a good balance between capability and computational requirements. It's small enough to fine-tune on consumer-grade GPUs but large enough to produce high-quality, contextually appropriate responses.
 
-### QLoRA: Memory-Efficient Fine-tuning
-
-The fine-tuning process uses a technique called **QLoRA (Quantized Low-Rank Adaptation)**. Without diving too deep into the technical details, QLoRA is a clever approach that makes fine-tuning large models practical without needing supercomputer-level hardware.
-
-**How QLoRA works (simplified):**
-
-Traditional fine-tuning updates all the weights in a neural network, which requires enormous memory. QLoRA instead:
-1. **Quantizes** the base model to 4-bit precision, reducing memory requirements by ~75%
-2. Adds small **low-rank adapter layers** that learn your specific patterns
-3. Only trains these adapter layers, not the entire model
-
-This means you can fine-tune an 8B parameter model on a single consumer GPU (like an RTX 4090 or even a rented cloud GPU) instead of needing a cluster of high-end datacenter GPUs.
-
 
 ### Hardware Setup for Fine-tuning
 
@@ -191,7 +178,7 @@ peft_use_dora: true
 
 This section defines how the model will be adapted:
 
-- `adapter: qlora`: Uses QLoRA (Quantized LoRA) technique
+- `adapter: qlora`: Uses [QLoRA (Quantized LoRA)](https://arxiv.org/abs/2305.14314){:target="_blank" rel="noopener"} technique
 - `lora_r: 64`: The rank of the LoRA adapter matrices. Higher values (like 64) give the model more capacity to learn patterns but require more memory. Typical values range from 8 to 128
 - `lora_alpha: 32`: Scaling factor that controls how much the adapter influences the base model. The ratio `lora_alpha/lora_r` determines the learning strength
 - `lora_dropout: 0.05`: Applies 5% dropout<sup>(1)</sup> to prevent overfitting<sup>(2)</sup> in the adapter layers
@@ -310,33 +297,6 @@ During training, you'll see metrics like:
 - **Learning rate**: Follows the cosine schedule, starting high and gradually decreasing
 - **Tokens per second**: Training speed metric
 
-The training process typically takes several hours depending on your hardware and dataset size. With the Telegram dataset containing thousands of conversations, you can expect training to take anywhere from 3-8 hours on a modern GPU.
+The training process typically takes several hours depending on your hardware and dataset size. 
 
-### Monitoring Training with Weights & Biases
-
-The configuration includes integration with **Weights & Biases (wandb)**, a powerful tool for experiment tracking:
-
-```yaml
-wandb_project: chat-like-bigghis
-```
-
-This allows you to:
-- Monitor training progress in real-time through a web dashboard
-- Compare different training runs
-- Track GPU utilization and memory usage
-- Visualize loss curves and learning rate schedules
-- Save training artifacts for reproducibility
-
-### What's Next?
-
-Once training completes, you'll have a fine-tuned model that has learned your conversational patterns. But how do you know if it actually works? How do you evaluate if the model truly "chats like you"?
-
-In the next part of this series, we'll explore:
-- How to load and use the fine-tuned model
-- Evaluation techniques for conversational models
-- Comparing outputs with the base model
-- Real-world examples of the model in action
-- Potential improvements and iterations
-
-The journey from raw chat data to a personalized AI is almost complete!
 
