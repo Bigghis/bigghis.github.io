@@ -239,7 +239,7 @@ weight_decay: 0.0
 
 <sup>(6)</sup> *[loss](https://bigghis.github.io/AI-appunti/guide/loss/intro.html?highlight=loss%20function#output-loss-functions){:target="_blank" rel="noopener"} is a measure of how well the model is performing. It is used to guide the training process and improve the model's performance.*
 
-<sup>(7)</sup> *[(weight decay](https://bigghis.github.io/AI-appunti/guide/regularizations/weightdecay.html?highlight=weight#weight-decay){:target="_blank" rel="noopener"} is a technique to prevent overfitting by limiting the values that weights can assume. It adds a penalty proportional to the sum of squared weights to the loss function, pushing weights toward smaller values and stabilizing the model.*
+<sup>(7)</sup> *[weight decay](https://bigghis.github.io/AI-appunti/guide/regularizations/weightdecay.html?highlight=weight#weight-decay){:target="_blank" rel="noopener"} is a technique to prevent overfitting by limiting the values that weights can assume. It adds a penalty proportional to the sum of squared weights to the loss function, pushing weights toward smaller values and stabilizing the model.*
 
 #### DeepSpeed Configuration
 
@@ -250,9 +250,9 @@ deepspeed: /path/to/deepspeed_configs/zero2.json
 DeepSpeed is a [distributed training library](https://github.com/deepspeedai/DeepSpeed){:target="_blank" rel="noopener"} that enables efficient multi-GPU training. 
 The **ZeRO (Zero Redundancy Optimizer)** technique comes in three stages:
 
-- **ZeRO-1**: Partitions optimizer states across GPUs. Provides modest memory savings
-- **ZeRO-2**: Partitions both optimizer states and gradients. This is what we're using—it provides a good balance between memory savings and communication overhead
-- **ZeRO-3**: Partitions model parameters, optimizer states, and gradients. Maximum memory savings but requires more inter-GPU communication. Best for training very large models across many GPUs
+- **ZeRO-1**: Partitions optimizer states across GPUs.
+- **ZeRO-2**: Partitions both optimizer states and gradients, I use this one here.
+- **ZeRO-3**: Partitions model parameters, optimizer states, and gradients. Maximum memory savings but requires more inter-GPU communication.
 
 In my setup, I used an ADAM<sup>(7)</sup> optimizer (the algorithm that updates model weights during training based on calculated gradients).  
 ZeRO-1 only partitions ADAM optimizer states across GPUs, but in my case this wasn't enough to avoid memory saturation. Switching to ZeRO-2 resolved the issue because it partitions both ADAM optimizer states and gradients across the two RTX 3090s.
