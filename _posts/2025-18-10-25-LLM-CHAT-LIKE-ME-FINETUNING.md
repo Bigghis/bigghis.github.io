@@ -226,11 +226,13 @@ weight_decay: 0.0
 - `tf32: true`: Enables TensorFloat-32 on compatible GPUs (like RTX 3090) for faster matrix operations
 - `gradient_checkpointing: true`: Trades computation for memory by recomputing activations during backward pass instead of storing them all. Essential for training larger models
 - `logging_steps: 1`: Logs training metrics every step (useful for monitoring but can slow things down slightly)
-- `flash_attention: true`: Uses Flash Attention 2, a highly optimized attention implementation that significantly speeds up training
+- `flash_attention: true`: Uses Flash Attention 2, a highly optimized attention<sup>(6)</sup> implementation that significantly speeds up training
 - `warmup_ratio: 0.1`: Gradually increases learning rate from 0 to the target over the first 10% of training steps to prevent instability
 - `evals_per_epoch: 1`: Evaluates on validation set once per epoch
 - `saves_per_epoch: 1`: Saves a checkpoint once per epoch
 - `weight_decay: 0.0`: No L2 regularization. LoRA's low rank already provides implicit regularization
+
+<sup>(6)</sup> *[attention](https://bigghis.github.io/AI-appunti/guide/nn/attention.html){:target="_blank" rel="noopener"} is a mechanism in neural networks that allows the model to focus on relevant parts of the input data. It is used in [transformer models](https://arxiv.org/abs/1706.03762){:target="_blank" rel="noopener"} to process sequences of tokens in parallel, allowing the model to learn relationships between words and phrases in a more efficient way.*
 
 #### DeepSpeed Configuration
 
@@ -259,8 +261,7 @@ special_tokens:
   eos_token: "<|eot_id|>"
 ```
 
-- `pad_token`: Token used for padding sequences to the same length
-- `eos_token`: End-of-turn token specific to Llama 3.1's chat format
+Special tokens are used to structure the conversation format. The `pad_token` fills sequences to uniform length, while the `eos_token` (end-of-sequence) marks the end of each turn in Llama 3.1's chat format, signaling when the assistant has finished its response.
 
 #### Weights & Biases Integration
 
