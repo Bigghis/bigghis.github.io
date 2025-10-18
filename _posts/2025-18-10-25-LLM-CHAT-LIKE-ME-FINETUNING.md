@@ -231,7 +231,7 @@ weight_decay: 0.0
 - `tf32: true`: Enables TensorFloat-32 on compatible GPUs (like RTX 3090) for faster matrix operations
 - `gradient_checkpointing: true`: Trades computation for memory by recomputing activations during backward pass instead of storing them all. Essential for training larger models
 - `logging_steps: 1`: Logs training metrics every step (useful for monitoring but can slow things down slightly)
-- `flash_attention: true`: Uses Flash Attention 2, a highly optimized attention<sup>(7)</sup> implementation that significantly speeds up training
+- `flash_attention: true`: Uses Flash Attention 2, a highly optimized attention implementation that significantly speeds up training
 - `warmup_ratio: 0.1`: Gradually increases learning rate from 0 to the target over the first 10% of training steps to prevent instability
 - `evals_per_epoch: 1`: Evaluates on validation set once per epoch
 - `saves_per_epoch: 1`: Saves a checkpoint once per epoch
