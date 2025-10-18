@@ -163,7 +163,7 @@ The transformation process requires three essential steps, all of which are nece
 **Cleaning**: Filter out group chats (unless you want multiple personalities), infrequent contacts, automated messages, and non-text content.
 
 **Structuring**: When you chat with someone, there's typically a rapid back-and-forth exchange about a specific topic. Then hours might pass before you chat again about something completely different. To maintain logical coherence in the training data, we need to separate these distinct conversation segments.  
-A good approach is to **group messages that occur within 5 minutes (turn window)** or more time apart of each other as part of the same conversational topic, while treating gaps longer than an hour as natural breaks between different discussions. This will help the model learns to respond within context rather than mixing unrelated topics.
+A good approach is to **group messages that occur within 5 minutes (turn window)** or more time apart of each other as part of the same conversational topic, while **treating gaps longer than an hour as natural breaks between different discussions**. This will help the model learns to respond within context rather than mixing unrelated topics.
 
 **Formatting**: The dataset will be formatted using **OpenAI's chat template**, which is a widely-adopted standard format for conversational AI. 
 Each conversation is structured as an array of messages with role assignments: **system** for context, **user** for the other person's messages, and **assistant** for your messages. Also include the **name** field to preserve who said what.
