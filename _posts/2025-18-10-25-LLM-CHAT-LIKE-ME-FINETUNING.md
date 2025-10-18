@@ -124,9 +124,7 @@ load_in_4bit: true
 strict: false
 ```
 
-- `base_model`: Specifies which pre-trained model to start from (Llama 3.1 8B in this case)
-- `load_in_4bit`: Enables 4-bit quantization, the core of QLoRA. This reduces memory usage by ~75% compared to full precision
-- `strict`: Set to false to allow more flexibility in model loading
+The model is downloaded from [Hugging Face](https://huggingface.co){:target="_blank" rel="noopener"} and quantized to 4-bit precision, reducing memory usage by ~75% compared to full precision. This 4-bit quantization is the core of QLoRA, enabling fine-tuning on consumer GPUs.
 
 #### Dataset and Chat Template Configuration
 
@@ -141,12 +139,9 @@ dataset_prepared_path: last_run_prepared
 val_set_size: 0.005
 ```
 
-- `chat_template`: Uses Llama 3's specific chat format to structure conversations
-- `datasets.path`: Points to your prepared JSONL file with the Telegram conversations
-- `type: chat_template`: Tells Axolotl to expect data in OpenAI `chat-template` format (system/user/assistant roles)
-- `message_field_role` and `message_field_content`: Specifies which JSON fields contain the role and message content
-- `dataset_prepared_path`: Cache directory for preprocessed data to speed up subsequent runs
-- `val_set_size: 0.005`: Reserves 0.5% of data for validation (99.5% for training). This small validation set helps monitor overfitting
+The dataset is configured to use Llama 3's chat format with the OpenAI chat-template structure (system/user/assistant roles).   The prepared JSONL file from Part 1 is split into 99.5% training and 0.5% validation data to monitor overfitting during training.
+
+Let's now explore the configuration sections in more detail where necessary.
 
 #### Sequence Length and Packing
 
@@ -156,11 +151,8 @@ sample_packing: true
 eval_sample_packing: false
 pad_to_sequence_len: true
 ```
-
-- `sequence_len: 4096`: Maximum context length in tokens. Llama 3.1 supports up to 128K, but 4096 is sufficient for most chat conversations and more memory-efficient
-- `sample_packing: true`: Combines multiple short conversations into single training batches to maximize GPU utilization. Instead of wasting tokens on padding, multiple conversations fill the 4096 token window
-- `eval_sample_packing: false`: Disables packing during evaluation for cleaner metrics
-- `pad_to_sequence_len: true`: Ensures consistent sequence lengths for efficient batch processing
+Conversations are converted into sequences of tokens to be fed into the model during training.  
+They are limited to 4096 tokens, which is sufficient for most chat conversations and more memory-efficient than Llama 3.1's full 128K context window. The `sample_packing` feature combines multiple short conversations into single training batches, maximizing GPU utilization by filling the token window instead of wasting space on padding.
 
 #### LoRA/QLoRA Configuration
 
@@ -178,7 +170,7 @@ peft_use_dora: true
 
 This section defines how the model will be adapted:
 
-- `adapter: qlora`: Uses [QLoRA (Quantized LoRA)](https://arxiv.org/abs/2305.14314){:target="_blank" rel="noopener"} technique
+- `adapter: qlora`: Uses [QLoRA (Quantized LoRA)](https://arxiv.org/abs/2305.14314){:target="_blank" rel="noopener"} technique to use quantization to reduce memory usage and speed up training.
 - `lora_r: 64`: The rank of the LoRA adapter matrices. Higher values (like 64) give the model more capacity to learn patterns but require more memory. Typical values range from 8 to 128
 - `lora_alpha: 32`: Scaling factor that controls how much the adapter influences the base model. The ratio `lora_alpha/lora_r` determines the learning strength
 - `lora_dropout: 0.05`: Applies 5% dropout<sup>(1)</sup> to prevent overfitting<sup>(2)</sup> in the adapter layers
@@ -205,12 +197,14 @@ learning_rate: 0.0002
 - `micro_batch_size: 1`: Processes one conversation at a time per GPU. With sample packing enabled, this could contain multiple conversations packed into 4096 tokens
 - `num_epochs: 4`: Iterates through the entire dataset 4 times. More epochs can lead to better adaptation but risk overfitting
 - `optimizer: adamw_bnb_8bit`: Uses 8-bit AdamW optimizer (from bitsandbytes library) for memory efficiency
-- `lr_scheduler: cosine`: Learning rate follows a cosine curve, starting at the specified rate and gradually decreasing to near zero
-- `learning_rate: 0.0002`: Starting learning rate<sup>(4)</sup>. This is relatively standard for LoRA fine-tuning
+- `lr_scheduler: cosine`: scheduler<sup>(4)</sup> setting: learning rate<sup>(5)</sup> follows a cosine curve, starting at the specified rate and gradually decreasing to near zero
+- `learning_rate: 0.0002`: Starting learning rate<sup>(5)</sup>. This is relatively standard for LoRA fine-tuning
 
 <sup>(3)</sup> *[gradient accumulation](https://colab.research.google.com/drive/102AQrQf0YJqWTGH0aKDnmZXftSHTQNS_?usp=sharing){:target="_blank" rel="noopener"} is a technique to avoid running out of VRAM during training. Normally, the model weights are updated after every batch using the calculated gradients. With gradient accumulation, instead of updating immediately, the gradients are accumulated (summed) over multiple batches. The model weights are only updated after a specified number of iterations. This allows training with larger effective batch sizes without requiring additional memory.*
 
-<sup>(4)</sup> is a hyperparameter that controls how quickly the model learns. Finding correct value [can be difficult](https://bigghis.github.io/AI-appunti/guide/optimizations/learning_rate.html?highlight=learning%20rate#learning-rate){:target="_blank" rel="noopener"} .
+<sup>(4)</sup> *A [scheduler](https://bigghis.github.io/AI-appunti/guide/optimizations/learning_rate.html?highlight=scheduler#learning-rate-variabile-scheduler){:target="_blank" rel="noopener"} dynamically adjusts the learning rate during training according to a predefined schedule. The cosine scheduler starts at the specified rate and gradually decreases following a cosine curve, helping achieve better convergence and avoiding issues like overshooting or slow convergence.*
+
+<sup>(5)</sup> *Learning rate is a hyperparameter that controls how quickly the model learns. Finding the correct value [can be difficult](https://bigghis.github.io/AI-appunti/guide/optimizations/learning_rate.html?highlight=learning%20rate#learning-rate){:target="_blank" rel="noopener"}—too high can cause instability, too low results in slow convergence.*
 
 #### Training Efficiency Settings
 
