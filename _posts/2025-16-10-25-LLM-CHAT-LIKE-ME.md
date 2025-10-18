@@ -3,7 +3,7 @@ title: "LLM \"Chat Like Me\" Project
 description: A project to create a LLM that can chat like yourself - Part 1: Dataset Preparation
 date: 2025-10-16 12:00:00 +0530
 categories: [LLM, Chat, Project, fine-tuning]
-tags: [LLM, Chat, Project, fine-tuning]
+tags: [LLM, Chat, Project, dataset]
 comments: false
 ---
 
@@ -285,7 +285,7 @@ It's like giving the model its identity and role for the conversation.
 
 Now we are ready to fine-tune the model because we have a valid dataset.
 
-**Continue to Part 2:** [Fine-tuning the Model with the Dataset](https://bigghis.github.io/posts/_posts/2025-18-10-25-LLM-CHAT-LIKE-ME-FINETUNING.md)
+**Continue to Part 2:** [Fine-tuning the Model with the Dataset](https://bigghis.github.io/posts/2025-18-10-25-LLM-CHAT-LIKE-ME-FINETUNING/)
   
   
 
