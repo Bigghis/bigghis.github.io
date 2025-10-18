@@ -46,7 +46,7 @@ There are many frameworks available for fine-tuning LLMs. Two of the most popula
 
 **Unsloth** is known for its speed optimizations and offers more granular control over the training process with extensive customization options. However, I chose **Axolotl** for this project because it better suited my needs.  
 The primary factor was Axolotl's multi-GPU support through DeepSpeed integration, which has been robust for a long time. In contrast, Unsloth's multi-GPU capabilities are still in an early development stage.  
-Additionally, I appreciated Axolotl's straightforward configuration approach, which is less complex compared to Unsloth's more granular settings. After setting up some additional software dependencies, Axolotl worked reliably on my dual-GPU setup without any issues. While Unsloth might offer more fine-grained control for advanced users, Axolotl's combination of simplicity, stability, and proven multi-GPU support made it the practical choice for this experiment.
+Additionally, I appreciated Axolotl's straightforward configuration approach. After setting up some additional software dependencies, Axolotl worked reliably on my dual-GPU setup without any issues.  
 
 ### Setting Up the Training Configuration
 
