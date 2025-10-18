@@ -251,8 +251,8 @@ DeepSpeed is a [distributed training library](https://github.com/deepspeedai/Dee
 The **ZeRO (Zero Redundancy Optimizer)** technique comes in three stages:
 
 - **ZeRO-1**: Partitions optimizer states across GPUs. Provides modest memory savings
-- **ZeRO-2**: Partitions both optimizer states and gradients. This is what we're using—it provides a good balance between memory savings and communication overhead, making it ideal for 2-GPU setups
-- **ZeRO-3**: Partitions model parameters, optimizer states, and gradients. Maximum memory savings but requires more inter-GPU communication. Best for training very large models across many GPUs (8+)
+- **ZeRO-2**: Partitions both optimizer states and gradients. This is what we're using—it provides a good balance between memory savings and communication overhead
+- **ZeRO-3**: Partitions model parameters, optimizer states, and gradients. Maximum memory savings but requires more inter-GPU communication. Best for training very large models across many GPUs
 
 In my setup, I used an ADAM<sup>(7)</sup> optimizer (the algorithm that updates model weights during training based on calculated gradients).  
 ZeRO-1 only partitions ADAM optimizer states across GPUs, but in my case this wasn't enough to avoid memory saturation. Switching to ZeRO-2 resolved the issue because it partitions both ADAM optimizer states and gradients across the two RTX 3090s.
