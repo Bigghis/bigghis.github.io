@@ -129,7 +129,7 @@ load_in_4bit: true
 strict: false
 ```
 
-The model is downloaded from [Hugging Face](https://huggingface.co){:target="_blank" rel="noopener"} and quantized to 4-bit precision, reducing memory usage by ~75% compared to full precision. This 4-bit quantization is the core of QLoRA, enabling fine-tuning on consumer GPUs.
+The model is downloaded from [Hugging Face](https://huggingface.co){:target="_blank" rel="noopener"} and quantized to 4-bit precision, reducing memory usage by ~75% compared to full precision. This 4-bit quantization is the core of QLoRA technique.
 
 #### Dataset and Chat Template Configuration
 
@@ -156,7 +156,7 @@ eval_sample_packing: false
 pad_to_sequence_len: true
 ```
 Conversations are converted into sequences of tokens to be fed into the model during training.  
-They are limited to 4096 tokens, which is sufficient for most chat conversations and more memory-efficient than Llama 3.1's full 128K context window. The `sample_packing` feature combines multiple short conversations into single training batches, maximizing GPU utilization by filling the token window instead of wasting space on padding.
+They are limited to 4096 tokens, which is sufficient for most chat conversations and more memory-efficient than Llama 3.1's full 128K context window. The `sample_packing` feature combines multiple short conversations into single training batches.
 
 #### LoRA/QLoRA Configuration
 
