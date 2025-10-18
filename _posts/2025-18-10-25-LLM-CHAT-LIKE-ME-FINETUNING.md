@@ -289,7 +289,7 @@ Once the configuration is set, starting the training is straightforward with Axo
 axolotl train config.yml
 ```
 
-The training process typically takes several hours depending on your hardware and dataset size. During training, you can monitor progress in real-time through wandb, which provides comprehensive telemetry and visualization of the training process.
+The training process typically takes several hours on my machine, generally depending on your hardware and dataset size. During training, you can monitor progress in real-time through wandb, which provides comprehensive telemetry and visualization of the training process.
 This real-time monitoring is useful for detecting issues early (like learning rate problems, hardware overheating) and for understanding how well the model is learning from your conversational data. 
 
 
