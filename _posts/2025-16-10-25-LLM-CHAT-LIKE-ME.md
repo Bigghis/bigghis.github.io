@@ -1,13 +1,13 @@
 ---
 title: "LLM \"Chat Like Me\" Project 
-description: A project to create a LLM that can chat like yourself - Part 1: Dataset Preparation
+description: A project to create a LLM that can chat like yourself - Part 1 - Dataset Preparation
 date: 2025-10-16 12:00:00 +0530
 categories: [LLM, Chat, Project, fine-tuning]
 tags: [LLM, Chat, Project, dataset]
 comments: false
 ---
 
-### LLM "Chat Like Me" project - Part 1
+### LLM "Chat Like Me" project - Part 1 - Dataset Preparation
 
 This project is born out of curiosity and a desire to learn how to fine-tune large language models hands-on. It's also a fun experiment to see if I can create an AI that replicates my conversational style :) when I'm chatting with friends, colleagues, etc.
 
