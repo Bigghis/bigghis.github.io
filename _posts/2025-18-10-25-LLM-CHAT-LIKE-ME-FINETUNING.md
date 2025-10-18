@@ -7,6 +7,7 @@ tags: [LLM, Chat, Project, fine-tuning]
 comments: false
 ---
 
+
 ### LLM "Chat Like Me" project - Part 2 - Fine-tuning
 
 Now we are ready to fine-tune the model because we have a valid dataset.
