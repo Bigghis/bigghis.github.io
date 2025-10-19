@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="url(#bgGrad)"/>
+  
+  <!-- Neural Network Connections -->
+  <g opacity="0.6" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round">
+    <!-- Layer 1 to Layer 2 connections -->
+    <line x1="128" y1="156" x2="256" y2="100" />
+    <line x1="128" y1="156" x2="256" y2="200" />
+    <line x1="128" y1="256" x2="256" y2="100" />
+    <line x1="128" y1="256" x2="256" y2="200" />
+    <line x1="128" y1="256" x2="256" y2="300" />
+    <line x1="128" y1="356" x2="256" y2="200" />
+    <line x1="128" y1="356" x2="256" y2="300" />
+    <line x1="128" y1="356" x2="256" y2="412" />
+    
+    <!-- Layer 2 to Layer 3 connections -->
+    <line x1="256" y1="100" x2="384" y2="156" />
+    <line x1="256" y1="200" x2="384" y2="156" />
+    <line x1="256" y1="200" x2="384" y2="256" />
+    <line x1="256" y1="300" x2="384" y2="256" />
+    <line x1="256" y1="300" x2="384" y2="356" />
+    <line x1="256" y1="412" x2="384" y2="356" />
+  </g>
+  
+  <!-- Neural Network Nodes -->
+  <g>
+    <!-- Input Layer (3 nodes) -->
+    <circle cx="128" cy="156" r="28" fill="#fff" opacity="0.9"/>
+    <circle cx="128" cy="256" r="28" fill="#fff" opacity="0.9"/>
+    <circle cx="128" cy="356" r="28" fill="#fff" opacity="0.9"/>
+    
+    <!-- Hidden Layer (4 nodes) -->
+    <circle cx="256" cy="100" r="32" fill="url(#nodeGrad)"/>
+    <circle cx="256" cy="200" r="32" fill="url(#nodeGrad)"/>
+    <circle cx="256" cy="300" r="32" fill="url(#nodeGrad)"/>
+    <circle cx="256" cy="412" r="32" fill="url(#nodeGrad)"/>
+    
+    <!-- Output Layer (3 nodes) -->
+    <circle cx="384" cy="156" r="28" fill="#fff" opacity="0.9"/>
+    <circle cx="384" cy="256" r="28" fill="#fff" opacity="0.9"/>
+    <circle cx="384" cy="356" r="28" fill="#fff" opacity="0.9"/>
+  </g>
+  
+  <!-- Inner circles for depth -->
+  <g fill="#667eea" opacity="0.5">
+    <circle cx="256" cy="100" r="16" />
+    <circle cx="256" cy="200" r="16" />
+    <circle cx="256" cy="300" r="16" />
+    <circle cx="256" cy="412" r="16" />
+  </g>
+</svg>
+
