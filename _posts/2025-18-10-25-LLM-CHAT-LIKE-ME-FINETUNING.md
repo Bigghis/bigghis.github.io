@@ -11,17 +11,17 @@ comments: false
 ### LLM "Chat Like Me" project - Part 2 - Fine-tuning
 
 In [Part 1](https://bigghis.github.io/posts/2025-16-10-25-LLM-CHAT-LIKE-ME/), we collected and prepared a dataset from Telegram chat history.  
-Now the idea is to fine-tune a model that can run locally on my pc with the provided dataset.  
+Now the idea is to fine-tune a model that can run locally on my PC with the provided dataset.  
 ### Training vs. Fine-tuning: An Important Distinction
 
-Let's be clear about what we're doing here. **We're not training an LLM from scratch.** That would require millions of dollars in computational resources, massive datasets, and months of training time on specialized hardware. That's what companies like Meta, OpenAI, and Google do.
+Let's be clear about what we're doing here. **We're not training a large LLM from scratch.** That would require millions of dollars in computational resources, massive datasets, and months of training time on specialized hardware. That's what companies like Meta, OpenAI, and Google do.
 
 Instead, we're **fine-tuning a pre-trained model**. This means taking an existing model that already understands language, grammar, and chat patterns, and then teaching it to adopt a specific conversational style.
 
 ### Choosing a Base Model: Llama 3.1
 
-For this project, I chose **Meta's Llama 3.1 8B** as the base model. The Llama family of models is open-source and offers decent performance for conversational tasks, making it a practical choice for these experiments.  
-The **8 billion parameters** version strikes a good balance between capability and computational requirements. It's small enough to fine-tune on consumer-grade GPUs but large enough to produce high-quality, contextually appropriate responses.
+For this project, I chose **Meta's Llama 3.1 8B** as the base model. The Llama family of models is open-source and offers decent performance for conversational tasks, which seemed like a reasonable choice for these experiments.  
+The **8 billion parameters** version should strike a good balance between capability and computational requirements. It's small enough to fine-tune on consumer-grade GPUs while potentially producing high-quality, contextually appropriate responses.
 
 
 ### Hardware Setup for Fine-tuning
@@ -38,7 +38,7 @@ For this project, I chose to use **my local machine** instead of cloud services.
 
 
 The dual RTX 3090 setup is well-suited for this 8B model. Each card has 24GB of VRAM, which is sufficient to handle an 8B parameter model with 4-bit quantization.  
-However, if you want to fine-tune **larger models** (like Llama 3.1 70B or 405B), local consumer hardware quickly becomes insufficient. For those cases, you would need to rely on cloud services like **Runpod**, **Lambda Labs**, or other providers that offer high-end datacenter GPUs (A100 80GB, H100) with significantly more VRAM. The 48GB total VRAM from two RTX 3090s simply isn't enough for larger models, even with aggressive quantization.
+However, if you want to fine-tune **larger models** (like Llama 3.1 70B or 405B), local consumer hardware quickly becomes insufficient. For those cases, you would need to rely on cloud services like **Runpod**, **Lambda Labs**, or other providers that offer high-end datacenter GPUs (A100 80GB, H100).
 
 ### Choosing a Training Framework: Axolotl
 
@@ -129,7 +129,7 @@ load_in_4bit: true
 strict: false
 ```
 
-The model is downloaded from [Hugging Face](https://huggingface.co){:target="_blank" rel="noopener"} and quantized to 4-bit precision, reducing memory usage by ~75% compared to full precision. This 4-bit quantization is the core of QLoRA technique.
+The model is downloaded from [Hugging Face](https://huggingface.co){:target="_blank" rel="noopener"} and quantized to 4-bit precision, reducing memory usage by ~75% compared to full precision. This 4-bit quantization is the core of the QLoRA technique.
 
 #### Dataset and Chat Template Configuration
 
@@ -144,7 +144,7 @@ dataset_prepared_path: last_run_prepared
 val_set_size: 0.005
 ```
 
-The dataset is configured to use Llama 3's chat format with the OpenAI chat-template structure (system/user/assistant roles).   The prepared JSONL file from Part 1 is split into 99.5% training and 0.5% validation data to monitor overfitting during training.
+The dataset is configured to use Llama 3's chat format with the OpenAI chat-template structure (system/user/assistant roles). The prepared JSONL file from Part 1 is split into 99.5% training and 0.5% validation data to monitor overfitting during training.
 
 
 #### Sequence Length and Packing
@@ -155,8 +155,7 @@ sample_packing: true
 eval_sample_packing: false
 pad_to_sequence_len: true
 ```
-Conversations are converted into sequences of tokens to be fed into the model during training.  
-They are limited to 4096 tokens, which is sufficient for most chat conversations and more memory-efficient than Llama 3.1's full 128K context window. The `sample_packing` feature combines multiple short conversations into single training batches.
+Conversations are converted into sequences of tokens to be fed into the model during training. They are limited to 4096 tokens. The `sample_packing` feature combines multiple short conversations into single training batches.
 
 #### LoRA/QLoRA Configuration
 
@@ -172,9 +171,9 @@ lora_modules_to_save:
 peft_use_dora: true
 ```
 
-This section defines how the model will be adapted:
+LoRA works by adding trainable low-rank matrices to the attention layers of the transformer, allowing efficient adaptation without modifying the original model weights. 
 
-- `adapter: qlora`: Uses [QLoRA (Quantized LoRA)](https://arxiv.org/abs/2305.14314){:target="_blank" rel="noopener"} technique to use quantization to reduce memory usage and speed up training.
+- `adapter: qlora`: Uses [QLoRA (Quantized LoRA)](https://arxiv.org/abs/2305.14314){:target="_blank" rel="noopener"} technique, which applies quantization to reduce memory usage and speed up training.
 - `lora_r: 64`: The rank of the LoRA adapter matrices. Higher values (like 64) give the model more capacity to learn patterns but require more memory. Typical values range from 8 to 128
 - `lora_alpha: 32`: Scaling factor that controls how much the adapter influences the base model. The ratio `lora_alpha/lora_r` determines the learning strength
 - `lora_dropout: 0.05`: Applies 5% dropout<sup>(1)</sup> to prevent overfitting<sup>(2)</sup> in the adapter layers
@@ -182,11 +181,15 @@ This section defines how the model will be adapted:
 - `lora_modules_to_save`: In addition to LoRA adapters, these modules are fully fine-tuned. The embedding (`embed_tokens`) and output (`lm_head`) layers often benefit from full fine-tuning, especially when working with specific vocabulary or domains
 - `peft_use_dora: true`: Enables DoRA (Weight-Decomposed Low-Rank Adaptation), a recent improvement over standard LoRA that separates magnitude and direction updates for better performance
 
+ 
+The `lora_target_linear: true` setting ensures that LoRA adapters are automatically applied to all linear layers in the transformer architecture. For Llama 3.1, Axolotl [automatically detects and targets](https://raw.githubusercontent.com/axolotl-ai-cloud/axolotl/refs/heads/main/src/axolotl/loaders/adapter.py){:target="_blank" rel="noopener"} the following modules: `q_proj`, `k_proj`, `v_proj`, `o_proj` (attention layers), and `gate_proj`, `up_proj`, `down_proj` (feed-forward layers).
+
 <sup>(1)</sup> *[dropout](https://bigghis.github.io/AI-appunti/guide/regularizations/dropout.html?highlight=dropout#dropout){:target="_blank" rel="noopener"} is a regularization technique that randomly "turns off" a subset of neurons during training, helping to prevent overfitting by forcing the network to learn more robust features.*
 
 <sup>(2)</sup> *[overfitting](https://bigghis.github.io/AI-appunti/guide/generics.html?highlight=overfitting#generalizzazioni-del-comportamento-delle-reti-neurali){:target="_blank" rel="noopener"} occurs when a model adapts too closely to the details and noise in the training data, compromising its ability to generalize. The model learns not only the underlying patterns but also random fluctuations and anomalies specific to the training set, resulting in excellent performance on training data but poor performance on new, unseen data.*
 
 <sup>(3)</sup> *[attention](https://bigghis.github.io/AI-appunti/guide/nn/attention.html){:target="_blank" rel="noopener"} is a mechanism in neural networks that allows the model to focus on relevant parts of the input data. It is used in [transformer models](https://arxiv.org/abs/1706.03762){:target="_blank" rel="noopener"} to process sequences of tokens in parallel, allowing the model to learn relationships between words and phrases in a more efficient way.*
+
 #### Training Hyperparameters
 
 ```yaml
@@ -283,13 +286,31 @@ These settings configure [Weights & Biases](https://wandb.ai/){:target="_blank" 
 
 ### Training Process
 
-Once the configuration is set, starting the training is straightforward with Axolotl:
+Once the configuration is set, starting the training with:
 
 ```bash
 axolotl train config.yml
 ```
 
-The training process typically takes several hours on my machine, generally depending on your hardware and dataset size. During training, you can monitor progress in real-time through wandb, which provides comprehensive telemetry and visualization of the training process.
-This real-time monitoring is useful for detecting issues early (like learning rate problems, hardware overheating) and for understanding how well the model is learning from your conversational data. 
+The training process typically takes several hours on my machine, generally depending on hardware and dataset size. 
+During training, you can monitor progress in real-time through wandb, which provides comprehensive telemetry and visualization of the training process.
+
+For example, you can track the loss function on both training and evaluation data. The training loss typically decreases steadily as the model learns, while the evaluation loss should also decrease initially. However, if the evaluation loss starts to increase while training loss continues to drop, this indicates the beginning of overfitting—the model is memorizing the training data rather than learning generalizable patterns.
+
+![Training Loss](/assets/images/chatlikemeloss.png)
+_Training loss decreases steadily throughout training_
+
+![Evaluation Loss](/assets/images/chatlikemelosseval.png)
+_Evaluation loss starts to increase around step 600, indicating the beginning of overfitting_
+
+**Note on Overfitting:** The evaluation loss shows early signs of overfitting, which suggests stopping the training early at 3 epochs. However, the training loss remains reasonable at 4 epochs, so I decided to continue training for the full 4 epochs.
+
+### Next Steps: Model Inference
+
+Once the fine-tuning process is complete, the trained model adapters (LoRA weights) are saved in the output directory.
+Now comes the exciting part 😃 testing whether the model has actually learned your conversational style.
+
+You can now query the model for inference by loading the base model along with the fine-tuned LoRA adapters. There are two approaches: either merge the LoRA weights directly into the base model for more efficient production deployments, or load the adapters dynamically at runtime for greater flexibility. For this project, I chose to **load the adapters dynamically**, as it allows experimenting with different fine-tuned versions without rebuilding the entire model.
 
 
+In the next part of this series, we'll explore how to load and use the fine-tuned model for inference, and create a chatbot interface to interact with the model. 
