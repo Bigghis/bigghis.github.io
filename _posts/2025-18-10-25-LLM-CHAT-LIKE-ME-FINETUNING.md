@@ -114,11 +114,11 @@ special_tokens:
   eos_token: "<|eot_id|>"
 ```
 
-The configuration file is organized into several logical sections, each controlling different aspects of the training process.
+The configuration file is organized into several logical sections, each controlling different aspects of the fine tuning process.
 
 Let's now explore the configuration sections in more detail where necessary.
 
-> **Note:** The following sections are quite technical. If you're not interested in the configuration details, you can skip ahead to the [Training Process](#training-process) section.
+> **Note:** The following sections are quite technical. If you're not interested in the configuration details, you can skip ahead to the [Fine Tuning Process](#fine-tuning-process) section.
 {: .prompt-info }
 
 #### Base Model and Quantization
