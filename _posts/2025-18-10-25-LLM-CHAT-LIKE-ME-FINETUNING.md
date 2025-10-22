@@ -14,7 +14,7 @@ In [Part 1](https://bigghis.github.io/posts/2025-16-10-25-LLM-CHAT-LIKE-ME/), we
 Now the idea is to fine-tune a model that can run locally on my PC with the provided dataset.  
 ### Training vs. Fine-tuning: An Important Distinction
 
-Let's be clear about what we're doing here. **We're not training a large LLM from scratch.** That would require millions of dollars in computational resources, massive datasets, and months of training time on specialized hardware. That's what companies like Meta, OpenAI, and Google do.
+Let's be clear about what we're doing here. **We're not training a large language model from scratch.** That would require millions of dollars in computational resources, massive datasets, and months of training time on specialized hardware. That's what companies like Meta, OpenAI, and Google do.
 
 Instead, we're **fine-tuning a pre-trained model**. This means taking an existing model that already understands language, grammar, and chat patterns, and then teaching it to adopt a specific conversational style.
 
@@ -284,26 +284,26 @@ wandb_log_model:
 
 These settings configure [Weights & Biases](https://wandb.ai/){:target="_blank" rel="noopener"}, a tool for tracking and logging the training process, including metrics like loss, learning rate, and GPU utilization.
 
-### Training Process
+### Fine Tuning Process
 
-Once the configuration is set, starting the training with:
+Once the configuration is set, starting the fine tuning with:
 
 ```bash
 axolotl train config.yml
 ```
 
-The training process typically takes several hours on my machine, generally depending on hardware and dataset size. 
-During training, you can monitor progress in real-time through wandb, which provides comprehensive telemetry and visualization of the training process.
+The fine tuning process typically takes several hours on my machine, generally depending on hardware and dataset size. 
+During fine tuning, you can monitor progress in real-time through wandb, which provides comprehensive telemetry and visualization of the fine tuning process.
 
 For example, you can track the loss function on both training and evaluation data. The training loss typically decreases steadily as the model learns, while the evaluation loss should also decrease initially. However, if the evaluation loss starts to increase while training loss continues to drop, this indicates the beginning of overfitting—the model is memorizing the training data rather than learning generalizable patterns.
 
-![Training Loss](/assets/images/chatlikemeloss.png)
+![Fine Tuning Loss](/assets/images/chatlikemeloss.png)
 _Training loss decreases steadily throughout training_
 
 ![Evaluation Loss](/assets/images/chatlikemelosseval.png)
 _Evaluation loss starts to increase around step 600, indicating the beginning of overfitting_
 
-**Note on Overfitting:** The evaluation loss shows early signs of overfitting, which suggests stopping the training early at 3 epochs. However, the training loss remains reasonable at 4 epochs, so I decided to continue training for the full 4 epochs.
+**Note on Overfitting:** The evaluation loss shows early signs of overfitting, which suggests stopping the fine tuning early at 3 epochs. However, the training loss remains reasonable at 4 epochs, so I decided to continue fine tuning for the full 4 epochs.
 
 ### Next Steps: Model Inference
 

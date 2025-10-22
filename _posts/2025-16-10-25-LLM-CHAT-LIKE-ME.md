@@ -218,8 +218,6 @@ I created also a comprehensive script **prepare_training_data.py** that handles 
 python prepare_training_data.py result.json --output training_data.jsonl
 ```
 
-**Key Features:**
-
 The script automatically performs all three transformation steps (Cleaning, Structuring, Formatting) and offers several configurable parameters:
 
 - `--min-messages` (default: 20): Filters out contacts with too few messages
