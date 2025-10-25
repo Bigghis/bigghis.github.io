@@ -52,7 +52,7 @@ Additionally, I appreciated Axolotl's straightforward configuration approach. Af
 
 Axolotl uses YAML configuration files to define all training parameters. Here's the configuration I used for this project:
 
-> Configuration axolotl for this project is available in the project's GitHub repository: [chat-like-me](https://github.com/Bigghis/chat-like-me){:target="_blank" rel="noopener"}
+> Axolotl configuration file is available in the project's GitHub repository: [chat-like-me](https://github.com/Bigghis/chat-like-me){:target="_blank" rel="noopener"}
 {: .prompt-info }
 
 ```yaml
