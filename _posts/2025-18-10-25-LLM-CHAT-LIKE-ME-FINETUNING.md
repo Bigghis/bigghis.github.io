@@ -52,6 +52,9 @@ Additionally, I appreciated Axolotl's straightforward configuration approach. Af
 
 Axolotl uses YAML configuration files to define all training parameters. Here's the configuration I used for this project:
 
+> Configuration axolotl for this project is available in the project's GitHub repository: [chat-like-me](https://github.com/Bigghis/chat-like-me)
+{: .prompt-info }
+
 ```yaml
 base_model: NousResearch/Meta-Llama-3.1-8B
 
@@ -113,9 +116,6 @@ special_tokens:
   pad_token: "<|finetune_right_pad_id|>"
   eos_token: "<|eot_id|>"
 ```
-
-> Configuration axolotl for this project is available in the project's GitHub repository: [chat-like-me](https://github.com/Bigghis/chat-like-me)
-{: .prompt-info }
 
 The configuration file is organized into several logical sections, each controlling different aspects of the fine tuning process.
 
