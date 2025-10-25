@@ -114,6 +114,9 @@ special_tokens:
   eos_token: "<|eot_id|>"
 ```
 
+> Configuration axolotl for this project is available in the project's GitHub repository: [chat-like-me](https://github.com/Bigghis/chat-like-me)
+{: .prompt-info }
+
 The configuration file is organized into several logical sections, each controlling different aspects of the fine tuning process.
 
 Let's now explore the configuration sections in more detail where necessary.
