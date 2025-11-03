@@ -10,7 +10,7 @@ comments: false
 
 ### LLM "Chat Like Me" project - Part 2 - Fine-tuning (SFT)
 
-In [Part 1](https://bigghis.github.io/posts/2025-10-16-LLM-CHAT-LIKE-ME/), we collected and prepared a dataset from Telegram chat history.  
+In [Part 1](https://bigghis.github.io/posts/LLM-CHAT-LIKE-ME/), we collected and prepared a dataset from Telegram chat history.  
 Now the idea is to fine-tune a model that can run locally on my PC with the provided dataset.  
 ### Training vs. Fine-tuning: An Important Distinction
 
