@@ -2,21 +2,21 @@
 title: "LLM \"Chat Like Me\" Project 
 description: A project to create a LLM that can chat like yourself (Fine-tuning)
 date: 2025-10-18 12:00:00 +0530
-categories: [LLM, Chat, Project, fine-tuning]
-tags: [LLM, Chat, Project, fine-tuning]
+categories: [LLM, Chat, Project, fine-tuning, SFT]
+tags: [LLM, Chat, Project, fine-tuning, SFT]
 comments: false
 ---
 
 
-### LLM "Chat Like Me" project - Part 2 - Fine-tuning
+### LLM "Chat Like Me" project - Part 2 - Fine-tuning (SFT)
 
-In [Part 1](https://bigghis.github.io/posts/2025-16-10-25-LLM-CHAT-LIKE-ME/), we collected and prepared a dataset from Telegram chat history.  
+In [Part 1](https://bigghis.github.io/posts/2025-10-16-LLM-CHAT-LIKE-ME/), we collected and prepared a dataset from Telegram chat history.  
 Now the idea is to fine-tune a model that can run locally on my PC with the provided dataset.  
 ### Training vs. Fine-tuning: An Important Distinction
 
 Let's be clear about what we're doing here. **We're not training a large language model from scratch.** That would require millions of dollars in computational resources, massive datasets, and months of training time on specialized hardware. That's what companies like Meta, OpenAI, and Google do.
 
-Instead, we're **fine-tuning a pre-trained model**. This means taking an existing model that already understands language, grammar, and chat patterns, and then teaching it to adopt a specific conversational style.
+Instead, we're **fine-tuning a pre-trained model**. This means taking an existing model that already understands language, grammar, and chat patterns, and then teaching it to adopt a specific conversational style, with a **super vised fine tuning (SFT)** process.
 
 ### Choosing a Base Model: Llama 3.1
 

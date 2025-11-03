@@ -287,9 +287,9 @@ So, when the trained model is later used, setting the same system prompt will tr
 It's like giving the model its identity and role for the conversation.
 
 
-Now you are ready to fine-tune the model because you have a valid dataset.
+Now you are ready to fine-tune the model because you have a valid dataset for a super vised fine tuning (SFT) training process.
 
-**Continue to Part 2:** [Fine-tuning the Model with the Dataset](https://bigghis.github.io/posts/2025-18-10-25-LLM-CHAT-LIKE-ME-FINETUNING/)
+**Continue to Part 2:** [Fine-tuning the Model with the Dataset](https://bigghis.github.io/posts/2025-10-18-LLM-CHAT-LIKE-ME-FINETUNING/)
   
   
 
