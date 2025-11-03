@@ -1,6 +1,6 @@
 ---
-title: "LLM \"Chat Like Me\" Project 
-description: A project to create a LLM that can chat like yourself (Fine-tuning)
+title: "LLM \"Chat Like Me\" Project - Fine-tuning (SFT)" 
+description: A project to create a LLM that can chat like yourself - Fine-tuning (SFT)
 date: 2025-10-18 12:00:00 +0530
 categories: [LLM, Chat, Project, fine-tuning, SFT]
 tags: [LLM, Chat, Project, fine-tuning, SFT]
