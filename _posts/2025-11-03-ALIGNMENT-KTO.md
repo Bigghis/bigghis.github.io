@@ -59,7 +59,7 @@ invece un prompt KTO è più semplice ed ha una sola preferenza etichettata come
 ```
 
 In generale avremo un dataset composto da un certo numero di preferenze positive e negative.  
-L'algoritmo KTO premia le preferenze positive con un peso crescente (**peso di confidenza**) quando il modello è incerto nella sua risposta e punisce le preferenze negative con maggiore forza (**avversione alle perdite**) quando il modello le considera probabili.  
+L'algoritmo KTO premia le preferenze positive con un peso crescente (**peso di confidenza**) quando il modello è incerto nella sua risposta e penalizza le preferenze negative con maggiore forza (**avversione alle perdite**) quando il modello le considera probabili.  
 
 
 ## Iperparametri
@@ -71,7 +71,7 @@ I valori di partenza suggeriti sono:
 **Epochs**: 1, 2 dovrebbero essere sufficienti.  
 **Batch Size**: per un corretto funzionamento usare batch compresi tra 8 e 128.   
 32 potrebbe essere un buon punto di partenza.  
-**Beta**: (regolatore di stabilità), usato per il concetto di **avversione al rischio**, decide quanto il modello che si sta allineando deve essere punito se si allontana dal modello di riferimento addestrato tramite SFT.  
+**Beta**: (regolatore di stabilità), usato per il concetto di **avversione al rischio**, decide quanto il modello che si sta allineando deve essere penalizzato se si allontana dal modello di riferimento addestrato tramite SFT.  
 β basso (vicino a 0) significa che il modello è libero di allontanarsi dal riferimento, per massimizzare le ricompense.  
 β alto (vicino a 1) significa che il modello è penalizzato se si allontana dal riferimento, per minimizzare le perdite e garantire la stabilità, limitando potenziali miglioramenti del modello stesso.  
 Nel paper KTO si suggerisce un valore di 0.1.  
@@ -140,7 +140,7 @@ gradient_checkpointing_kwargs:
 ### Dataset per KTO
 La generazione di un dataset per KTO dipende dalla situazione specifica per cui si sta allineando il modello.  
 Per esempio, dopo aver eseguito un SFT, potremmo generare un dataset per l'alignment con KTO, a partire dal dataset di SFT.  
-Le preferenze binarie positive potrebbero essere create a partire dal dataset di SFT e le preferenze negative sintetiche per inferenza del modello base ante SFT, magari con sampling aggressivi (parametri di temperatura alta, top-p basso etc.)  
+Le preferenze binarie positive potrebbero essere create a partire dal dataset di SFT e le preferenze negative sintetiche potrebbero essere generate per inferenza dal modello base ante SFT, magari con sampling aggressivi (parametri di temperatura alta, top-p basso etc.)  
 
 Tornando all'esempio del dataset costruito dalle chat telegram del progetto [LLM "Chat Like Me"](https://bigghis.github.io/posts/LLM-CHAT-LIKE-ME/), possiamo usare diversi approcci per generare dataset di preferenze negative.
 
