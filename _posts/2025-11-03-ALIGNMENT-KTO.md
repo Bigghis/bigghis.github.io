@@ -21,7 +21,7 @@ Tra i vari algoritmi di tipo HALO che sono stati creati, quello che esamino in q
 
 L'algoritmo è descritto nel paper [KTO: Model Alignment as Prospect Theoretic Optimization](https://arxiv.org/html/2402.01306v1){:target="_blank"}.   
 Prende spunto dalla **teoria dei prospetti** di Kahneman e Tversky, in particolare dal concetto di **avversione alle perdite**.  
-In ambito finanziario, per esempio, le persone hanno la tendenza a provare un dolore psicologico maggiore per una perdita, rispetto al piacere di un guadagno di pari ammontare.
+In ambito finanziario, per esempio, le persone hanno la tendenza a provare un dolore psicologico maggiore per una perdita, rispetto al piacere per un guadagno di pari ammontare.
 Questo **bias** influenza la nostra percezione e porta a proteggerci dalle perdite evitando rischi che, tuttavia, implicano la rinuncia a possibilità di guadagno maggiori. 
 
 Per quanto riguarda l'implementazione dell'algoritmo, KTO prevede di usare un **dataset di preferenze binario** (buono/cattivo) che semplifica la raccolta dei feedback, al contrario degli altri algoritmi HALO che usano **coppie di preferenze**.  
@@ -68,11 +68,11 @@ Dal punto di vista operativo nel paper KTO sono descritti gli iperparametri che 
 
 I valori di partenza suggeriti sono:  
 **Learning Rate**: 5e-6 se si usa un optimizer di tipo **AdamW**.  
-**Epochs**: 2, 3 sono sufficienti.  
+**Epochs**: 1, 2 dovrebbero essere sufficienti.  
 **Batch Size**: per un corretto funzionamento usare batch compresi tra 8 e 128.   
 32 potrebbe essere un buon punto di partenza.  
 **Beta**: (regolatore di stabilità), usato per il concetto di **avversione al rischio**, decide quanto il modello che si sta allineando deve essere punito se si allontana dal modello di riferimento addestrato tramite SFT.  
-β basso (vicino a 0) significa che il modello è libero di allontanarsi dal riferimento, per massimizzare le ricompense.
+β basso (vicino a 0) significa che il modello è libero di allontanarsi dal riferimento, per massimizzare le ricompense.  
 β alto (vicino a 1) significa che il modello è penalizzato se si allontana dal riferimento, per minimizzare le perdite e garantire la stabilità, limitando potenziali miglioramenti del modello stesso.  
 Nel paper KTO si suggerisce un valore di 0.1.  
 **Desiderable/Undesirable Weights**: pesi usati per regolare l'**avversione alle perdite**, dando maggiore o minore importanza alle preferenze positive o negative.  
@@ -99,7 +99,7 @@ Si è sperimentato che KTO riesce a gestire forti squilibri tra numeri di prefer
 
 ## Implementazione con TRL e axolotl
 
-Per usare KTO con [TRL](https://github.com/huggingface/trl){:target="_blank"} si la classe [KTOTrainer](https://huggingface.co/docs/trl/v0.24.0/en/kto_trainer#trl.KTOTrainer){:target="_blank"} e KTOConfig.  
+Per usare KTO con [TRL](https://github.com/huggingface/trl){:target="_blank"} si usano le classi [KTOTrainer](https://huggingface.co/docs/trl/v0.24.0/en/kto_trainer#trl.KTOTrainer){:target="_blank"} e KTOConfig.  
 
 Axolotl [fornisce supporto per KTO](https://docs.axolotl.ai/docs/rlhf.html#kto){:target="_blank"} (wrapper per TRL) attraverso diversi formati di dataset.  
 Per un formato custom del tipo:
