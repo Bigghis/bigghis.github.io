@@ -19,8 +19,6 @@ In genere possiamo suddividere un prompt in 4 blocchi:
 * **Input data**: i dati che il modello deve utilizzare per eseguire il task. (**fornisce i *dati concreti* su cui lavorare.**)
 * **Output indicator**: delle indicazioni sul formato della risposta che il modello deve produrre. (**specifica il *formato* atteso.**)
 
-#### Esempio
-
 > **[Context]**  
 > Sei un nutrizionista esperto specializzato in diete mediterranee.  
 > Hai 20 anni di esperienza nella creazione di piani alimentari personalizzati per pazienti con intolleranze alimentari.  
@@ -48,7 +46,7 @@ A partire da questo schema dei 4 blocchi è possibile effettuare delle variazion
 Un **negative prompt** è un prompt che viene utilizzato per impedire al modello di produrre risposte specifiche, o impedire di produrre risposte che contengono determinate parole.  
 Un negative prompt può aiutare a **mantenere il focus del modello su un determinato argomento** e quindi **migliorare la chiarezza delle risposte**.  
 
-Riprendendo l'esempio precedente, possiamo aggiungeredei negative prompting:  
+Riprendendo l'esempio precedente, possiamo aggiungere dei negative prompting:  
 > **[Context]**  
 > Sei un nutrizionista esperto specializzato in diete mediterranee.  
 > Hai 20 anni di esperienza nella creazione di piani alimentari personalizzati per pazienti con intolleranze alimentari.  
@@ -83,7 +81,7 @@ Funziona bene per compiti semplici e comuni.
 {: .prompt-tip }
 
 ### One-shot Prompting
-Nel **one-shot prompting** si fornisce **un singolo esempio** prima di porre la domanda vera. L'esempio guida il modello sul formato e sul tipo di risposta attesi.  
+Nel **one-shot prompting** si fornisce **un singolo esempio** prima di porre una domanda. L'esempio guida il modello sul formato e sul tipo di risposta attesi.  
 
 > Classifica il sentimento della frase.  
 >  
