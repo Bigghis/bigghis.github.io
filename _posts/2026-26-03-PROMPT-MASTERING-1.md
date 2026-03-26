@@ -113,14 +113,14 @@ Nel **few-shot prompting** si forniscono **più esempi** per aiutare il modello 
 ### Chain of Thought Prompting
 Nel **Chain of Thought (CoT) prompting** si chiede al modello di esplicitare i **passaggi intermedi del ragionamento**, tramite un ragionamento a step, prima di arrivare alla risposta finale. Questo migliora le prestazioni su task che richiedono logica, calcolo o ragionamento multi-step.  
 
-> Quante uova servono per fare 5 frittate se ogni frittata richiede 3 uova?  
+> Scriviamo una breve presentazione per un'azienda che produce olio d'oliva biologico in Puglia.  
 >  
-> Ragioniamo passo per passo:  
-> 1. Ogni frittata richiede 3 uova.  
-> 2. Devo preparare 5 frittate.  
-> 3. Quindi: 3 × 5 = 15 uova.  
+> **Prima**, descrivi l'azienda e il territorio.  
+> **Poi**, presenta il metodo di produzione.  
+> **Successivamente**, spiega cosa rende unico il prodotto.  
+> **Infine**, concludi con un invito all'acquisto.  
 >  
-> Risposta: servono 15 uova.
+> Scrivi la presentazione seguendo questo piano. Ragiona passo per passo.
 {: .prompt-tip }
 
 
