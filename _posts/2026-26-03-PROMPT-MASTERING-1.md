@@ -130,7 +130,7 @@ Nel **Chain of Thought (CoT) prompting** si chiede al modello di esplicitare i *
 ### Prompt Template
 Un **prompt template** è un prompt con dei **placeholder** che vengono sostituiti dinamicamente al momento dell'uso.    
 Questo permette di riutilizzare la stessa struttura di prompt per input diversi, senza doverlo riscrivere ogni volta.  
-I placeholder sono tipicamente racchiusi tra doppie parentesi graffe `{{variabile}}`.  
+I placeholder sono tipicamente racchiusi tra doppie parentesi graffe, es: {{variabile}}.  
 I prompt template sono utili quando si integra un LLM all'interno di un'applicazione software, dove i valori dei placeholder vengono popolati programmaticamente.  
 
 > **[Context]**  
