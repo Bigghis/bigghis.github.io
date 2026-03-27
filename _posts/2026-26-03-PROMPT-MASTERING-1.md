@@ -36,7 +36,7 @@ In genere possiamo suddividere un prompt in 4 blocchi:
 > **[Output indicator]**  
 > Presenta il piano in formato tabella con colonne: Giorno, Colazione, Spuntino, Pranzo, Merenda, Cena.  
 > Sotto la tabella, aggiungi una nota con il totale calorico medio giornaliero e le macro (proteine, carboidrati, grassi) in percentuale.  
-{: .prompt-tip }
+{: .prompt-info }
 
 
 A partire da questo schema dei 4 blocchi è possibile effettuare delle variazioni di prompt per ottenere risultati diversi.  
@@ -69,7 +69,7 @@ Riprendendo l'esempio precedente, possiamo aggiungere dei negative prompting:
 > Sotto la tabella, aggiungi una nota con il totale calorico medio giornaliero e le macro (proteine, carboidrati, grassi) in percentuale.  
 > **Non aggiungere disclaimer medici o avvertenze legali.**  
 > **Non inserire spiegazioni o commenti al di fuori della tabella e della nota riassuntiva.**  
-{: .prompt-tip }
+{: .prompt-info }
 
 
 ### Zero-shot Prompting
@@ -78,7 +78,7 @@ Funziona bene per compiti semplici e comuni.
 
 > Classifica il sentimento della seguente frase come "positivo", "negativo" o "neutro".  
 > Frase: "Il ristorante aveva un'atmosfera fantastica ma il cibo era mediocre."
-{: .prompt-tip }
+{: .prompt-info }
 
 ### One-shot Prompting
 Nel **one-shot prompting** si fornisce **un singolo esempio** prima di porre una domanda. L'esempio guida il modello sul formato e sul tipo di risposta attesi.  
@@ -90,7 +90,7 @@ Nel **one-shot prompting** si fornisce **un singolo esempio** prima di porre una
 >  
 > Frase: "Il ristorante aveva un'atmosfera fantastica ma il cibo era mediocre."  
 > Sentimento:
-{: .prompt-tip }
+{: .prompt-info }
 
 ### Few-shot Prompting
 Nel **few-shot prompting** si forniscono **più esempi** per aiutare il modello a fornire una risposta corretta.  
@@ -108,7 +108,7 @@ Nel **few-shot prompting** si forniscono **più esempi** per aiutare il modello 
 >  
 > Frase: "Il ristorante aveva un'atmosfera fantastica ma il cibo era mediocre."  
 > Sentimento:
-{: .prompt-tip }
+{: .prompt-info }
 
 ### Chain of Thought Prompting
 Nel **Chain of Thought (CoT) prompting** si chiede al modello di esplicitare i **passaggi intermedi del ragionamento**, tramite un ragionamento a step, prima di arrivare alla risposta finale. Questo migliora le prestazioni su task che richiedono logica, calcolo o ragionamento multi-step.  
@@ -121,7 +121,7 @@ Nel **Chain of Thought (CoT) prompting** si chiede al modello di esplicitare i *
 > **Infine**, concludi con un invito all'acquisto.  
 >  
 > Scrivi la presentazione seguendo questo piano. Ragiona passo per passo.
-{: .prompt-tip }
+{: .prompt-info }
 
 
 ### Prompt Template
@@ -141,7 +141,7 @@ I prompt template sono utili quando si integra un LLM all'interno di un'applicaz
 >  
 > **[Output indicator]**  
 > Rispondi con due sezioni: "Sinossi" e "Personaggi principali".  
-{: .prompt-tip }
+{: .prompt-info }
 
 L'applicazione chiede all'utente: *"Descrivi il film che vuoi creare"* e inserisce la sua risposta nel placeholder `{{descrizione_film}}`.  
 Ad esempio, se l'utente risponde `"Un thriller ambientato su una stazione spaziale dove l'equipaggio scopre che uno di loro non è umano"`, il prompt generato sarà:
