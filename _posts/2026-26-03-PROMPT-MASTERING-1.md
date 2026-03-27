@@ -1,6 +1,6 @@
 ---
 title: "Mastering Prompt Engineering"
-description: "Mastering Prompt Engineering"
+description: "Le basi per costruire prompt efficaci"
 date: 2026-03-26 12:00:00 +0530
 categories: [Prompt Engineering]
 tags: [Prompt, Mastering, Prompt Engineering]
