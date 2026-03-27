@@ -44,7 +44,7 @@ A partire da questo schema dei 4 blocchi è possibile effettuare delle variazion
 
 ### Negative Prompting
 
-Un **negative prompt** è un prompt che viene utilizzato per impedire al modello di produrre risposte specifiche, o impedire di produrre risposte che contengono determinate parole.  
+Un **negative prompt** è un prompt che viene utilizzato per impedire al modello di produrre risposte specifiche o impedire di produrre risposte che contengono determinate parole.  
 Un negative prompt può aiutare a **mantenere il focus del modello su un determinato argomento** e quindi **migliorare la chiarezza delle risposte**.  
 
 Riprendendo l'esempio precedente, possiamo aggiungere dei negative prompting:  
