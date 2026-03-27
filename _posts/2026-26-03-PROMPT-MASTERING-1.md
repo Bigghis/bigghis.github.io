@@ -146,7 +146,7 @@ I prompt template sono utili quando si integra un LLM all'interno di un'applicaz
 > Rispondi con due sezioni: "Sinossi" e "Personaggi principali".  
 {: .prompt-info }
 
-L'applicazione chiede all'utente: *"Descrivi il film che vuoi creare"* e inserisce la sua risposta nel placeholder `{{descrizione_film}}`.  
+L'applicazione chiede all'utente: *"Descrivi il film che vuoi creare"* e inserisce la sua risposta nel placeholder {{descrizione_film}}.  
 Ad esempio, se l'utente risponde `"Un thriller ambientato su una stazione spaziale dove l'equipaggio scopre che uno di loro non è umano"`, il prompt generato sarà:
 
 > **[Context]**  
