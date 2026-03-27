@@ -130,7 +130,7 @@ Nel **Chain of Thought (CoT) prompting** si chiede al modello di esplicitare i *
 ### Prompt Template
 Un **prompt template** è un prompt con dei **placeholder** che vengono sostituiti dinamicamente al momento dell'uso.    
 Questo permette di riutilizzare la stessa struttura di prompt per input diversi, senza doverlo riscrivere ogni volta.  
-I placeholder sono tipicamente racchiusi tra doppie parentesi graffe, es: `\{\{variabile\}\}`.  
+I placeholder sono tipicamente racchiusi tra doppie parentesi, es: `((variabile))`.  
 I prompt template sono utili quando si integra un LLM all'interno di un'applicazione software, dove i valori dei placeholder vengono popolati programmaticamente.  
 
 > **[Context]**  
@@ -140,13 +140,13 @@ I prompt template sono utili quando si integra un LLM all'interno di un'applicaz
 > In base alla descrizione del film fornita dall'utente, scrivi una sinossi professionale di massimo 10 righe, seguita da una lista di 3 personaggi principali con nome e breve descrizione.  
 >  
 > **[Input data]**  
-> Descrizione dell'utente: "{{descrizione_film}}"  
+> Descrizione dell'utente: "((descrizione_film))"  
 >  
 > **[Output indicator]**  
 > Rispondi con due sezioni: "Sinossi" e "Personaggi principali".  
 {: .prompt-info }
 
-L'applicazione chiede all'utente: *"Descrivi il film che vuoi creare"* e inserisce la sua risposta nel placeholder {{descrizione_film}}.  
+L'applicazione chiede all'utente: *"Descrivi il film che vuoi creare"* e inserisce la sua risposta nel placeholder ((descrizione_film)).  
 Ad esempio, se l'utente risponde `"Un thriller ambientato su una stazione spaziale dove l'equipaggio scopre che uno di loro non è umano"`, il prompt generato sarà:
 
 > **[Context]**  
