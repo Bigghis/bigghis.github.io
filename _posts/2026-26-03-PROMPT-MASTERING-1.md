@@ -9,7 +9,7 @@ comments: false
 
 ### Prompt Engineering
 
-Per un utilizzo efficiente di un LLM, è fondamentale saper progettare e sviluppare prompt ottimizzati.  
+Per un utilizzo efficiente di un LLM è fondamentale saper progettare e sviluppare prompt ottimizzati.  
 Questo processo è noto come **Prompt Engineering**.  
 
 In genere possiamo suddividere un prompt in 4 blocchi:
@@ -19,6 +19,7 @@ In genere possiamo suddividere un prompt in 4 blocchi:
 * **Input data**: i dati che il modello deve utilizzare per eseguire il task. (**fornisce i *dati concreti* su cui lavorare.**)
 * **Output indicator**: delle indicazioni sul formato della risposta che il modello deve produrre. (**specifica il *formato* atteso.**)
 
+Un classico prompt può essere il seguente:  
 > **[Context]**  
 > Sei un nutrizionista esperto specializzato in diete mediterranee.  
 > Hai 20 anni di esperienza nella creazione di piani alimentari personalizzati per pazienti con intolleranze alimentari.  
