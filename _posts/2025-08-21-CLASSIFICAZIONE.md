@@ -25,6 +25,19 @@ Una matrice di confusione è una tabella che mostra il numero di istanze classif
 
 La matrice si dice **sbilanciata** quando il totale dei positivi reali è molto diverso da quello dei negativi reali.  
 
+Prendiamo come esempio un modello che classifica le email come "spam" o "non spam". Per ogni predizione del modello ci sono quattro possibili risultati:
+
+|  | **Predetto: Spam** | **Predetto: Non Spam** |
+|--|:--:|:--:|
+| **Reale: Spam** | True Positive (TP) | False Negative (FN) |
+| **Reale: Non Spam** | False Positive (FP) | True Negative (TN) |
+
+* **True Positive (TP)** - il modello ha predetto "spam" e l'email era effettivamente spam
+* **True Negative (TN)** - il modello ha predetto "non spam" e l'email non era spam
+* **False Positive (FP)** - il modello ha predetto "spam" ma l'email non era spam (falso allarme)
+* **False Negative (FN)** - il modello ha predetto "non spam" ma l'email era spam (mancato rilevamento)
+
+La matrice di confusione può essere anche multi-dimensionale (es. positivo, neutro, negativo) per classificazioni con più di due classi.
 
 
 #### Metriche di classificazione
@@ -42,6 +55,8 @@ L'accuracy è la proporzione di istanze correttamente classificate rispetto al t
 Un modello perfetto ha un'accuracy di 1, perché tutte le istanze sono classificate correttamente.  
 Per i dataset fortemente sbilanciati, l'accuracy **non è una buona metrica** per valutare la qualità di un modello perché, per classi che compaiono raramente, l'accuracy non è rappresentativa del comportamento del modello.  
 
+\[ Accuracy = \frac{TP + TN}{TP + TN + FP + FN} \]
+
 
 #### Recall
 > **Se il riferimento sono le istanze positive, quante di queste sono state classificate correttamente?**
@@ -49,6 +64,9 @@ Per i dataset fortemente sbilanciati, l'accuracy **non è una buona metrica** pe
 
 Il recall (richiamo) è la proporzione di istanze positive correttamente classificate rispetto al totale delle istanze positive reali.  
 Un modello perfetto ha un recall di 1, perché tutte le istanze positive sono classificate correttamente.  
+Da preferire quando i **falsi negativi sono costosi** (es. in campo medico, non vogliamo che una malattia passi inosservata).
+
+\[ Recall = \frac{TP}{TP + FN} \]
 
 #### Precision
 > **Quando il modello ha previsto la classe positiva, qual è stata la percentuale di previsioni corrette?**
@@ -57,13 +75,18 @@ Un modello perfetto ha un recall di 1, perché tutte le istanze positive sono cl
 La precisione è la proporzione di istanze positive correttamente classificate rispetto al totale delle istanze classificate positive.  
 La precisione migliora quando diminuisce il numero di falsi positivi, al contrario del recall che migliora quando diminuisce il numero di falsi negativi.  
 Un modello perfetto ha una precisione di 1, perché tutte le istanze positive sono classificate correttamente.  
+Da preferire quando i **falsi positivi sono costosi** (es. non vogliamo che email importanti finiscano nello spam).
+
+\[ Precision = \frac{TP}{TP + FP} \]
 
 #### F1-score
 > **Per una soglia scelta, quanto bene il modello bilancia il fatto di aver avuto ragione nell'identificare i positivi (Precision) e la percentuale di positivi trovati (Recall)?**
 {: .prompt-tip }
 Il F1-score è la **media armonica** di precisione e recall.  
 Un modello perfetto ha un F1-score di 1, perché precisione e recall sono entrambi 1, altrimenti il F1-score è compreso tra 0 e 1 ed è simile al valore peggiore tra precisione e recall. 
-Questa metrica bilancia l'importanza di precisione e recall ed è preferibile alla precisione per i set di dati con classi sbilanciate perché è più robusta.  
+Questa metrica bilancia l'importanza di precisione e recall ed è preferibile alla precisione per i set di dati con classi sbilanciate perché è più robusta.
+
+\[ F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall} \]  
 
 
 #### ROC
