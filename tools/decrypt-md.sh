@@ -8,7 +8,7 @@
 #          bash tools/decrypt-md.sh _posts/some-post.md
 #
 # Reads STATICRYPT_PASSWORD from .env if present, or from environment.
-# Requires: openssl
+# Requires: openssl, xxd
 
 set -euo pipefail
 
@@ -23,6 +23,9 @@ if [ -z "${STATICRYPT_PASSWORD:-}" ]; then
   echo "ERROR: STATICRYPT_PASSWORD environment variable is not set"
   exit 1
 fi
+
+KEY=$(printf '%s' "$STATICRYPT_PASSWORD" | openssl dgst -sha256 -binary | xxd -p -c 64)
+IV=$(printf '%s' "${STATICRYPT_PASSWORD}_iv" | openssl dgst -md5 -binary | xxd -p -c 32)
 
 decrypt_file() {
   local file="$1"
@@ -51,7 +54,7 @@ decrypt_file() {
     return 1
   fi
 
-  if ! openssl enc -aes-256-cbc -pbkdf2 -md sha256 -iter 600000 -a -d -salt -pass "pass:${STATICRYPT_PASSWORD}" < "$tmp_blob" > "$tmp_dec"; then
+  if ! openssl enc -aes-256-cbc -K "$KEY" -iv "$IV" -a -d < "$tmp_blob" > "$tmp_dec"; then
     echo "  ERROR: Decryption failed for $file (wrong password?)"
     return 1
   fi
