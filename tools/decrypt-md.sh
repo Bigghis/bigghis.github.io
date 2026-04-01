@@ -4,10 +4,10 @@
 # back to plaintext Markdown. Used in CI before Jekyll build,
 # or locally when you need to edit a protected post.
 #
-# Usage:   STATICRYPT_PASSWORD=xxx bash tools/decrypt-md.sh
-#          STATICRYPT_PASSWORD=xxx bash tools/decrypt-md.sh _posts/2026-01-04-AWS-CLOUD_COMPUTING.md
+# Usage:   bash tools/decrypt-md.sh
+#          bash tools/decrypt-md.sh _posts/some-post.md
 #
-# Requires: STATICRYPT_PASSWORD env variable
+# Reads STATICRYPT_PASSWORD from .env if present, or from environment.
 # Requires: openssl
 
 set -euo pipefail
@@ -32,28 +32,33 @@ decrypt_file() {
     return
   fi
 
-  local front_matter encrypted_blob decrypted
-  front_matter=$(awk '/^---$/{n++} n==2{print; exit} {print}' "$file")
+  local tmp_front tmp_blob tmp_dec
+  tmp_front=$(mktemp)
+  tmp_blob=$(mktemp)
+  tmp_dec=$(mktemp)
+  trap "rm -f '$tmp_front' '$tmp_blob' '$tmp_dec'" RETURN
 
-  encrypted_blob=$(awk -v marker="$ENCRYPTED_MARKER" '
+  awk '/^---$/{n++} n==2{print; exit} {print}' "$file" > "$tmp_front"
+
+  awk -v marker="$ENCRYPTED_MARKER" '
     BEGIN { found=0 }
     $0 == marker { found=1; next }
     found && /^[A-Za-z0-9+\/=]/ { print }
-  ' "$file")
+  ' "$file" > "$tmp_blob"
 
-  if [ -z "$encrypted_blob" ]; then
+  if [ ! -s "$tmp_blob" ]; then
     echo "  ERROR: No encrypted content found in $file"
     return 1
   fi
 
-  decrypted=$(echo "$encrypted_blob" | openssl enc -aes-256-cbc -pbkdf2 -a -d -salt -pass "pass:${STATICRYPT_PASSWORD}") || {
+  if ! openssl enc -aes-256-cbc -pbkdf2 -a -d -salt -pass "pass:${STATICRYPT_PASSWORD}" < "$tmp_blob" > "$tmp_dec"; then
     echo "  ERROR: Decryption failed for $file (wrong password?)"
     return 1
-  }
+  fi
 
   {
-    echo "$front_matter"
-    echo "$decrypted"
+    cat "$tmp_front"
+    cat "$tmp_dec"
   } > "$file"
 
   echo "  Decrypted: $file"

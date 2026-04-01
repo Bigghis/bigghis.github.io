@@ -4,10 +4,10 @@
 # so that the repository only stores ciphertext for those posts.
 # Front matter is preserved in plaintext for Jekyll listings/tags.
 #
-# Usage:   STATICRYPT_PASSWORD=xxx bash tools/encrypt-md.sh
-#          STATICRYPT_PASSWORD=xxx bash tools/encrypt-md.sh _posts/2026-01-04-AWS-CLOUD_COMPUTING.md
+# Usage:   bash tools/encrypt-md.sh
+#          bash tools/encrypt-md.sh _posts/some-post.md
 #
-# Requires: STATICRYPT_PASSWORD env variable
+# Reads STATICRYPT_PASSWORD from .env if present, or from environment.
 # Requires: openssl
 
 set -euo pipefail
@@ -37,23 +37,26 @@ encrypt_file() {
     return
   fi
 
-  local front_matter body encrypted
-  front_matter=$(awk '/^---$/{n++} n==2{print; exit} {print}' "$file")
-  body=$(awk '/^---$/{n++; if(n==2){found=1; next}} found{print}' "$file")
+  local tmp_front tmp_body tmp_enc
+  tmp_front=$(mktemp)
+  tmp_body=$(mktemp)
+  tmp_enc=$(mktemp)
+  trap "rm -f '$tmp_front' '$tmp_body' '$tmp_enc'" RETURN
 
-  if [ -z "$body" ]; then
+  awk '/^---$/{n++} n==2{print; exit} {print}' "$file" > "$tmp_front"
+  awk '/^---$/{n++; if(n==2){found=1; next}} found{print}' "$file" > "$tmp_body"
+
+  if [ ! -s "$tmp_body" ]; then
     echo "  Skipping (empty body): $file"
     return
   fi
 
-  encrypted=$(echo "$body" | openssl enc -aes-256-cbc -pbkdf2 -a -salt -pass "pass:${STATICRYPT_PASSWORD}")
+  openssl enc -aes-256-cbc -pbkdf2 -a -salt -pass "pass:${STATICRYPT_PASSWORD}" < "$tmp_body" > "$tmp_enc"
 
   {
-    echo "$front_matter"
-    echo ""
-    echo "$ENCRYPTED_MARKER"
-    echo ""
-    echo "$encrypted"
+    cat "$tmp_front"
+    printf '\n%s\n\n' "$ENCRYPTED_MARKER"
+    cat "$tmp_enc"
   } > "$file"
 
   echo "  Encrypted: $file"
