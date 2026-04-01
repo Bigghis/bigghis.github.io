@@ -8,76 +8,33 @@
 #          bash tools/decrypt-md.sh _posts/some-post.md
 #
 # Reads STATICRYPT_PASSWORD from .env if present, or from environment.
-# Requires: openssl, xxd
 
 set -euo pipefail
 
 ENCRYPTED_MARKER="<!-- ENCRYPTED -->"
 
 if [ -z "${STATICRYPT_PASSWORD:-}" ] && [ -f .env ]; then
+  set -a
   # shellcheck disable=SC1091
   source .env
+  set +a
 fi
 
-if [ -z "${STATICRYPT_PASSWORD:-}" ]; then
-  echo "ERROR: STATICRYPT_PASSWORD environment variable is not set"
-  exit 1
-fi
-
-KEY=$(printf '%s' "$STATICRYPT_PASSWORD" | openssl dgst -sha256 -binary | xxd -p -c 64)
-IV=$(printf '%s' "${STATICRYPT_PASSWORD}_iv" | openssl dgst -md5 -binary | xxd -p -c 32)
-
-decrypt_file() {
-  local file="$1"
-
-  if ! grep -q "^${ENCRYPTED_MARKER}$" "$file"; then
-    echo "  Skipping (not encrypted): $file"
-    return
-  fi
-
-  local tmp_front tmp_blob tmp_dec
-  tmp_front=$(mktemp)
-  tmp_blob=$(mktemp)
-  tmp_dec=$(mktemp)
-  trap "rm -f '$tmp_front' '$tmp_blob' '$tmp_dec'" RETURN
-
-  awk '/^---$/{n++} n==2{print; exit} {print}' "$file" > "$tmp_front"
-
-  awk -v marker="$ENCRYPTED_MARKER" '
-    BEGIN { found=0 }
-    $0 == marker { found=1; next }
-    found && /^[A-Za-z0-9+\/=]/ { print }
-  ' "$file" > "$tmp_blob"
-
-  if [ ! -s "$tmp_blob" ]; then
-    echo "  ERROR: No encrypted content found in $file"
-    return 1
-  fi
-
-  if ! openssl enc -aes-256-cbc -K "$KEY" -iv "$IV" -a -d < "$tmp_blob" > "$tmp_dec"; then
-    echo "  ERROR: Decryption failed for $file (wrong password?)"
-    return 1
-  fi
-
-  {
-    cat "$tmp_front"
-    cat "$tmp_dec"
-  } > "$file"
-
-  echo "  Decrypted: $file"
-}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [ $# -gt 0 ]; then
-  for f in "$@"; do
-    decrypt_file "$f"
-  done
+  python3 "$SCRIPT_DIR/crypt_md.py" decrypt "$@"
 else
-  count=0
+  files=()
   for post_md in _posts/*.md; do
     if grep -q "^${ENCRYPTED_MARKER}$" "$post_md"; then
-      decrypt_file "$post_md"
-      count=$((count + 1))
+      files+=("$post_md")
     fi
   done
-  echo "Processed $count encrypted post(s)."
+  if [ ${#files[@]} -eq 0 ]; then
+    echo "No encrypted posts found."
+    exit 0
+  fi
+  python3 "$SCRIPT_DIR/crypt_md.py" decrypt "${files[@]}"
+  echo "Processed ${#files[@]} encrypted post(s)."
 fi
