@@ -51,7 +51,7 @@ decrypt_file() {
     return 1
   fi
 
-  if ! openssl enc -aes-256-cbc -pbkdf2 -a -d -salt -pass "pass:${STATICRYPT_PASSWORD}" < "$tmp_blob" > "$tmp_dec"; then
+  if ! openssl enc -aes-256-cbc -pbkdf2 -md sha256 -iter 600000 -a -d -salt -pass "pass:${STATICRYPT_PASSWORD}" < "$tmp_blob" > "$tmp_dec"; then
     echo "  ERROR: Decryption failed for $file (wrong password?)"
     return 1
   fi

@@ -51,7 +51,7 @@ encrypt_file() {
     return
   fi
 
-  openssl enc -aes-256-cbc -pbkdf2 -a -salt -pass "pass:${STATICRYPT_PASSWORD}" < "$tmp_body" > "$tmp_enc"
+  openssl enc -aes-256-cbc -pbkdf2 -md sha256 -iter 600000 -a -salt -pass "pass:${STATICRYPT_PASSWORD}" < "$tmp_body" > "$tmp_enc"
 
   {
     cat "$tmp_front"
