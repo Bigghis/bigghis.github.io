@@ -48,6 +48,16 @@ jobs:
           ruby-version: 3.3
           bundler-cache: true
 
+      - name: Verify password fingerprint
+        env:
+          STATICRYPT_PASSWORD: ${{ secrets.STATICRYPT_PASSWORD }}
+        run: |
+          printf '%s' "$STATICRYPT_PASSWORD" | python3 -c "
+          import sys, hashlib
+          data = sys.stdin.buffer.read()
+          print(f'len={len(data)} sha256={hashlib.sha256(data).hexdigest()[:16]}')
+          "
+
       - name: Decrypt protected posts for build
         env:
           STATICRYPT_PASSWORD: ${{ secrets.STATICRYPT_PASSWORD }}
