@@ -24,6 +24,7 @@ package-lock.json
 
 # Secrets
 .env
+ENCRYPT-HOWTO.md
 
 # Misc
 _sass/vendors
