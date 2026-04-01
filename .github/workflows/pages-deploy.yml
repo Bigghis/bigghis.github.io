@@ -48,6 +48,36 @@ jobs:
           ruby-version: 3.3
           bundler-cache: true
 
+      - name: Debug decrypt environment
+        env:
+          STATICRYPT_PASSWORD: ${{ secrets.STATICRYPT_PASSWORD }}
+        run: |
+          echo "=== OpenSSL version ==="
+          openssl version
+          echo "=== xxd version ==="
+          xxd -v 2>&1 || echo "xxd not found"
+          echo "=== Password length ==="
+          printf '%s' "$STATICRYPT_PASSWORD" | wc -c
+          echo "=== Key derivation test ==="
+          printf '%s' "$STATICRYPT_PASSWORD" | openssl dgst -sha256 -hex
+          echo "=== IV derivation test ==="
+          printf '%s' "${STATICRYPT_PASSWORD}_iv" | openssl dgst -md5 -hex
+          echo "=== Key (xxd) ==="
+          printf '%s' "$STATICRYPT_PASSWORD" | openssl dgst -sha256 -binary | xxd -p -c 64
+          echo "=== IV (xxd) ==="
+          printf '%s' "${STATICRYPT_PASSWORD}_iv" | openssl dgst -md5 -binary | xxd -p -c 32
+          echo "=== First encrypted file head ==="
+          head -20 _posts/2026-01-04-AWS-CLOUD_COMPUTING.md
+          echo "=== Extracted blob (first 3 lines) ==="
+          awk '/<!-- ENCRYPTED -->/{f=1;next} f && /^[A-Za-z0-9+\/=]/{print}' _posts/2026-01-04-AWS-CLOUD_COMPUTING.md | head -3
+          echo "=== Quick decrypt test ==="
+          KEY=$(printf '%s' "$STATICRYPT_PASSWORD" | openssl dgst -sha256 -binary | xxd -p -c 64)
+          IV=$(printf '%s' "${STATICRYPT_PASSWORD}_iv" | openssl dgst -md5 -binary | xxd -p -c 32)
+          awk '/<!-- ENCRYPTED -->/{f=1;next} f && /^[A-Za-z0-9+\/=]/{print}' _posts/2026-01-04-AWS-CLOUD_COMPUTING.md > /tmp/blob.txt
+          echo "Blob lines: $(wc -l < /tmp/blob.txt)"
+          echo "Blob bytes: $(wc -c < /tmp/blob.txt)"
+          openssl enc -aes-256-cbc -K "$KEY" -iv "$IV" -a -d < /tmp/blob.txt > /tmp/dec.txt 2>&1 && echo "DECRYPT OK" || echo "DECRYPT FAILED"
+
       - name: Decrypt protected posts for build
         env:
           STATICRYPT_PASSWORD: ${{ secrets.STATICRYPT_PASSWORD }}
