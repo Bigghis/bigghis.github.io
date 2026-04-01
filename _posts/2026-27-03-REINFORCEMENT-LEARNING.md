@@ -8,86 +8,99 @@ comments: false
 protected: true
 ---
 
-### Reinforcement Learning
+<!-- ENCRYPTED -->
 
-Il **Reinforcement Learning (RL)** è un tipo di Machine Learning in cui un **agente** impara a prendere decisioni eseguendo azioni all'interno di un **ambiente**, con l'obiettivo di **massimizzare una ricompensa cumulativa** nel tempo.
-
-A differenza del Supervised Learning (dove il modello impara da esempi etichettati) e dell'Unsupervised Learning (dove il modello cerca pattern nei dati), nel Reinforcement Learning il modello **impara per tentativi ed errori**, simulando molte volte lo stesso scenario e imparando dai propri successi e dai propri sbagli.
-
-#### Concetti chiave
-
-* **Agent** - il soggetto che impara e prende le decisioni
-* **Environment** - il sistema esterno con cui l'agente interagisce
-* **State** - la situazione attuale dell'ambiente
-* **Action** - le scelte compiute dall'agente
-* **Reward** - il feedback che l'ambiente restituisce in base alle azioni dell'agente
-* **Policy** - la strategia che l'agente utilizza per determinare quale azione compiere in base allo stato corrente
-
-#### Come funziona
-
-Il processo di apprendimento segue un ciclo continuo:
-
-1. L'agente **osserva** lo stato corrente dell'ambiente
-2. **Seleziona un'azione** in base alla propria policy
-3. L'ambiente **transita in un nuovo stato** e fornisce una **ricompensa**
-4. L'agente **aggiorna la propria policy** per migliorare le decisioni future
-
-L'obiettivo finale è **massimizzare la ricompensa cumulativa nel tempo**.
-
-#### Esempio pratico: un robot in un labirinto
-
-Immaginiamo di addestrare un robot a navigare un labirinto:
-
-* Il **robot** è l'agente
-* Il **labirinto** è l'ambiente
-* La **posizione** del robot è lo stato
-
-Ad ogni passo il robot:
-1. Osserva la propria posizione (State)
-2. Sceglie una direzione in cui muoversi (Action)
-3. Riceve una ricompensa:
-   * **-1** per ogni passo compiuto (incentivo a trovare la via più breve)
-   * **-10** per aver sbattuto contro un muro (penalità)
-   * **+100** per aver raggiunto l'uscita (ricompensa massima)
-4. Aggiorna la propria policy in base alla ricompensa e alla nuova posizione
-
-**Risultato**: dopo molte simulazioni, il robot impara a navigare il labirinto in modo efficiente, evitando i muri e trovando il percorso più breve verso l'uscita.
-
-#### Applicazioni del Reinforcement Learning
-
-* **Gaming** - insegnare all'AI a giocare a giochi complessi (es. Scacchi, Go)
-* **Robotica** - navigazione e manipolazione di oggetti in ambienti dinamici
-* **Finanza** - gestione di portafogli e strategie di trading
-* **Sanità** - ottimizzazione di piani terapeutici
-* **Veicoli autonomi** - pianificazione del percorso e processo decisionale
-
----
-
-### RLHF - Reinforcement Learning from Human Feedback
-
-L'**RLHF** (Reinforcement Learning from Human Feedback) è una variante del Reinforcement Learning che utilizza il **feedback umano** per aiutare i modelli di ML ad apprendere in modo più efficiente e allineato alle esigenze delle persone.
-
-Nel Reinforcement Learning classico esiste una **funzione di ricompensa** (reward function) che guida l'apprendimento. L'RLHF **incorpora il feedback umano all'interno di questa funzione di ricompensa**, così che il modello sia più allineato con gli obiettivi, i desideri e le necessità umane.
-
-L'RLHF è utilizzato in tutta la Generative AI, inclusi i modelli LLM, e **migliora significativamente le prestazioni** del modello.
-
-#### Come funziona l'RLHF
-
-Prendiamo come esempio la creazione di un **chatbot aziendale** per la conoscenza interna dell'azienda:
-
-**1. Raccolta dati**  
-Viene creato un insieme di prompt e risposte generate da esseri umani.  
-Esempio: *"Dov'è la sede del dipartimento HR a Boston?"*
-
-**2. Fine-tuning supervisionato del modello**  
-Si effettua il fine-tuning di un modello esistente con la conoscenza interna dell'azienda.  
-Il modello genera le proprie risposte ai prompt umani, e queste vengono confrontate matematicamente con le risposte generate dagli umani.
-
-**3. Costruzione di un reward model separato**  
-Gli esseri umani indicano quale risposta preferiscono tra più alternative generate dallo stesso prompt.  
-Questo crea un **modello di ricompensa** capace di stimare quale risposta un umano preferirebbe.
-
-**4. Ottimizzazione del modello con il reward model**  
-Il reward model viene usato come funzione di ricompensa per il Reinforcement Learning.  
-Questa fase può essere **completamente automatizzata**: il modello continua a migliorarsi senza ulteriore intervento umano.
-
+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

@@ -48,6 +48,11 @@ jobs:
           ruby-version: 3.3
           bundler-cache: true
 
+      - name: Decrypt protected posts for build
+        env:
+          STATICRYPT_PASSWORD: ${{ secrets.STATICRYPT_PASSWORD }}
+        run: bash tools/decrypt-md.sh
+
       - name: Build site
         run: bundle exec jekyll b -d "_site${{ steps.pages.outputs.base_path }}"
         env:

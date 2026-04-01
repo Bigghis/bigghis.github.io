@@ -8,149 +8,166 @@ comments: false
 protected: true
 ---
 
-### AWS e Cloud Computing
+<!-- ENCRYPTED -->
 
-
-### L'approccio IT tradizionale e i suoi problemi
-
-Tradizionalmente, per mettere online un'applicazione, un'azienda doveva costruire e gestire la propria infrastruttura IT: un data center fisico (anche solo un garage o un ufficio con dei server).
-
-Questo approccio comporta diversi problemi:
-
-- **Costi fissi elevati**: affitto dei locali, alimentazione elettrica, raffreddamento, manutenzione.
-- **Tempi lunghi**: aggiungere o sostituire hardware richiede tempo.
-- **Scalabilità limitata**: difficile adattarsi rapidamente a picchi di domanda.
-- **Personale dedicato**: serve un team operativo 24/7 per monitorare l'infrastruttura.
-- **Rischio disastri**: terremoti, incendi, blackout possono compromettere tutto.
-
-La domanda chiave diventa: *possiamo esternalizzare tutto questo?* La risposta è il **cloud computing**.
-
----
-
-### Cloud Computing
-
-#### Cos'è il Cloud Computing
-
-Il cloud computing è la fornitura **on-demand** di risorse IT (potenza di calcolo, storage, database, applicazioni) tramite Internet, con un modello di pagamento **pay-as-you-go** (paghi solo quello che usi).
-
-In pratica:
-
-- Puoi ottenere esattamente il tipo e la quantità di risorse di cui hai bisogno.
-- Puoi accedere alle risorse quasi istantaneamente.
-- Non devi comprare né gestire hardware: il provider (come AWS) possiede e mantiene l'infrastruttura, tu la usi tramite un'interfaccia web.
-
-Esempi di servizi cloud che usi già ogni giorno: **Gmail** (email), **Dropbox** (storage), **Netflix** (video on demand, costruito su AWS).
-
-#### Modelli di deployment
-
-| Modello | Descrizione | Caratteristiche |
-|---------|-------------|-----------------|
-| **Private Cloud** | Servizi cloud usati da una singola organizzazione, non esposti al pubblico | Controllo completo, sicurezza elevata, adatto a esigenze specifiche |
-| **Public Cloud** | Risorse di proprietà di un provider terzo, erogate via Internet (es. AWS, Azure, GCP) | Scalabilità, costi ridotti, nessuna gestione hardware |
-| **Hybrid Cloud** | Parte dell'infrastruttura resta on-premise, parte viene estesa al cloud | Controllo sugli asset sensibili + flessibilità del cloud pubblico |
-
-#### Le cinque caratteristiche del Cloud Computing
-
-1. **Self-service on-demand**: gli utenti possono creare risorse senza intervento umano del provider.
-2. **Accesso tramite rete**: le risorse sono disponibili via rete da qualsiasi piattaforma client.
-3. **Multi-tenancy e resource pooling**: più clienti condividono la stessa infrastruttura fisica, mantenendo sicurezza e privacy.
-4. **Elasticità e scalabilità rapida**: le risorse vengono acquisite e rilasciate automaticamente in base alla domanda.
-5. **Servizio misurato**: l'utilizzo viene misurato e si paga esattamente per ciò che si è consumato.
-
-#### I sei vantaggi del Cloud Computing
-
-1. **Da CAPEX a OPEX**: si passa da spese in conto capitale (comprare hardware) a spese operative (pagamento on-demand). Riduzione del TCO (Total Cost of Ownership).
-2. **Economie di scala**: AWS opera su larga scala, i costi per l'utente si riducono.
-3. **Basta indovinare la capacità**: si scala in base all'utilizzo reale misurato.
-4. **Maggiore velocità e agilità**: risorse disponibili in pochi minuti.
-5. **Niente più data center da gestire**: nessun costo di manutenzione fisica.
-6. **Presenza globale in pochi minuti**: grazie all'infrastruttura distribuita di AWS.
-
-#### Problemi risolti dal Cloud
-
-- **Flessibilità**: cambiare tipo di risorse quando serve.
-- **Costo-efficacia**: paghi solo quello che usi.
-- **Scalabilità**: gestire carichi maggiori potenziando l'hardware (scale-up) o aggiungendo nodi (scale-out).
-- **Elasticità**: capacità di espandersi e contrarsi automaticamente.
-- **Alta disponibilità e fault-tolerance**: distribuzione su più data center.
-- **Agilità**: sviluppare, testare e rilasciare software rapidamente.
-
-#### Tipi di Cloud Computing
-
-| Tipo | Descrizione | Gestione | Esempi |
-|------|-------------|----------|--------|
-| **IaaS** (Infrastructure as a Service) | Blocchi base dell'IT cloud: rete, calcolo, storage. Massima flessibilità. | Tu gestisci: OS, middleware, runtime, dati, applicazioni | Amazon EC2, Azure, GCP, Digital Ocean |
-| **PaaS** (Platform as a Service) | Il provider gestisce l'infrastruttura sottostante. Ti concentri su deployment e gestione delle applicazioni. | Tu gestisci: dati e applicazioni | AWS Elastic Beanstalk, Heroku, Google App Engine |
-| **SaaS** (Software as a Service) | Prodotto completo, gestito interamente dal provider. | Tu usi il prodotto | Gmail, Dropbox, Zoom, AWS Rekognition |
-
-#### Pricing AWS: concetti base
-
-AWS si basa su tre pilastri di prezzo (pay-as-you-go):
-
-| Voce | Cosa paghi |
-|------|------------|
-| **Compute** | Il tempo di calcolo utilizzato |
-| **Storage** | I dati archiviati nel cloud |
-| **Data transfer OUT** | I dati trasferiti *in uscita* dal cloud (il trasferimento *in ingresso* è gratuito) |
-
----
-
-### Infrastruttura globale AWS
-
-L'infrastruttura di AWS è organizzata su più livelli gerarchici distribuiti nel mondo.
-
-#### Region
-
-- AWS dispone di **Region** distribuite in tutto il mondo (es. `us-east-1`, `eu-west-3`).
-- Ogni Region è un **cluster di data center**.
-- La maggior parte dei servizi AWS è **region-scoped** (legata a una specifica regione).
-
-**Come scegliere una Region?** Quattro criteri:
-
-1. **Compliance**: i dati non lasciano mai una Region senza permesso esplicito. Scegli in base ai requisiti legali.
-2. **Prossimità ai clienti**: una Region vicina ai tuoi utenti riduce la latenza.
-3. **Servizi disponibili**: non tutti i servizi o le funzionalità sono presenti in tutte le Region.
-4. **Prezzo**: il costo varia da Region a Region.
-
-#### Availability Zones (AZ)
-
-- Ogni Region ha tipicamente **3 Availability Zones** (minimo 3, massimo 6).
-- Ogni AZ è composta da uno o più data center fisicamente separati, con alimentazione, rete e connettività ridondanti.
-- Le AZ sono **isolate tra loro** per proteggere dai disastri locali.
-- Sono collegate tra loro tramite rete ad **alta banda e bassissima latenza**.
-
-Esempio: la Region Sydney (`ap-southeast-2`) ha tre AZ: `ap-southeast-2a`, `ap-southeast-2b`, `ap-southeast-2c`.
-
-### Edge Locations (Points of Presence) (CDN)
-
-- AWS ha oltre **400 Points of Presence** (Edge Locations e Regional Caches) in 90+ città in oltre 40 paesi.
-- Servono per distribuire contenuti agli utenti finali con **latenza ridotta** (es. tramite Amazon CloudFront, la CDN di AWS).
-
-#### Servizi globali vs servizi regionali
-
-| Servizi globali | Servizi regionali (esempi) |
-|-----------------|---------------------------|
-| **IAM** (Identity and Access Management) | **Amazon EC2** (IaaS) |
-| **Route 53** (DNS) | **Elastic Beanstalk** (PaaS) |
-| **CloudFront** (CDN) | **Lambda** (FaaS - Function as a Service) |
-| **WAF** (Web Application Firewall) | **Rekognition** (SaaS) |
-
-#### Modello di responsabilità condivisa (Shared Responsibility Model)
-
-AWS adotta un modello di responsabilità condivisa tra il provider e il cliente:
-
-- **AWS è responsabile della sicurezza *del* cloud**: infrastruttura fisica, hardware, rete, data center.
-- **Il cliente è responsabile della sicurezza *nel* cloud**: configurazione dei servizi, dati, gestione degli accessi, crittografia.
-
-> Riferimento: [https://aws.amazon.com/compliance/shared-responsibility-model/](https://aws.amazon.com/compliance/shared-responsibility-model/)
-
-#### Acceptable Use Policy
-
-La policy di utilizzo accettabile di AWS vieta:
-
-- Uso illegale, dannoso o offensivo.
-- Violazioni della sicurezza.
-- Abuso della rete.
-- Spam o abuso di email/messaggi.
-
-> Riferimento: [https://aws.amazon.com/aup/](https://aws.amazon.com/aup/)
+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
+MdjKiEOdEGt9akQWA2qMJO+BP0yzweUCMMs0NHh4DWShtjc1GvixPN8ydNBG5FaW
+p8nLa3lgJ3L9OgCcaHYLyYI898zwdI1wo9A90ANHGkwHK72ao3njfM6tcG4mkbhr
+iBqAU23nVSugDKOCnbo0g5rG3VC2KTZQLvY51rq/uJuDaJCn4itz6//2rW19pRXT
+BT2Rs/pZrQXVRXeBJIMPXRlc19FCtePM5uSZln16E4r+16HlhZy3BpuNHTkZKlUq
+tkDDh16mo8cK9KH5Tayg89LdlIcuvKCg8UKyvi4n6Bhx7xjlJEcvhlPDG18U0I66
+Y43m1D1gTMn9gG3roHuRUMfUkb7eNWytag4vzIM8DSTV58vejNVsgHxA/gECpqYB
+KPIw0vrgCdR3Jd25oNfi/7032m2X77oPL2zRvfzBwy2KHKVtJ5pJou5Mq0w59hSq
+t6e/jiC1Yk6FlIzWcDrGpgHFk6TMAIHRfmhnRXTu39h0qjg8uzDUc8aWk1eZj6Gn
+s9nKChmjb8mwnYI+RRtqAuTUpaziF58eN5mWM7f1zEcb1FlTTcgSF66KGF/y614z
+6MlqM8p0uH8bK0LiIImD8aHtBUROqNhxEJb7/dWLTjg29Zmzb8Mw+t0v0wSm2hsK
+btOQUg6J2Mv1qPegxsu+jAxeTPXr7W32V99fboZrWGcvjPOweF9xOiCJONYDZNsM
+PPf6a+z3PM8FACFMc4SZqoI9OmqUtzMCkG8mnicvTPDsWBJaast2ReuxMXWQr5n6
+m37XxGg1JVnDo9ei/Gh3Cfp7+zdezKk34qB6t8c5NdTm5mLkiV+/41eLCudARwvZ
+DhvdUHTDOos7Pnkx04z8MI8Q4u3353+HPYdmntYl5rcz1L1lkYicjjYzH0CORdg4
+fYFGfQcC/TI3LnuUUc67C+h2xt7/XJ5M7GH3bKgnAAWpd3uRSbVcpVlnaAwL/GAP
+1nmCP5TzWQ9qZHsQmEp0yNvVwvOKE4L1iezX44nqJG8DGAXK8hmDfUUCOoN6DPD6
+0oL7lRDCDxyADkXpoeIEfSXiw6RvNBzGMI0GhwjYQ24+UuP0++8JPALzzEf95qva
+9H17M7Z4wCtMEL1syGT4Wdz6o8IUsO7D2dZeRKPx+kpQSAHXbtuto4FwYf39dTYg
+gM7nrzRr17+bV6O52fwYWacR9PZbuZeXsJGDECplR26C+oqmFOuBHcZFg4Ksjyou
+JR58rdtp9nEZZWga4hVvVlHl7MNrWYxkgMDkcqB7XRyB1rAY2ZF+3V3clPVlfHnq
+HIzL2Rsy52O6S7ZU996O+Z3YjNATLEYiwMyl9S6gjeR2Bf+9TwDnFM3cVO3dAAp6
+SS8FbY79kcytNxrOoilQ4dv084hNjI20jhm/dp07W6QgzNDIDCsKif7Cx9Fax//j
+zH5Y0SI2n579L3i0CCgBgfjAgaKDOYGMQbiKt7GvT8WlZCI94oPT0rT1hBfVnL+1
+35HpFWD5KPpm5cJKH3EGlEkWzcYtJwB+niUFOlEd5tlFAyqsAsssMeT2XY7btJ4n
+S08sjvzqPk3JnSmJ1Gf+T+HgONxa5QbU8Gc1vtrLf2zBEYqvfo897W7u2e62ak2v
+5gz6F9T/0ixaXZT8vu8zLlF9FQcq/a9DfDHyHTr8UWeOFcXiCfxXnAh1LTZvSCR1
+iScVlVd6ITyZhz+8J4NPLr1NUJunKXJ4GVhEmsv5NKPgbQiI74ljnQals/QxGvTG
+KXa7cpJhWd5iTCjh4bUKKFVlktfOo2xXUIlsB7V41G1HhpWZsXgQaP8vIkqtJtkg
+WXiDJ1UiJwfzH3pPAxzxTsoiDEq3bDg2txCEJf8ZQAPCW4DSrEbGzbqj/o1+6q1Z
+9cP8Jj7rFVyidTnX6pkoUX7dw8Uodd/1MjW1GGomqkyOZ9mcWA7GK8KobGhFXqOs
+/3KUkaVVJ5hTfHhXJbij7bhJzN5e5/LID8QcXkpoNUtRw0n6owrZJPaE4p16Vovp
+wuBDk/YLAXyrjUnn9Wl2EvvymbQZ2M4GZpjrdT5RKp5Hb3AYt+50wEVnwywCNHph
+s6S82MGs3MIF4+1Zsli4HVb3tVJ2w0OUkGs4KM57qwqmt9ECXgD+cvWWQx8Vkz9P
+wiFwD0dT3n1+F+Z3i2NOwk/AcDZS8ewGUmY7qZXunsP8qirN3gZTS+LURNr13FEL
+PkY/z7+8ZNpmbNvXwi8dQgy03uhFfM37UimPcaU+a5Rf2m6djmOIo//hnz7I8pP/
+kIx+l/JhQ/gg2kOCHQN5uuCCz3USwFkPEiu5uL6l8xPIMIhQrRgoeUJU4w5R+WzE
+JXa0cdAtx+J0PG5eM/Mv8shw68DvW4il3tEHBm8MFyqVlg6jGUGdLXpZVQ+eo6v7
+Oij+A3gokhNzO1J8M0nSB5N+/AjiXT6yESryebuQH1eA6OvQeCNPOfa+4bJYUtLF
+WFr5Ezs2b9HPSs1NXdWzXXGeVMiFWIk4AZVFLeo5WPeiI61owBIf/TgdgKL51Whn
+W18ZRo0ASEojfmR8V0BQjtTKaLZhR/9CA0J5YF0FTFpYwPn/XmQTvvcpv5GS3O2f
+kuNfqURL1Xy+AglRzXp4OViamZspwYaVfrJudZubh7LVfw4lSsM6jJV6sZ7Gvu6t
+m6wgLkHjrEaGPMbhZFaammcSnJK5oeC4f0hZIxhDLIDzfiCsBwX9aW/yQn5WUZi+
+NIFUIjtAkCnFJPEyAJYQC9jXejZaeHQa+SKBrPOODCimcnc6E51G2RsKMOgmmFVI
+QPiOxFoqxwmZSmHSxIKr8kBYcQhUMHAFzVULSxc9FbMtiOtIB7SeufA0iPA9SD3l
+KK3Y71DwiiClDcyToLTg+icq0h1Fmrapsi0vaqXFOrD+EqeQXYhnx5zz8GMNE9P3
+/QdjLsCcovphc3lwA1TreK7WfyyaEocb6eEnqvnrcgrjMAYoYKsuXVQVKmdbHk5Q
+cbojP6apVU3SzYZ2l55ZjwmjB0WiysnNc0taw2Hb+8eyw9Z2eS8XYYMpccS0sfQI
+FRCcgx6FlXn8ut4Ty4Zs0b5kCOCcAQPq1o7ldhXpZAPdFKzfhxPwu467vlQDvKvA
+wPhyiPpK85+SKiNz4XLuUMTaz2hqM5BW+nVpN99d6waJdoMnd6dQmhoQecRnnQEU
+1KdfKUfeRxQD/6V5oPCvab4bqsCPc5SxqrXniDP5OCAU2R8w2J7Gi9f/R0p4kfTT
+RE4nUbngkWlLV0G74xMuUhvuuDjzbe14lUsYBEAxqwzObBFLsGtB9CE5dAt/BaRA
+RNfaaqWl7xs9H1KErSgLX98Ic8kTJEApD6lDR0vqtqEb+SoA8xabvk6IUTR5u3uB
+nq5+nj/cqiWl7jjMVDsqthG7sdDKyxw3J17/WQZzh9M4hAXVSo28ENHT/t0RtHmU
+KVnMvAqHmgApLMlK8VlWy11PuUPU3lZCkFovyb0+kp2fCzQHeKUi1y34U9C/Z2Jl
+mpC76fChbaJ84irVIaAAI7xuFAy3GZLFoFDY0yPy0bnIrRP6L164yySCzZJEGTMn
+zCfMErjp0jIMaRYZl0MDAXUMtAMNJWUDflbToCyTGkr1xpxL94FmET4TmoaJKWiS
+wZha87OZ7HhNDxe/BqjCeZ6YhAyOzxfu4oaFkh4S+ZawV5ED2qmCUh5hYL6Wq3UI
+0551IgqcvKvRKVEl+B8ooS52mhr+AEMEUX1O7fwoG3ZaD4//GdXfFA5a1/ZvWf73
+Ybqq9T71UAzjnS/U9VdkXHWRoRXQnHNWP1n+tZZcz8hb9FhG2BQxVLIqtyxFMBPI
+Z/jH10latFDdheP3AiCZ4gNrabkzG89C/Ba184oyO/zJdBhgKnKUU4ZSSXdbvT0B
+hp4gwzqq60DE+nh/tBTmvn006PUhMLmCiBdtfmS+S+7y8ISf0w0Xvb9uDXBaBpeo
++EDPlqd2Jn/BZBXqT7zljFF3bA8Tvo75ET1o4zaIrTM9mVI9aIr3nd4dL9E2IT9N
++rUz4mh02HrozvcJrEr9NPkSDh4s9neqkTKVD5mAD1gwH493kLg2gqvjUT3U8YBO
+18EdB+TlaYTntXGyoPOOpcDEYNHSr6BKoNRGwDzrVH3s8SAGm7VgbQDbkYYcI9Ap
+OmVQH1cTLdQOsXluhu0i0Hf6JFb43MNGHjDDreoxmRJ364VwgRG+8h1ydXMv1mrM
+3XK+MbSuUFT6JLbsHdX/RPsg0M91yzAc0F0Tz8hJfMYCWzsReqn5gu88zJl2vUQ7
