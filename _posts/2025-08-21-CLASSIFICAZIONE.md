@@ -88,6 +88,9 @@ Questa metrica bilancia l'importanza di precisione e recall ed è preferibile al
 
 \[ F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall} \]  
 
+Si usa per dataset sbilanciati, misura la capacità del modello di identificare i casi positivi, minimizzando i falsi negativi e i falsi positivi.  
+E' utile nei LLM per NLP perché non si vogliono perdere informazioni rilevanti e si vuole segnalare quelle irrilevanti.  
+
 
 #### ROC
 > **Quanto il modello riesce a mantenere True Positive Rates (TPR) alti e False Positive Rates (FPR) bassi variando la soglia?**
@@ -111,6 +114,7 @@ Il punto che minimizza la distanza dall'angolo in alto a sinistra è la soglia m
 
 Un modello perfetto ha un ROC AUC di 1, perché la curva ROC è una linea retta che va dall'angolo in basso a sinistra all'angolo in alto a destra, chiaramente l'AUC di una curva pessima (diagonale) è 0.5.  
 Una qualsiasi curva reale ha un AUC compreso tra 0.5 e 1.  
+Usato nei classificatori binari, misura la capacità del modello di distinguere tra classi positive e negative, minimizzando i falsi negativi e i falsi positivi.  
 
 
 #### PR
