@@ -126,40 +126,6 @@ Nel **Chain of Thought (CoT) prompting** si chiede al modello di esplicitare i *
 > Scrivi la presentazione seguendo questo piano. Ragiona passo per passo.
 {: .prompt-info }
 
-
-### Ottimizzazione delle Performance del Prompt
-
-Oltre alla struttura e alla tecnica del prompt, esistono alcuni **parametri** che influenzano direttamente il comportamento e la qualità delle risposte del modello.
-
-* **System Prompt**: definisce come il modello deve comportarsi e rispondere. È un'istruzione di base che viene eseguita prima di ogni interazione con l'utente.
-
-* **Temperature** (da 0 a 1): controlla la **creatività** dell'output.
-  * Valore basso (es. 0.2) — risposte più conservative, ripetitive e focalizzate sulla risposta più probabile.
-  * Valore alto (es. 1.0) — risposte più diversificate, creative e imprevedibili, ma potenzialmente meno coerenti.
-
-* **Top P** (da 0 a 1): detto anche *nucleus sampling*. Dopo la **softmax**, i token vengono ordinati per probabilità decrescente; il modello somma le probabilità partendo dal token più probabile e si ferma quando la somma cumulativa raggiunge il valore P. Solo i token inclusi in questa soglia vengono considerati per il campionamento.
-  * Valore basso (es. 0.25) — il modello sceglie tra un nucleo ristretto di token (quelli che coprono il 25% della massa di probabilità), producendo risposte più prevedibili e coerenti.
-  * Valore alto (es. 0.99) — il nucleo si allarga fino a coprire quasi tutta la distribuzione, permettendo al modello di selezionare anche token meno probabili, con output più creativi e diversificati.
-
-* **Top K**: limita il campionamento ai **K token con probabilità più alta**, indipendentemente dalla loro probabilità cumulativa. È un filtro "a conteggio fisso", complementare a Top P che è un filtro "a soglia di probabilità".
-  * Valore basso (es. 10) — il modello sceglie solo tra i 10 token più probabili, ottenendo risposte più focalizzate e coerenti.
-  * Valore alto (es. 500) — il modello ha a disposizione 500 candidati, favorendo risposte più varie e creative.
-
-* **Length**: imposta il **numero massimo di token** nella risposta generata. Utile per controllare la verbosità dell'output.
-
-* **Stop Sequences**: token specifici che segnalano al modello di interrompere la generazione dell'output.
-
-### Latenza del Prompt
-
-La **latenza** indica quanto velocemente il modello risponde. È influenzata da:
-
-* **La dimensione del modello**: modelli più grandi tendono ad essere più lenti.
-* **Il tipo di modello**: modelli diversi (es. Llama vs Claude) hanno performance differenti.
-* **Il numero di token in input**: più è lungo il prompt, più lenta sarà la risposta.
-* **Il numero di token in output**: risposte più lunghe richiedono più tempo.
-
-La latenza **non è influenzata** dai parametri Top P, Top K e Temperature: questi modificano la qualità della risposta, non la velocità.
-
 ### Prompt Template
 Un **prompt template** è un prompt con dei **placeholder** che vengono sostituiti dinamicamente al momento dell'uso.    
 Questo permette di riutilizzare la stessa struttura di prompt per input diversi, senza doverlo riscrivere ogni volta.  
@@ -196,6 +162,37 @@ Ad esempio, se l'utente risponde `"Un thriller ambientato su una stazione spazia
 {: .prompt-info }
 
 E' possibile che il template contenga esempi (few shot) per aiutare il modello nella comprensione del task, e che questi siano completatamente trasparenti all'utente esterno che utilizza l'applicazione e fornisce il suo prompt.  
+
+
+### Direct Stimulus Prompting 
+
+Il **Direct Stimulus Prompting** è una tecnica in cui si fornisce al modello un **inizio parziale della risposta attesa**, spingendolo a completarla nel modo desiderato, senza dovergli spiegare esplicitamente come strutturarla.
+
+Invece di chiedere al modello *cosa* fare, gli si mostra direttamente *come iniziare a farlo*: il modello legge il frammento iniziale e lo continua in modo coerente.
+
+A differenza del **few-shot prompting** — che mostra esempi di coppie input/output per insegnare il pattern — il **direct stimulus** fornisce direttamente l'inizio dell'output finale, come se il modello stesse "completando" la risposta già avviata.
+
+Ad esempio, invece di scrivere:  
+*"Scrivi una email formale per rifiutare gentilmente la candidatura di un candidato"*
+
+si usa il Direct Stimulus così:
+
+> **[Context]**  
+> Sei un responsabile HR di un'azienda tecnologica.  
+>
+> **[Instructions]**  
+> Completa la seguente email di rifiuto per un candidato, mantenendo un tono formale ed empatico. Non riscrivere l'intestazione, continua direttamente dal punto in cui si interrompe.  
+>
+> **[Input data — Direct Stimulus]**  
+> Gentile Marco,  
+> la ringraziamo per aver partecipato al processo di selezione per la posizione di Software Engineer.  
+> Dopo un'attenta valutazione del suo profilo,
+{: .prompt-info }
+
+Il modello riceve questo inizio e lo completa naturalmente, producendo un testo formale e già correttamente impostato, senza aggiungere introduzioni o commenti non richiesti.
+
+Il **direct stimulus** è particolarmente efficace nelle applicazioni che generano **testi standardizzati** (email, report, notifiche) dove il formato di partenza è sempre lo stesso e si vuole solo personalizzare la parte finale.
+
 
 ### Adversarial Prompting
 
@@ -257,4 +254,38 @@ Ad esempio, si può inserire nel template una nota come:
 {: .prompt-info }
 
 Questo approccio non garantisce una protezione assoluta, ma riduce significativamente il rischio che il modello segua istruzioni iniettate dall'utente.
+
+
+### Ottimizzazione delle Performance del Prompt
+
+Oltre alla struttura e alla tecnica del prompt, esistono alcuni **parametri** che influenzano direttamente il comportamento e la qualità delle risposte del modello.
+
+* **System Prompt**: definisce come il modello deve comportarsi e rispondere. È un'istruzione di base che viene eseguita prima di ogni interazione con l'utente.
+
+* **Temperature** (da 0 a 1): controlla la **creatività** dell'output.
+  * Valore basso (es. 0.2) — risposte più conservative, ripetitive e focalizzate sulla risposta più probabile.
+  * Valore alto (es. 1.0) — risposte più diversificate, creative e imprevedibili, ma potenzialmente meno coerenti.
+
+* **Top P** (da 0 a 1): detto anche *nucleus sampling*. Dopo la **softmax**, i token vengono ordinati per probabilità decrescente; il modello somma le probabilità partendo dal token più probabile e si ferma quando la somma cumulativa raggiunge il valore P. Solo i token inclusi in questa soglia vengono considerati per il campionamento.
+  * Valore basso (es. 0.25) — il modello sceglie tra un nucleo ristretto di token (quelli che coprono il 25% della massa di probabilità), producendo risposte più prevedibili e coerenti.
+  * Valore alto (es. 0.99) — il nucleo si allarga fino a coprire quasi tutta la distribuzione, permettendo al modello di selezionare anche token meno probabili, con output più creativi e diversificati.
+
+* **Top K**: limita il campionamento ai **K token con probabilità più alta**, indipendentemente dalla loro probabilità cumulativa. È un filtro "a conteggio fisso", complementare a Top P che è un filtro "a soglia di probabilità".
+  * Valore basso (es. 10) — il modello sceglie solo tra i 10 token più probabili, ottenendo risposte più focalizzate e coerenti.
+  * Valore alto (es. 500) — il modello ha a disposizione 500 candidati, favorendo risposte più varie e creative.
+
+* **Length**: imposta il **numero massimo di token** nella risposta generata. Utile per controllare la verbosità dell'output.
+
+* **Stop Sequences**: token specifici che segnalano al modello di interrompere la generazione dell'output.
+
+### Latenza del Prompt
+
+La **latenza** indica quanto velocemente il modello risponde. È influenzata da:
+
+* **La dimensione del modello**: modelli più grandi tendono ad essere più lenti.
+* **Il tipo di modello**: modelli diversi (es. Llama vs Claude) hanno performance differenti.
+* **Il numero di token in input**: più è lungo il prompt, più lenta sarà la risposta.
+* **Il numero di token in output**: risposte più lunghe richiedono più tempo.
+
+La latenza **non è influenzata** dai parametri Top P, Top K e Temperature: questi modificano la qualità della risposta, non la velocità.
 
