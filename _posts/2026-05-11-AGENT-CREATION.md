@@ -1,7 +1,7 @@
 ---
 title: "Creating Agents with Langchain Deep Agents"
 description: "Creating Agents with Langchain deep agents"
-date: 2026-11-05 12:00:00 +0530
+date: 2026-05-11 12:00:00 +0530
 categories: [Langchain, Deep Agents, Agent Engineering]
 tags: [Langchain, Deep Agents, Agent Engineering]
 comments: false
