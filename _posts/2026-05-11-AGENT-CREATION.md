@@ -21,7 +21,8 @@ In an agentic engineering system, one or multiple specialized agents work togeth
 [Deep Agents](https://docs.langchain.com/oss/python/deepagents/overview){:target="_blank"} is a framework that enables the complete *harnessing* of agents. 
 It simplifies the process of building multi-agent systems by providing a set of tools and capabilities that make it easier to build and manage agents.  
 
-> An agent harness is the software infrastructure that wraps around an AI model, acting as the "body" for the AI's "brain" to turn it into an autonomous agent. It bridges the model's reasoning with real-world actions by providing operational control for multi-step workflows, integrating external tools and environments, managing long-term memory across sessions, and enforcing safety guardrails. 
+> An agent harness is the software infrastructure that wraps around an AI model. 
+>It bridges the model's reasoning with real-world actions by providing operational control for multi-step workflows, integrating external tools and environments, managing long-term memory across sessions, and enforcing safety guardrails.  
 > To learn more: [The Anatomy of an Agent Harness](https://www.langchain.com/blog/the-anatomy-of-an-agent-harness){:target="_blank"}
 {: .prompt-info }
 
