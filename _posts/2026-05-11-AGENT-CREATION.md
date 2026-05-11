@@ -389,8 +389,8 @@ The output of the agent is the final investment report.
 
 **Example of the output of the agent:**
 
------------------------------------------------------- 
 
+```markdown
 # Investment Analysis Report for Mueller Industries (MLI)
 
 ## Company Overview
@@ -442,7 +442,7 @@ Recent insider activity reports indicate:
 ## Conclusion & Outlook
 Overall, Mueller Industries presents a strong investment opportunity characterized by robust financial health, a solid growth trajectory, and consistent dividend payments. However, potential economic downturns and market competition pose significant risks. Ongoing monitoring of raw material prices and regulatory environments will be crucial in assessing future performance. Stakeholders should also watch for trends in insider trading, as these can signal management confidence in the company's future prospects.
 
-------------------------------------------------------
+```
 
 
 This is a basic demo application, you can obviously improve the prompts, add more subagents, tools, memory systems, or build user interfaces with streamlit or other frameworks to make the system more versatile and complex.
