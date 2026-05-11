@@ -26,7 +26,7 @@ It simplifies the process of building multi-agent systems by providing a set of 
 {: .prompt-info }
 
 To put Deep Agents to work and test it in the field, we will implement an agentic system specialized in financial reporting that analyzes a company's financials and produces an investment report.  
-We will use the SEC EDGAR database to retrieve company financial data through the [edgartools](https://edgartools.readthedocs.io/en/latest/){:target="_blank"} library.  
+We will use the SEC EDGAR database to retrieve company financial data through the [EdgarTools](https://edgartools.readthedocs.io/en/latest/){:target="_blank"} library.  
 
 
 
@@ -49,7 +49,7 @@ The architecture of the financial analyst system is as follows:
 
 For the **worker agents** to perform their research, they need access to external data. This is achieved through a set of specialized tools defined in the system. In the context of agentic engineering, these tools act as a shared gateway, providing secure and consistent capabilities across the entire agent swarm. 
 
-Our financial analyst system leverages the `edgartools` library, which provides a set of tools to retrieve company financial data from the SEC EDGAR database. 
+Our financial analyst system leverages the `EdgarTools` library, which provides a set of tools to retrieve company financial data from the SEC EDGAR database. 
 These tools are converted into **callable tools** by the deep agent framework.
 
 
