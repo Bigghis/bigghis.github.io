@@ -385,4 +385,64 @@ For example can see the trace of workflow execution in the following screenshot:
 ![LangSmith Trace](/assets/images/langsmith.png)
 
 
+The output of the agent is the final investment report.
+
+**Example of the output of the agent:**
+
+------------------------------------------------------ 
+
+# Investment Analysis Report for Mueller Industries (MLI)
+
+## Company Overview
+Mueller Industries, Inc. operates in the manufacturing sector, primarily producing copper, brass, zinc, and aluminum products for various applications, including housing and commercial construction. The company's financial performance has shown significant growth over the past year, reflecting resilience in a fluctuating economic environment.
+
+## Financial Health
+- **Balance Sheet (as of Dec 27, 2025)**:
+  - **Total Assets**: $3.73 billion
+  - **Total Liabilities**: $497 million
+  - **Stockholders' Equity**: $3.21 billion
+- **Income Statement (Fiscal Year Ending Dec 27, 2025)**:
+  - **Net Sales**: $4.18 billion
+  - **Net Income**: $765 million
+  - **Basic Earnings Per Share**: $6.99
+  - **Dividends per Share**: $1.00
+- **Cash Flow (Fiscal Year Ending Dec 27, 2025)**:
+  - **Net Cash from Operating Activities**: $755 million
+  - **Net Cash used in Investing Activities**: $(24.9) million
+  - **Net Cash used in Financing Activities**: $(394.6) million
+
+The company exhibited a solid net income growth of approximately 25% year-over-year, indicating strong operational performance. The retained earnings increased significantly to $3.76 billion, which enhances financial stability.
+
+## Key Risks
+1. **Economic and External Risks**:
+   - Volatility in raw material costs (copper, brass, zinc, aluminum) could impact operational margins. Tariffs and trade barriers exacerbate these risks.
+   - Dependence on the housing and commercial construction markets makes the company sensitive to economic downturns.
+
+2. **Market Risks**:
+   - Intense competition and potential importation of substitute products could erode pricing power and margins.
+   - Emerging technologies may pose a threat to product demand.
+
+3. **Legal and Regulatory Risks**:
+   - Ongoing litigation and environmental regulations could impose significant costs that affect operational performance.
+   - Compliance with environmental laws may necessitate capital investments, which could strain cash flow.
+
+4. **Operational Risks**:
+   - Labor disputes or strikes could disrupt production, leading to increased costs and loss of revenue.
+   - Cybersecurity threats are a growing concern, with significant risks associated with data breaches affecting business operations and reputation.
+
+## Insider Signals
+Recent insider activity reports indicate:  
+- Directors of Mueller Industries recently received awards including common stock, with notable transactions involving:
+  - Terry Hermanson: 1,222 shares awarded
+  - William C. Drummond: 1,222 shares awarded
+  - Scott Jay Goldman: 1,222 shares awarded
+  - John B. Hansen: 1,222 shares awarded
+  - Donovan Elizabeth M: 1,222 shares awarded
+
+## Conclusion & Outlook
+Overall, Mueller Industries presents a strong investment opportunity characterized by robust financial health, a solid growth trajectory, and consistent dividend payments. However, potential economic downturns and market competition pose significant risks. Ongoing monitoring of raw material prices and regulatory environments will be crucial in assessing future performance. Stakeholders should also watch for trends in insider trading, as these can signal management confidence in the company's future prospects.
+
+------------------------------------------------------
+
+
 This is a basic demo application, you can obviously improve the prompts, add more subagents, tools, memory systems, or build user interfaces with streamlit or other frameworks to make the system more versatile and complex.
