@@ -394,7 +394,8 @@ The output of the agent is the final investment report.
 # Investment Analysis Report for Mueller Industries (MLI)
 
 ## Company Overview
-Mueller Industries, Inc. operates in the manufacturing sector, primarily producing copper, brass, zinc, and aluminum products for various applications, including housing and commercial construction. The company's financial performance has shown significant growth over the past year, reflecting resilience in a fluctuating economic environment.
+Mueller Industries, Inc. operates in the manufacturing sector, primarily producing copper, brass, zinc, and aluminum products for various applications, including housing and commercial construction. 
+The company's financial performance has shown significant growth over the past year, reflecting resilience in a fluctuating economic environment.
 
 ## Financial Health
 - **Balance Sheet (as of Dec 27, 2025)**:
@@ -411,7 +412,8 @@ Mueller Industries, Inc. operates in the manufacturing sector, primarily produci
   - **Net Cash used in Investing Activities**: $(24.9) million
   - **Net Cash used in Financing Activities**: $(394.6) million
 
-The company exhibited a solid net income growth of approximately 25% year-over-year, indicating strong operational performance. The retained earnings increased significantly to $3.76 billion, which enhances financial stability.
+The company exhibited a solid net income growth of approximately 25% year-over-year, indicating strong operational performance. 
+The retained earnings increased significantly to $3.76 billion, which enhances financial stability.
 
 ## Key Risks
 1. **Economic and External Risks**:
@@ -440,9 +442,14 @@ Recent insider activity reports indicate:
   - Donovan Elizabeth M: 1,222 shares awarded
 
 ## Conclusion & Outlook
-Overall, Mueller Industries presents a strong investment opportunity characterized by robust financial health, a solid growth trajectory, and consistent dividend payments. However, potential economic downturns and market competition pose significant risks. Ongoing monitoring of raw material prices and regulatory environments will be crucial in assessing future performance. Stakeholders should also watch for trends in insider trading, as these can signal management confidence in the company's future prospects.
+Overall, Mueller Industries presents a strong investment opportunity characterized by robust financial health, a solid growth trajectory, and consistent dividend payments. 
+However, potential economic downturns and market competition pose significant risks. 
+Ongoing monitoring of raw material prices and regulatory environments will be crucial in assessing future performance. 
+Stakeholders should also watch for trends in insider trading, as these can signal management confidence in the company's future prospects.
 
 ```
 
 
-This is a basic demo application, you can obviously improve the prompts, add more subagents, tools, memory systems, or build user interfaces with streamlit or other frameworks to make the system more versatile and complex.
+This is a basic demo application, you can obviously improve the prompts, use more powerful models, add more subagents, tools, memory systems, or build user interfaces with streamlit or other frameworks to make the system more versatile and complex.
+
+In a real-world application, it is essential to establish a rigorous system of **evals** to verify that the agent performs as expected.
