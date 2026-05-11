@@ -38,7 +38,7 @@ We want to create an autonomous agentic system that produces financial reports f
 This application assembles a team of AI analysts to evaluate a company's financial health and produce a comprehensive investment report. The software reads real-world data from SEC filings, processes the information, and generates a structured analysis.
 
 This system perfectly illustrates the agentic engineering model. It utilizes a **central leader agent to orchestrate** the entire research workflow. 
-When a user requests an analysis of a specific company, **the leader breaks down the request, delegates the quantitative and qualitative research to specialized worker agents**, and finally synthesizes their individual findings into a final report.
+When a user requests an analysis of a specific company, **the leader breaks down the request, delegates the quantitative and qualitative research to specialized worker agents, and finally synthesizes their individual findings into a final report**.
 
 ### The Architecture
 
@@ -48,7 +48,7 @@ The architecture of the financial analyst system is as follows:
 
 ### Tools and Edgar Integration
 
-For the **worker agents** to perform their research, they need access to external data. This is achieved through a set of specialized tools defined in the system. In the context of agentic engineering, these tools act as a shared gateway, providing secure and consistent capabilities across the entire agent swarm. 
+For the **worker agents** to perform their research, they need access to external data. This is achieved through a set of specialized tools defined in the system. 
 
 Our financial analyst system leverages the `EdgarTools` library, which provides a set of tools to retrieve company financial data from the SEC EDGAR database. 
 These tools are converted into **callable tools** by the deep agent framework.
@@ -56,15 +56,15 @@ These tools are converted into **callable tools** by the deep agent framework.
 
 #### The Leader Prompt
 
-The behavior and workflow of the entire system are governed by the system prompt assigned to the leader agent. In the deep agents architecture, the system prompt is a critical component that teaches the agent its role and operating principles. 
-
-The leader prompt in our financial system instructs the agent to act as a senior investment analyst coordinating a team of specialists. It explicitly outlines a four-step workflow. 
+The behavior and workflow of the entire system are governed by the system prompt assigned to the leader agent.  
+The leader prompt in our financial system instructs the agent to act as a senior investment analyst coordinating a team of specialists. It explicitly outlines the workflow.   
 The leader must plan the analysis by breaking it down into logical steps and it must delegate the specific analytical tasks to the appropriate subagents, then the leader is instructed to synthesize the findings by reading the intermediate files produced by the team and compiling a final investment summary with specific required sections. 
-Lastly, it must deliver the final report to the user. The prompt also enforces key principles, reminding the leader to always plan before acting, to let the specialists handle the granular details, and to save all work using the virtual filesystem tools.
+Lastly, it must deliver the final report to the user.   
+The prompt also enforces key principles, **reminding the leader to always plan before acting**, to let the specialists handle the granular details, and to save all work using the virtual filesystem tools.
 
 #### Worker Subagents using tools
 
-The actual analytical work is carried out by specialized worker subagents, demonstrating the power of **context isolation**. 
+The analytical work is carried out by specialized worker subagents, demonstrating the power of **context isolation**.  
 Each subagent focuses entirely on one specific analytical domain, equipped with its own unique system prompt and a restricted set of tools. This prevents massive documents, like a 10-K report, from polluting the reasoning capabilities of the main leader agent.
 
 Example:
