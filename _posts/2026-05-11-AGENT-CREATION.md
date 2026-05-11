@@ -43,16 +43,7 @@ When a user requests an analysis of a specific company, **the leader breaks down
 
 The architecture of the financial analyst system is as follows:
 
-```mermaid
-graph TD
-    A[User] --> B[Leader Agent]
-    B --> C[Worker: Financial Analyst Agent]
-    B --> D[Worker: Risk Analyst Agent]
-    B --> E[Worker: Insider Activity Agent]
-    C --> F[tool: Financial Data]
-    D --> G[tool: Risk Analysis]
-    E --> H[tool: Insider Activity Analysis]
-```
+![Financial Analyst Agent Architecture](/assets/images/agent-architecture.png)
 
 ### Tools and Edgar Integration
 
