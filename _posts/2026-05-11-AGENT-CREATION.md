@@ -9,8 +9,8 @@ comments: false
 
 ### Agentic Engineering
 
-Agentic engineering represents a shift in how we approach software development and automation. 
-Instead of treating artificial intelligence as a simple code generation tool or an isolated assistant, **this paradigm models AI agents as collaborative digital team members**. 
+Agentic engineering represents a shift in how we approach software development and automation.  
+Instead of treating artificial intelligence as a simple code generation tool or an isolated assistant, **this paradigm models AI agents as collaborative digital team members**.  
 In an agentic engineering system, one or multiple specialized agents work together to execute complex workflows that mirror the operations of real-world engineering teams. 
 
 
