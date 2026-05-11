@@ -57,11 +57,14 @@ These tools are converted into **callable tools** by the deep agent framework.
 
 The behavior and workflow of the entire system are governed by the system prompt assigned to the leader agent. In the deep agents architecture, the system prompt is a critical component that teaches the agent its role and operating principles. 
 
-The leader prompt in our financial system instructs the agent to act as a senior investment analyst coordinating a team of specialists. It explicitly outlines a four-step workflow. First, the leader must plan the analysis by breaking it down into logical steps. Second, it must delegate the specific analytical tasks to the appropriate subagents. Third, the leader is instructed to synthesize the findings by reading the intermediate files produced by the team and compiling a final investment summary with specific required sections. Lastly, it must deliver the final report to the user. The prompt also enforces key principles, reminding the leader to always plan before acting, to let the specialists handle the granular details, and to save all work using the virtual filesystem tools.
+The leader prompt in our financial system instructs the agent to act as a senior investment analyst coordinating a team of specialists. It explicitly outlines a four-step workflow. 
+The leader must plan the analysis by breaking it down into logical steps and it must delegate the specific analytical tasks to the appropriate subagents, then the leader is instructed to synthesize the findings by reading the intermediate files produced by the team and compiling a final investment summary with specific required sections. 
+Lastly, it must deliver the final report to the user. The prompt also enforces key principles, reminding the leader to always plan before acting, to let the specialists handle the granular details, and to save all work using the virtual filesystem tools.
 
 #### Worker Subagents using tools
 
-The actual analytical work is carried out by specialized worker subagents, demonstrating the power of context isolation. Each subagent focuses entirely on one specific analytical domain, equipped with its own unique system prompt and a restricted set of tools. This prevents massive documents, like a 10-K report, from polluting the reasoning capabilities of the main leader agent.
+The actual analytical work is carried out by specialized worker subagents, demonstrating the power of **context isolation**. 
+Each subagent focuses entirely on one specific analytical domain, equipped with its own unique system prompt and a restricted set of tools. This prevents massive documents, like a 10-K report, from polluting the reasoning capabilities of the main leader agent.
 
 Example:
 For quantitative data, a specialized **financial analyst agent** can invoke a tool to retrieve a company's balance sheet, income statement, or cash flow statement.  
@@ -72,7 +75,7 @@ Additionally, an **insider activity analyst agent** is responsible for tracking 
 
 #### Langsmith: The observability layer
 
-Agentic systems are inherently non-deterministic and involve complex, multi-step workflows where agents interact with each other and external tools. This complexity makes traditional debugging methods insufficient. This is where an observability layer becomes critical.
+Agentic systems are notoriously non-deterministic and involve complex, multi-step workflows where agents interact with each other and external tools. This complexity makes traditional debugging methods insufficient. This is where an observability layer becomes critical.
 
 [LangSmith](https://smith.langchain.com/){:target="_blank"} is a unified developer platform designed specifically for building, testing, and monitoring LLM applications. In our financial analyst system, LangSmith acts as the observability layer, providing end-to-end tracing of every action the agents take.  
 This level of visibility is very useful in agentic engineering to debug complex behavior, evaluate agent trajectories, and improve the overall performance and reliability of the system over time.
@@ -84,7 +87,8 @@ Let's dive into the code to see how these concepts are implemented.
 
 #### 1. The Leader Agent
 
-The Leader Agent orchestrates the entire process. Its prompt explicitly defines the workflow (Plan, Delegate, Synthesize, Deliver) and the principles it must follow:
+The Leader Agent orchestrates the entire process. 
+Its prompt explicitly defines the workflow (Plan, Delegate, Synthesize, Deliver) and the principles it must follow:
 
 ```python
 LEADER_PROMPT = """\
@@ -124,7 +128,8 @@ a given company by coordinating your team.
 
 #### 2. Subagents
 
-Subagents (or Worker Agents) are defined as dictionaries containing their name, description, system prompt, and the specific tools they are allowed to use. This ensures context isolation. The demo defines three specialists—financials, risk, and insider activity—and passes them to the leader as `all_subagents`:
+Subagents (or Worker Agents) are defined as dictionaries containing their name, description, system prompt, and the specific tools they are allowed to use.  
+The demo defines three specialists—financials, risk, and insider activity—and passes them to the leader as `all_subagents`:
 
 ```python
 from tools import get_financials, get_10k_section, get_insider_transactions
@@ -379,4 +384,4 @@ For example can see the trace of workflow execution in the following screenshot:
 ![LangSmith Trace](/assets/images/langsmith.png)
 
 
-This is a basic example, you can obviously improve the prompts, add more subagents, tools, memory systems, or build user interfaces with streamlit or other frameworks to make the system more versatile and complex.
+This is a basic demo application, you can obviously improve the prompts, add more subagents, tools, memory systems, or build user interfaces with streamlit or other frameworks to make the system more versatile and complex.
