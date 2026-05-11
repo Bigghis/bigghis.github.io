@@ -386,3 +386,6 @@ To see how the system works we can use the LangSmith UI to trace the execution o
 For example can see the trace of workflow execution in the following screenshot:
 
 ![LangSmith Trace](/assets/images/langsmith.png)
+
+
+This is a basic example, you can obviously improve the prompts, add more subagents, tools, memory systems, or build user interfaces with streamlit or other frameworks to make the system more versatile and complex.
