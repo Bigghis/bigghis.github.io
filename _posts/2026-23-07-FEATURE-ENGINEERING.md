@@ -61,10 +61,12 @@ In questi casi, prendendo ad esempio un sistema di classificazione binaria, si h
 
 Per cercare di mitigare il problema si possono usare varie tecniche:
 
+
 ##### Oversampling 
 
 Per cercare di riequilibrare lo sbilanciamento si può usare la tecnica dell'oversampling. Questa tecnica consiste nel duplicare casi positivi (frodi) per bilanciare il numero di casi negativi (transazioni legittime).  
 Si è sperimentato che aggiungere casi positivi minoritari all'interno del dataset funziona bene per addestrare le reti neurali.
+
 
 ##### Undersampling
 
@@ -72,17 +74,20 @@ Un'altra tecnica è l'undersampling, che consiste nell'eliminare casi negativi (
 Tuttavia, di solito, eliminare dati non è una buona soluzione, in quanto si perdono informazioni potenzialmente utili. 
 In sostanza, diciamo che è fattibile se il dataset è davvero molto grande. L'arte del feature engineering sta anche in questo: trovare il giusto equilibrio tra informazioni utili e dati da eliminare.
 
+
 ##### SMOTE generazione di dati sintetici
 
 **SMOTE (Synthetic Minority Over-sampling Technique)** è una tecnica che genera nuovi casi positivi (frodi) usando gli algoritmi KNN (K-Nearest Neighbors) che abbiamo visto prima. Calcolando la distanza euclidea dai casi positivi, vengono generati nuovi casi positivi che sono simili ai casi positivi originali perché hanno le stesse caratteristiche, ma non sono copie esatte.  
 Ovviamente la tecnica puà essere usata anche per creare casi negativi simili a quelli originali.
 Questo aiuta molto durante l'addestramento del modello. 
 
+
 ##### Modifica del threshold di classificazione
 
 Prendiamo per semplicità un sistema di classificazione binaria.  Il modello predice caso positivo e caso negativo sottoforma di una certa percentuale di probabilità.  
 Questa probabilità viene confrontata con un **threshold** (valore soglia) al di sotto del quale il modello predice caso negativo e al di sopra del quale predice caso positivo.  
 Nel feature engineering, il threshold può essere modificato per bilanciare il numero di casi positivi e negativi, per cercare di migliorare le predizioni dei casi positivi. Ovviamente il settaggio del giusto threshold è una scelta che deve essere fatta con molta attenzione e deve essere testata con cura, perché può anche sensibilmente peggiorare le prestazioni del modello.
+
 
 ### Gestione dei dati anomali (outliers)
 
