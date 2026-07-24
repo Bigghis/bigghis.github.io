@@ -1,5 +1,5 @@
 ---
-title: "Deep dive nella teoria del Feature Engineering"
+title: "La teoria del Feature Engineering"
 description: "Il Feature Engineering è cruciale per ottenere un modello di machine learning che funzioni in modo ottimale."
 date: 2026-07-23 12:00:00 +0530
 categories: [Machine Learning, Feature Engineering]
