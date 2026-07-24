@@ -17,9 +17,9 @@ Tenendo presente che la qualità dei dati influisce direttamente sulle prestazio
 
 ### Curse of dimensionality
 
-Se ipotizziamo che ogni feature dei dati possa essere rappresentata in una dimensione, come un vettore, è chiaro che più features ci sono, più crescono le dimensioni e di conseguenza la complessità di rappresentazione dei dati.   
+Se ipotizziamo che ogni feature dei dati possa essere rappresentata in una dimensione, come un vettore, è chiaro che più features ci sono, più crescono le dimensioni e, di conseguenza, aumenta la complessità di rappresentazione dei dati.   
 Sta a noi decidere quali features sono importanti e quali secondarie che possono essere scartate, in quanto non contribuiscono al processo decisionale del modello e aumentano inutilmente la complessità di rappresentazione dei dati.  
-Difatti un grande numero di features contribuisce alla creazione di un **curse of dimensionality**, ovvero un aumento dello spazio dimensionale in cui sono collocati i dati, che può portare a problemi di overfitting e di difficoltà nell'addestrare il modello.  
+Difatti un grande numero di features contribuisce alla creazione di un **curse of dimensionality**, ovvero un aumento dello spazio dimensionale in cui sono collocati i dati, che può portare a problemi di overfitting e difficoltà nell'addestrare il modello.  
 Per tenere sotto controllo questo problema si sceglie ponderatamente quali sono le features importanti.  
 Esistono tecniche come **PCA (Principal Component Analysis)** che permettono di distillare le features in un minor numero in modo da continuare a mantenere la maggior informazione possibile.  
 Altra tecnica è il **K-means clustering** che permette di raggruppare le features in base alle loro similarità.  
@@ -29,9 +29,9 @@ Queste tecniche sono algoritmi classici non algoritmi di machine learning.
 ### Imputazione dei dati mancanti
 
 Uno dei problemi più comuni nei dataset è la mancanza di alcuni dati.  
-Ciò è deleterio per l'addestramento dei modelli e per questo motivo si cerca di imputare i dati mancanti con altri valori.  
-Una comunissima tecnica è quella di sostituire il dato mancante con la **media aritmetica** dei valori presenti nella stessa feature (colonna).  
-Ha il vantaggio di non alterare la media della distribuzione dei valori della featurema non sempre è la soluzione migliore.  
+Ciò è deleterio per l'addestramento dei modelli e per questo motivo si cerca di sostituire i dati mancanti con altri valori.  
+Una tecnica comune è quella di sostituire il dato mancante con la **media aritmetica** dei valori presenti nella stessa feature (colonna).  
+Ha il vantaggio di non alterare la media della distribuzione dei valori della feature ma non sempre è la soluzione migliore.  
 All'interno di una feature, infatti, possono esserci valori che si discostano tantissimo dalla media. Sono chiamati, per questo, **outliers**, o valori anomali.  
 In presenza di outliers è preferibile utilizzare la **mediana** per sostituire il dato mancante in quanto è meno sensibile a tali valori anomali.  
 Tuttavia le sostituzioni con medie e mediane sono spesso semplicistiche e non sempre sono le soluzioni migliori.  
@@ -52,10 +52,10 @@ In generale, quando siamo in presenza di molti dati mancanti all'interno di un d
 
 ### Gestione dei dati sbilanciati
 
-Nei dataset che contengono feature categoriche, è possibile che ci siano classi che sono rappresentate in modo sbilanciato.
+Nei dataset che contengono feature categoriche, è possibile che ci siano classi che sono rappresentate in modo sbilanciato.  
 In questi casi, prendendo ad esempio un sistema di classificazione binaria, si hanno notevoli discrepanze tra i casi positivi ed i casi negativi
    
-> Esempio: nel caso di rilevamento delle frodi, il 99% delle transazioni documentate nel dataset sono legittime e solo l'1% sono frodi.
+> Esempio: nel caso di rilevamento delle frodi, il 99% delle transazioni documentate nel dataset sono legittime e solo l'1% sono frodi.  
 > Ciò significa che l'alto numero di casi negativi influenza il modello a predire sempre il caso negativo, non individuando mai i casi positivi, cioè le frodi.
 {: .prompt-info }
 
@@ -70,15 +70,17 @@ Si è sperimentato che aggiungere casi positivi minoritari all'interno del datas
 
 ##### Undersampling
 
-Un'altra tecnica è l'undersampling, che consiste nell'eliminare casi negativi (transazioni legittime) per bilanciare il numero di casi positivi (frodi).
-Tuttavia, di solito, eliminare dati non è una buona soluzione, in quanto si perdono informazioni potenzialmente utili. 
-In sostanza, diciamo che è fattibile se il dataset è davvero molto grande. L'arte del feature engineering sta anche in questo: trovare il giusto equilibrio tra informazioni utili e dati da eliminare.
+Un'altra tecnica è l'undersampling, che consiste nell'eliminare casi negativi (transazioni legittime) per bilanciare il numero di casi positivi (frodi).  
+Tuttavia, di solito, eliminare dati non è una buona soluzione, in quanto si perdono informazioni potenzialmente utili.  
+In sostanza, diciamo che è fattibile se il dataset è davvero molto grande.  
+L'arte del feature engineering sta anche in questo: trovare il giusto equilibrio tra informazioni utili e dati da eliminare.
 
 
 ##### SMOTE generazione di dati sintetici
 
-**SMOTE (Synthetic Minority Over-sampling Technique)** è una tecnica che genera nuovi casi positivi (frodi) usando gli algoritmi KNN (K-Nearest Neighbors) che abbiamo visto prima. Calcolando la distanza euclidea dai casi positivi, vengono generati nuovi casi positivi che sono simili ai casi positivi originali perché hanno le stesse caratteristiche, ma non sono copie esatte.  
-Ovviamente la tecnica puà essere usata anche per creare casi negativi simili a quelli originali.
+**SMOTE (Synthetic Minority Over-sampling Technique)** è una tecnica che genera nuovi casi positivi (frodi) usando gli algoritmi KNN (K-Nearest Neighbors) che abbiamo visto prima.  
+Calcolando la distanza euclidea dai casi positivi, vengono generati nuovi casi positivi che sono simili ai casi positivi originali perché hanno le stesse caratteristiche, ma non sono copie esatte.   
+Ovviamente la tecnica puà essere usata anche per creare casi negativi simili a quelli originali.  
 Questo aiuta molto durante l'addestramento del modello. 
 
 
@@ -86,7 +88,8 @@ Questo aiuta molto durante l'addestramento del modello.
 
 Prendiamo per semplicità un sistema di classificazione binaria.  Il modello predice caso positivo e caso negativo sottoforma di una certa percentuale di probabilità.  
 Questa probabilità viene confrontata con un **threshold** (valore soglia) al di sotto del quale il modello predice caso negativo e al di sopra del quale predice caso positivo.  
-Nel feature engineering, il threshold può essere modificato per bilanciare il numero di casi positivi e negativi, per cercare di migliorare le predizioni dei casi positivi. Ovviamente il settaggio del giusto threshold è una scelta che deve essere fatta con molta attenzione e deve essere testata con cura, perché può anche sensibilmente peggiorare le prestazioni del modello.
+Nel feature engineering, il threshold può essere modificato per bilanciare il numero di casi positivi e negativi, per cercare di migliorare le predizioni dei casi positivi.  
+Ovviamente il settaggio del giusto threshold è una scelta che deve essere fatta con molta attenzione e deve essere testata con cura, perché può anche sensibilmente peggiorare le prestazioni del modello.
 
 
 ### Gestione dei dati anomali (outliers)
