@@ -225,7 +225,7 @@ Normalizzare vuol dire trasformare i dati in una **scala di grandezza comparabil
 Molti modelli, infatti, specialmente le reti neurali, lavorano meglio se i dati di input sono distribuiti normalmente (range `[0, 1]`) in **distribuzioni gaussiane uniformi**, o per lo meno se tutte le feature si trovano su scale di grandezza comparabili.  
 
 > Per approfondire, vedere gli appunti su ["Normalization"](https://bigghis.github.io/AI-appunti/guide/optimizations/normalize.html){: target="_blank" }.
-{: .prompt-tip }
+{: .prompt-info }
 
 
 
@@ -236,9 +236,9 @@ Molti modelli, infatti, specialmente le reti neurali, lavorano meglio se i dati 
 Ci sono delle eccezioni: alcuni algoritmi, come gli alberi decisionali (*Decision Trees*), sono insensibili alla scala dei dati. Tuttavia, per la maggior parte dei modelli, lo normalizzazione è fondamentale.
 
 
-> ⚠️ **Attenzione ai risultati:** Se il modello serve a prevedere un valore numerico (e non una categoria) e abbiamo normalizzato anche la variabile target in fase di addestramento, ricordarsi sempre di **invertire la scala** (reverse scaling) sui risultati finali.  
+> **Attenzione ai risultati:** Se il modello serve a prevedere un valore numerico (e non una categoria) e abbiamo normalizzato anche la variabile target in fase di addestramento, ricordarsi sempre di **invertire la scala** (reverse scaling) sui risultati finali.  
 > Altrimenti, il modello restituirà un numero normalizzato privo di significato per l'utente, invece del valore reale atteso.
-{: .prompt-warning }    
+{: .prompt-danger }    
 
 ### Shuffling dei dati
 
