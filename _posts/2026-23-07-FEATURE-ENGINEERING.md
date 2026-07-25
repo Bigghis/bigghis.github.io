@@ -183,7 +183,7 @@ Questo assicura che nessuna classe sia vuota o sovrappesata rispetto alle altre.
 
 ### Trasformazione dei dati (Data Transformation)
 Un'altra tecnica fondamentale è l'applicazione di funzioni matematiche alle feature per **trasformarle** o **crearne di nuove** che siano più "digeribili" per gli algoritmi.  
-Molti modelli, infatti, faticano a individuare pattern in dati con andamenti non lineari.  
+Molti modelli, infatti, faticano a individuare pattern in dati con andamenti non lineari.   
 Un esempio pratico è la **trasformazione logaritmica**: se una feature presenta un andamento esponenziale, applicare un logaritmo può trasformare la curva in una linea retta (relazione lineare), rendendo molto più semplice per il modello coglierne il trend.  
 
 
@@ -199,12 +199,12 @@ Naturalmente, bisogna sempre bilanciare: aggiungere troppe feature derivate risc
 
 
 
-Un'altra operazione molto comune durante la preparazione dei dati è la **codifica** (encoding). Spesso i modelli, in particolare nel mondo del Deep Learning, richiedono che i dati in ingresso abbiano un formato molto specifico e bisogna trasformarli di conseguenza.
+Un'altra operazione molto comune durante la preparazione dei dati è la **codifica** (encoding). Spesso i modelli, in particolare nel mondo del Deep Learning, richiedono che i dati in ingresso abbiano un formato specifico e bisogna trasformarli di conseguenza.
 
 ### Encoding (One-Hot Encoding)
 Encoding è il processo di conversione di dati da un formato a un altro.  
-Un esempio classico e fondamentale è il **One-Hot Encoding**. 
-L'idea alla base è creare un "contenitore" (o *bucket*) per ogni possibile categoria presente nei dati.  
+Un esempio classico e fondamentale è il **One-Hot Encoding**.  
+L'idea alla base è creare un "contenitore" (o *bucket*) per ogni possibile categoria presente nei dati.    
 Si assegna il valore `1` alla categoria a cui appartiene il dato (indicando che è presente, o "hot") e `0` a tutte le altre (indicando che non è quella categoria).
 
 > **Esempio: Riconoscimento della scrittura**
@@ -213,7 +213,7 @@ Si assegna il valore `1` alla categoria a cui appartiene il dato (indicando che 
 > `[0, 0, 0, 0, 0, 0, 0, 0, 1, 0]`
 {: .prompt-tip }
 
-Nel Deep Learning, i neuroni lavorano tipicamente su **stati di attivazione** (booleano acceso/spento), non possiamo semplicemente "alimentare" un singolo neurone di input con il numero 8 o il numero 3 e aspettarci che il modello lo interpreti correttamente come una categoria. 
+Nel Deep Learning, i neuroni lavorano tipicamente su **stati di attivazione** (booleano acceso/spento), non possiamo semplicemente "alimentare" un singolo neurone di input con il numero 8 o il numero 3 e aspettarci che il modello lo interpreti correttamente come una categoria.  
 Invece, utilizzando il One-Hot Encoding, il dato viene fornito a 10 input diversi, che corrispondono a 10 neuroni, dove solo uno di essi riceve il segnale di attivazione `1`, mentre tutti gli altri rimangono inattivi `0`.
 
 ### Normalizzazione dei dati
