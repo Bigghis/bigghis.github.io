@@ -108,7 +108,8 @@ Essa utilizza valori al quadrato, per questo motivo non è sempre molto intuitiv
 Per questo motivo si usa più spesso la **deviazione standard**, che è semplicemente **la radice quadrata della varianza**.  
 Riportando il numero all'unità di misura originale (di nuovo in Euro), ci fa capire subito di quanto i dati si allontanano dalla media.
 
-In una **distribuzione normale** (la classica "campana"), la maggior parte dei valori si concentra intorno alla media: circa il 68% cade entro **±1σ** e circa il 95% entro **±2σ**. I valori che restano fuori da queste fasce sono i candidati naturali a essere considerati anomali.
+In una **distribuzione normale** (la classica gaussiana o "campana"), la maggior parte dei valori si concentra intorno alla media: circa il 68% cade entro **±1σ** e circa il 95% entro **±2σ**.  
+I valori che rimangono fuori da queste fasce sono i candidati naturali a essere considerati anomali.
 
 Esempio di distribuzione del reddito annuo:
 
