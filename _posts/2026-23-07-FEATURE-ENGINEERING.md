@@ -127,7 +127,7 @@ Esempio di distribuzione del reddito annuo:
 Anche i dati anomali possono essere gestiti in vari modi, è possibile **eliminarli**, **sostituirli** con la media o la mediana dei dati presenti nella stessa feature, o con un valore predefinito, o **lasciarli** così com'è.   
 Tutto sta nel saper individuare la corretta soluzione in base alla natura del dato anomalo, e a quella del dataset e non è sempre semplice!
 
-> **Quando conviene eliminare un dato anomalo?**
+> **Quando conviene eliminare un dato anomalo?**  
 > Immaginiamo un dataset con i tempi di consegna (in giorni) di un corriere: `2, 3, 2, 4, 3, 365`.  
 > Il valore `365` è anomalo: un pacco consegnato dopo un anno intero!    
 > Indagando, scopriamo che quel record appartiene a un **ordine di test** creato dagli sviluppatori in ambiente di produzione, mai cancellato, e lasciato "aperto" per mesi.  
@@ -190,7 +190,7 @@ Un esempio pratico è la **trasformazione logaritmica**: se una feature presenta
 
 
 
-> **Esempio: sistema di raccomandazione di YouTube**
+> **Esempio: sistema di raccomandazione di YouTube**  
 > Un esempio reale viene da un paper pubblicato da YouTube sul funzionamento dei loro sistemi di raccomandazione.   
 > Per ogni feature numerica $x$ (ad esempio, il tempo trascorso dall'ultima visualizzazione di un video), YouTube non si limita a passare al modello il valore grezzo $x$, ma fornisce anche il suo quadrato ($x^2$) e la sua radice quadrata ($\sqrt{x}$).  
 > In questo modo, aiutano la rete neurale a catturare facilmente andamenti super-lineari o sub-lineari nei dati.  
@@ -208,7 +208,7 @@ Un esempio classico e fondamentale è il **One-Hot Encoding**.
 L'idea alla base è creare un "contenitore" (o *bucket*) per ogni possibile categoria presente nei dati.    
 Si assegna il valore `1` alla categoria a cui appartiene il dato (indicando che è presente, o "hot") e `0` a tutte le altre (indicando che non è quella categoria).
 
-> **Esempio: Riconoscimento della scrittura**
+> **Esempio: Riconoscimento della scrittura**  
 > Immaginiamo di costruire un modello di Deep Learning per riconoscere numeri scritti a mano da 0 a 9. Se vogliamo rappresentare il fatto che un'immagine contenga il numero "8", non passiamo semplicemente il valore numerico `8` al modello. 
 > Creiamo invece 10 "slot" (uno per ogni possibile cifra). Inseriremo un `1` nello slot corrispondente all'8 (il nono slot, se iniziamo a contare da zero) e `0` in tutti gli altri:
 > `[0, 0, 0, 0, 0, 0, 0, 0, 1, 0]`
@@ -229,7 +229,7 @@ Molti modelli, infatti, specialmente le reti neurali, lavorano meglio se i dati 
 
 
 
-> **Esempio: Reddito vs Età**
+> **Esempio: Reddito vs Età**  
 > Immaginiamo di addestrare un sistema basandoci sul reddito di una persona (es. `50.000`) e sulla sua età (es. `30`). Se non normalizziamo questi dati portandoli su scale comparabili, il valore "50.000" del reddito sovrasterà completamente il "30" dell'età. Il modello darà un'importanza enorme al reddito ignorando quasi del tutto l'età, portando a risultati scadenti.
 {: .prompt-tip }
 
