@@ -151,7 +151,8 @@ Quel miliardario modifica di molto la scala della distribuzione: tutte le person
 In questo scenario è la **media** a diventare poco significativa: un solo reddito altissimo la trascina verso valori bizzarri, lontani dai 27.000 € da cui eravamo partiti.  
 La **mediana**, invece, rimane vicina a quel valore centrale, perché è meno sensibile agli estremi.  
 
-Abbiamo visto che calcolando media e deviazione standard del dataset riusciamo agevolmente a identificare gli outlier per poi **scartare** i valori che si trovano al di fuori, ad esempio, di **due deviazioni standard**.  Applicando questa regola e riprovando a tracciare l'istogramma, otteniamo una distribuzione molto più leggibile: scartando il miliardario, anche la media torna più vicina ai 27.000 € di partenza.
+Abbiamo visto che calcolando media e deviazione standard del dataset riusciamo agevolmente a identificare gli outlier per poi **scartare** i valori che si trovano al di fuori, ad esempio, di **due deviazioni standard**.  
+Applicando questa regola e riprovando a tracciare l'istogramma, otteniamo una distribuzione molto più leggibile: scartando il miliardario, anche la media torna più vicina ai 27.000 € di partenza.
 
 ![Istogramma dei redditi dopo aver scartato l'outlier](/assets/images/income_without_outlier.svg){: width="720"}  
 
