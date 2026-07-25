@@ -1,6 +1,6 @@
 ---
 title: "La teoria del Feature Engineering"
-description: "Senza un corretto feature engineering, anche il miglior algoritmo fatica a dare risultati ottimali."
+description: "Senza un'attenta e corretta preparazione dei dati, anche il miglior modello fatica a fornire risultati ottimali."
 date: 2026-07-23 12:00:00 +0530
 categories: [Machine Learning, Feature Engineering]
 tags: [Machine Learning, Feature Engineering]
