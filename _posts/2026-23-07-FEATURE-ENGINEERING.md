@@ -6,6 +6,7 @@ categories: [Machine Learning, Feature Engineering]
 tags: [Machine Learning, Feature Engineering]
 comments: false
 protected: false
+math: true
 ---
 
 Il **feature engineering** è il processo che trasforma i dati grezzi in informazioni più chiare e utili per addestrare correttamente un modello di machine learning.  
