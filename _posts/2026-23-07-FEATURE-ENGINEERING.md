@@ -128,7 +128,7 @@ Esempio di distribuzione del reddito annuo:
 Anche i dati anomali possono essere gestiti in vari modi, è possibile **eliminarli**, **sostituirli** con la media o la mediana dei dati presenti nella stessa feature, o con un valore predefinito, o **lasciarli** così com'è.   
 Tutto sta nel saper individuare la corretta soluzione in base alla natura del dato anomalo, e a quella del dataset e non è sempre semplice!
 
-> **Quando conviene eliminare un dato anomalo?**  
+> **Quando conviene eliminare un dato anomalo?**    
 > Immaginiamo un dataset con i tempi di consegna (in giorni) di un corriere: `2, 3, 2, 4, 3, 365`.  
 > Il valore `365` è anomalo: un pacco consegnato dopo un anno intero!    
 > Indagando, scopriamo che quel record appartiene a un **ordine di test** creato dagli sviluppatori in ambiente di produzione, mai cancellato, e lasciato "aperto" per mesi.  
