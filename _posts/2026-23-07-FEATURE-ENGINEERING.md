@@ -58,7 +58,7 @@ In questi casi, prendendo ad esempio un sistema di **classificazione binaria**, 
    
 > Esempio: nel caso di rilevamento delle frodi, il 99% delle transazioni documentate nel dataset sono legittime e solo l'1% sono frodi.  
 > Ciò significa che l'alto numero di casi negativi influenza il modello a predire sempre il caso negativo, non individuando mai i casi positivi, cioè le frodi.
-{: .prompt-info }
+{: .prompt-tip }
 
 Per cercare di mitigare il problema si possono usare varie tecniche:
 
@@ -238,6 +238,13 @@ Ci sono delle eccezioni: alcuni algoritmi, come gli alberi decisionali (*Decisio
 
 > ⚠️ **Attenzione ai risultati:** Se il modello serve a prevedere un valore numerico (e non una categoria) e abbiamo normalizzato anche la variabile target in fase di addestramento, ricordarsi sempre di **invertire la scala** (reverse scaling) sui risultati finali.  
 > Altrimenti, il modello restituirà un numero normalizzato privo di significato per l'utente, invece del valore reale atteso.
-{: .warning-tip }    
+{: .prompt-warning }    
 
+### Shuffling dei dati
 
+Infine, un'ultima pratica è lo **shuffling** (mescolamento) dei dati di addestramento.  
+
+Spesso i dati mantengono un "segnale residuo" o un **bias** nascosto dovuto semplicemente all'ordine temporale o logico in cui sono stati originariamente raccolti.  
+Mescolando casualmente l'ordine delle righe prima di fornirle al modello, si elimina questo effetto collaterale indesiderato. 
+
+Esistono molti casi reali in cui modelli con prestazioni inizialmente pessime sono migliorati drasticamente con un semplice shuffle dell'input!
