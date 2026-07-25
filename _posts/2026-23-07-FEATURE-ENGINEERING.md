@@ -8,8 +8,8 @@ comments: false
 protected: false
 ---
 
-Il **feature engineering** è il processo di conversione dei dati in features utili per un modello di machine learning.  
-Una **feature** è una singola caratteristica misurabile del dato che viene utilizzata per prevedere il risultato di un modello di machine learning.  
+Il **feature engineering** è il processo che trasforma i dati grezzi in informazioni più chiare e utili per addestrare correttamente un modello di machine learning.  
+Una **feature** è una singola proprietà o caratteristica misurabile dei dati, che il modello utilizza come input per prendere decisioni e fare previsioni.  
 Tenendo presente che la qualità dei dati influisce direttamente sulle prestazioni del modello, il feature engineering è un processo fondamentale per ottenere un modello che funzioni in modo ottimale.  
 
 > "Applied machine learning is basically feature engineering". Andrew Ng
