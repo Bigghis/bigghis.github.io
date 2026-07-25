@@ -238,7 +238,7 @@ Ci sono delle eccezioni: alcuni algoritmi, come gli alberi decisionali (*Decisio
 
 > **Attenzione ai risultati:** Se il modello serve a prevedere un valore numerico (e non una categoria) e abbiamo normalizzato anche la variabile target in fase di addestramento, ricordarsi sempre di **invertire la scala** (reverse scaling) sui risultati finali.  
 > Altrimenti, il modello restituirà un numero normalizzato privo di significato per l'utente, invece del valore reale atteso.
-{: .prompt-warning }    
+{: .prompt-danger }    
 
 ### Shuffling dei dati
 
