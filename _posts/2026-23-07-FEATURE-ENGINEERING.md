@@ -213,7 +213,6 @@ Si assegna il valore `1` alla categoria a cui appartiene il dato (indicando che 
 > `[0, 0, 0, 0, 0, 0, 0, 0, 1, 0]`
 {: .prompt-tip }
 
-**Perché si usa il One-Hot Encoding?** 
 Nel Deep Learning, i neuroni lavorano tipicamente su **stati di attivazione** (booleano acceso/spento), non possiamo semplicemente "alimentare" un singolo neurone di input con il numero 8 o il numero 3 e aspettarci che il modello lo interpreti correttamente come una categoria. 
 Invece, utilizzando il One-Hot Encoding, il dato viene fornito a 10 input diversi, che corrispondono a 10 neuroni, dove solo uno di essi riceve il segnale di attivazione `1`, mentre tutti gli altri rimangono inattivi `0`.
 
