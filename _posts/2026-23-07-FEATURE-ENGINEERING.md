@@ -217,7 +217,7 @@ Si assegna il valore `1` alla categoria a cui appartiene il dato (indicando che 
 
 > **Esempio: Classi passeggeri del Titanic**  
 > Nel famoso dataset del Titanic, la feature `Pclass` indica la classe del biglietto: `1`, `2` o `3`.  
-> Tipicamente i modelli fanno difficoltà a comprendere un valore categorico arbitrario così com'è: invece di una sola feature con valori 1/2/3, il One-Hot Encoding crea tre feature binarie — *sono in 1ª classe?*, *sono in 2ª?*, *sono in 3ª?* — e per ogni passeggero solo una di esse vale `1`:
+> Tipicamente i modelli fanno difficoltà a comprendere un valore categorico arbitrario così com'è: invece di una sola feature con valori 1,2,3, il One-Hot Encoding crea tre feature binarie — *sono in 1ª classe?*, *sono in 2ª?*, etc. — e per ogni passeggero solo una di esse vale `1`:
 >
 > | Passeggero | Pclass | P1 | P2 | P3 |
 > |:----------:|:------:|:--:|:--:|:--:|
