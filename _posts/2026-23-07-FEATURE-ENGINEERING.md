@@ -3,7 +3,7 @@ title: "La teoria del Feature Engineering"
 description: "Senza un'attenta e corretta preparazione dei dati, anche il miglior modello fatica a fornire risultati ottimali."
 date: 2026-07-23 12:00:00 +0530
 categories: [Machine Learning, Feature Engineering]
-tags: [Machine Learning, Feature Engineering]
+tags: [Machine Learning, Feature Engineering, One-Hot Encoding, Normalization, Scaling, Shuffling, oversampling, undersampling, smote, binning, data transformation]
 comments: false
 protected: false
 math: true
@@ -213,6 +213,17 @@ Si assegna il valore `1` alla categoria a cui appartiene il dato (indicando che 
 > Immaginiamo di costruire un modello di Deep Learning per riconoscere numeri scritti a mano da 0 a 9. Se vogliamo rappresentare il fatto che un'immagine contenga il numero "8", non passiamo semplicemente il valore numerico `8` al modello. 
 > Creiamo invece 10 "slot" (uno per ogni possibile cifra). Inseriremo un `1` nello slot corrispondente all'8 (il nono slot, se iniziamo a contare da zero) e `0` in tutti gli altri:
 > `[0, 0, 0, 0, 0, 0, 0, 0, 1, 0]`
+{: .prompt-tip }
+
+> **Esempio: Classi passeggeri del Titanic**  
+> Nel famoso dataset del Titanic, la feature `Pclass` indica la classe del biglietto: `1`, `2` o `3`.  
+> Tipicamente i modelli fanno difficoltà a comprendere un valore categorico arbitrario così com'è: invece di una sola feature con valori 1/2/3, il One-Hot Encoding crea tre feature binarie — *sono in 1ª classe?*, *sono in 2ª?*, *sono in 3ª?* — e per ogni passeggero solo una di esse vale `1`:
+>
+> | Passeggero | Pclass | P1 | P2 | P3 |
+> |:----------:|:------:|:--:|:--:|:--:|
+> | Anna       | 1      | 1  | 0  | 0  |
+> | Bruno      | 2      | 0  | 1  | 0  |
+> | Carla      | 3      | 0  | 0  | 1  |
 {: .prompt-tip }
 
 Nel Deep Learning, i neuroni lavorano tipicamente su **stati di attivazione** (booleano acceso/spento), non possiamo semplicemente "alimentare" un singolo neurone di input con il numero 8 o il numero 3 e aspettarci che il modello lo interpreti correttamente come una categoria.  
