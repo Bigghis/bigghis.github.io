@@ -201,11 +201,10 @@ Un esempio pratico è la **trasformazione logaritmica**: se una feature presenta
 Naturalmente, bisogna sempre bilanciare: aggiungere troppe feature derivate rischia di farci ritornare nel problema del **curse of dimensionality**.  
 
 
-
-Un'altra operazione molto comune durante la preparazione dei dati è la **codifica** (encoding). Spesso i modelli, in particolare nel mondo del Deep Learning, richiedono che i dati in ingresso abbiano un formato specifico e bisogna trasformarli di conseguenza.
-
 ### Encoding (One-Hot Encoding)
-Encoding è il processo di conversione di dati da un formato a un altro.  
+
+Un'altra operazione molto comune durante la preparazione dei dati è la **codifica** (encoding). Spesso i modelli, in particolare nel mondo del Deep Learning, richiedono che i dati in ingresso abbiano un formato specifico e bisogna trasformarli di conseguenza.  
+
 Un esempio classico e fondamentale è il **One-Hot Encoding**.  
 L'idea alla base è creare un "contenitore" (o *bucket*) per ogni possibile categoria presente nei dati.    
 Si assegna il valore `1` alla categoria a cui appartiene il dato (indicando che è presente, o "hot") e `0` a tutte le altre (indicando che non è quella categoria).
