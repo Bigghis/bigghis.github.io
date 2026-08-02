@@ -1,9 +1,9 @@
 ---
 title: "Agentic Memory"
-description: "L'agentic memory si basa sull'idea che un agente possa memorizzare informazioni e utilizzarle nel proprio processo decisionale."
+description: "Memoria dell'agente: come funziona e come si implementa."
 date: 2026-01-08 12:00:00 +0530
 categories: [Agentic Memory]
-tags: [Agentic Memory, Memory Manager, Memory Engineering, Context Engineering, Vector Store, PostgreSQL, pgvector, psycopg, LangChain, Embedding, stateless, stateful]
+tags: [Agentic Memory, Memory Manager, Memory Engineering, Context Engineering, Vector Store, PostgreSQL, pgvector, LangChain, Embedding, stateless, stateful]
 comments: false
 protected: false
 mermaid: true
