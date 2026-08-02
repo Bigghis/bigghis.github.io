@@ -1,7 +1,7 @@
 ---
 title: "Agentic Memory"
 description: "Memoria agentica: funzionamento e implementazione."
-date: 2026-08-01 12:00:00 +0530
+date: 2026-08-01 12:00:00 +0200
 categories: [Agentic Memory]
 tags: [Agentic Memory, Memory Manager, Memory Engineering, Context Engineering, Vector Store, PostgreSQL, pgvector, LangChain, Embedding, stateless, stateful]
 comments: false
@@ -83,7 +83,7 @@ Il Memory Layer è composto da due elementi che lavorano in coppia:
 
 Insieme danno vita ad **agenti memory-augmented**, capaci di gestire attività continue, di operare su **task long-horizon** (compiti che si estendono su orizzonti temporali lunghi) e di adattarsi a nuove informazioni.
 
-> Il Memory Core risponde alla domanda *"che cosa ricorda l'agente?"*, il Memory Manager alla domanda *"come ci accede alle informazioni memorizzate?"*.
+> Il Memory Core risponde alla domanda *"che cosa ricorda l'agente?"*, il Memory Manager alla domanda *"come si accede alle informazioni memorizzate?"*.
 {: .prompt-info }
 
 ### Il Memory Manager
@@ -104,12 +104,12 @@ Mentre la memoria conversazionale può essere contenuta all'interno di una norma
 
 | Tipo di memoria | Analogia umana | A cosa serve | Storage | Strategia di retrieval |
 |:---|:---|:---|:---|:---|
-| **Conversational** | memoria a breve termine | cronologia della chat per thread | tabella SQL | match esatto su `thread_id` |
+| **Conversational** | memoria episodica (la traccia persistita della working memory) | cronologia della chat per thread | tabella SQL | match esatto su `thread_id` |
 | **Knowledge Base** | memoria semantica a lungo termine | fatti, documenti, risultati di ricerca | vector store (colonna `vector`) | similarità semantica |
 | **Workflow** | memoria procedurale | pattern di azioni appresi | vector store (colonna `vector`) | similarità semantica + filtro sui metadati |
 | **Toolbox** | memoria delle competenze | tool e capacità disponibili | vector store (colonna `vector`) | similarità semantica |
-| **Entity** | memoria episodica | persone, luoghi, sistemi citati | vector store (colonna `vector`) | similarità semantica |
-| **Summary** | memoria compressa | contesto condensato per conversazioni lunghe | vector store (colonna `vector`) | similarità semantica (con filtro opzionale per ID) |
+| **Entity** | memoria semantica | persone, luoghi, sistemi citati | vector store (colonna `vector`) | similarità semantica |
+| **Summary** | memoria compressa | contesto condensato per conversazioni lunghe | vector store (colonna `vector`) | similarità semantica |
 | **Tool Log** | traccia di audit | input/output grezzi dei tool e stato di esecuzione | tabella SQL | match esatto su `thread_id` + ordinamento temporale |
 
 Per ognuno di questi store il Memory Manager espone almeno le operazioni di **lettura** e **scrittura**; nulla vieta di implementare anche `update`, `delete` e `create` a seconda delle necessità.
@@ -302,20 +302,11 @@ print("Using user:", database_connection.info.user)
 ```
 
 
-```mermaid
-flowchart TB
-  PC["database_connection<br/>(psycopg)"]
-  PE["pg_engine<br/>(PGEngine, pool SQLAlchemy)"]
-  PC --> PSQL["Tabelle SQL<br/>conversational, tool_log"]
-  PE --> PINIT["init_vectorstore_table()"]
-  PINIT --> PVS["PGVectorStore.create_sync()"]
-```
-
 #### 2. Il modello di embedding
 
-Il secondo componente chiave è il modello di embedding, che useremo per trasformare il testo in vettori.  
+Altro componente chiave è il modello di embedding, che useremo per trasformare il testo in vettori.  
 Esistono miriadi di modelli di embedding, che possono essere usati con `langchain-huggingface`.  
-In questo esempio ne usiamo uno [`paraphrase-mpnet-base-v2`.](https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2){:target="_blank"} prelevato da Hugging Face attraverso l'integrazione LangChain, usando la libreria `sentence-transformers`.
+In questo esempio usiamo [`paraphrase-mpnet-base-v2`](https://huggingface.co/sentence-transformers/paraphrase-mpnet-base-v2){:target="_blank"} prelevato da Hugging Face attraverso l'integrazione LangChain, usando la libreria `sentence-transformers`.
 
 ```python
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -358,7 +349,7 @@ for table in ALL_TABLES:
 database_connection.commit()
 ```
 
-`DROP TABLE IF EXISTS ... CASCADE` rende superflua la gestione delle eccezioni: se la tabella non c'è, il comando è semplicemente un no-op. `CASCADE` elimina anche indici e dipendenze collegate.
+`DROP TABLE IF EXISTS ... CASCADE` rende superflua la gestione delle eccezioni: se la tabella non c'è, il comando è semplicemente un no-op. Gli indici della tabella vengono eliminati già dal `DROP TABLE`; `CASCADE` elimina in più gli oggetti dipendenti, come viste e foreign key di altre tabelle.
 
 ##### Dalle categorie cognitive alle tabelle
 
@@ -388,7 +379,7 @@ I commenti a fianco ai nomi delle tabelle indicano la **categoria cognitiva** ch
 A differenza dei vector store, la memoria conversazionale usa una tabella tradizionale perché qui ci serve un **recupero esatto per thread**, non una ricerca per similarità.
 
 Per una conversational memory unit vogliamo catturare il **contenuto**, il **ruolo** e il **timestamp**. 
-Possiamo però aggiungere metadati ulteriori: il campo `metadata` associato alla memory unit (qui in **JSONB**, interrogabile e indicizzabile), il campo `created_at` (che è cosa diversa dal timestamp in cui la memory unit viene catturata) e un `summary_id`, che useremo più avanti per collegare la conversazione ai suoi riassunti.
+Possiamo però aggiungere metadati ulteriori: il campo `metadata` associato alla memory unit (qui in **JSONB**, interrogabile e indicizzabile), il campo `created_at` (che coincide con `timestamp` finché entrambi restano al default `NOW()`, ma se ne distingue quando il timestamp dell'evento viene passato dall'applicazione) e un `summary_id`, pensato per collegare la conversazione ai suoi riassunti.
 
 ```python
 def create_conversational_history_table(conn, table_name: str = "conversational_memory"):
@@ -550,7 +541,8 @@ class StoreManager:
         self._conversational_table = conversational_table
         self._tool_log_table = tool_log_table
 
-        # Hybrid search richiede colonna tsvector + indice GIN già in fase di creazione tabella
+        # Hybrid search: la colonna tsvector deve nascere insieme alla tabella
+        # (l'indice GIN verrà applicato dopo, con apply_hybrid_search_index())
         hybrid_config = HybridSearchConfig(
             tsv_column="content_tsv",
             tsv_lang="pg_catalog.english",
@@ -631,7 +623,7 @@ Ogni store nasce in **due passi**: prima `init_vectorstore_table()` crea la tabe
 Ripetiamo il procedimento per ogni forma di memoria: knowledge base (memoria semantica), workflow, toolbox, entity e summary.  
 Sulla sola knowledge base dichiariamo colonne di metadati **tipizzate e filtrabili** (`arxiv_id`, `subjects`, `submission_date`) e passiamo la `HybridSearchConfig` già in fase di creazione.
 
-> L'hybrid search in Postgres non si "accende" a posteriori su uno store già esistente: richiede una colonna `tsvector` e un indice **GIN** che devono esistere al momento della creazione della tabella. Per questo la configurazione viene passata a `init_vectorstore_table()` e a `create_sync()`, invece di un metodo `setup_hybrid_search()` chiamato dopo.
+> Per l'hybrid search la colonna `tsvector` deve nascere insieme alla tabella: per questo la `HybridSearchConfig` viene passata sia a `init_vectorstore_table()` sia a `create_sync()`. L'indice **GIN** che accelera la full-text search, invece, si applica in un secondo momento con `apply_hybrid_search_index()`: lo faremo nella sezione 6, insieme agli indici vettoriali.
 {: .prompt-tip }
 
 Lo `StoreManager` non gestisce solo i vector store: conserva anche i nomi delle tabelle SQL (conversazionale e tool log), così da diventare l'unico punto di accesso a tutti gli store del sistema.
@@ -672,7 +664,7 @@ summary_vs = store_manager.get_summary_store()
 tool_log_table = store_manager.get_tool_log_table()
 ```
 
-#### 6. Gli indici vettoriali
+#### 6. Gli indici
 
 Per garantire un recupero efficiente delle informazioni bisogna **sempre creare un indice**.  
 Con `PGVectorStore` gli indici si creano direttamente sullo store, senza helper esterni:  
@@ -688,13 +680,24 @@ workflow_vs.apply_vector_index(HNSWIndex(name="workflow_hnsw"))
 toolbox_vs.apply_vector_index(HNSWIndex(name="toolbox_hnsw"))
 entity_vs.apply_vector_index(HNSWIndex(name="entity_hnsw"))
 summary_vs.apply_vector_index(HNSWIndex(name="summary_hnsw"))
+
+# Indice GIN sulla colonna tsvector della knowledge base,
+# per la parte full-text dell'hybrid search
+# (usa index_name e index_type definiti nella HybridSearchConfig)
+knowledge_base_vs.apply_hybrid_search_index()
 print("All indexes created!")
 ```
+
+Gli indici HNSW accelerano la ricerca per similarità vettoriale; `apply_hybrid_search_index()` crea invece l'indice **GIN** `kb_tsv_index` sulla colonna `content_tsv` della knowledge base, senza il quale la parte full-text dell'hybrid search funzionerebbe ma scandirebbe tutte le righe.
+
+> **Che cos'è un indice GIN?** GIN sta per *Generalized Inverted Index* e funziona come l'indice analitico in fondo a un libro: per ogni parola conserva l'elenco delle righe che la contengono. Quando la full-text search cerca "space exploration", Postgres non legge tutte le righe una per una: apre la voce "space", apre la voce "exploration" e incrocia le due liste. È lo stesso tipo di indice che si usa anche per interrogare le colonne JSONB.
+{: .prompt-info }
+
 Per approfondire l'argomento, si può consultare la [documentazione ufficiale di pgvector](https://github.com/pgvector/pgvector#indexing){:target="_blank"}.
 
 #### 7. Il Memory Manager
 
-Arrivati a questo punto possiamo istanziare il Memory Manager, che, come abbiamo detto,astrae tutte le operazioni con cui leggiamo e scriviamo informazioni nel database, nascondendo la complessità delle query SQL e delle operazioni sui vector store dietro un'interfaccia uniforme.
+Arrivati a questo punto possiamo istanziare il Memory Manager, che, come abbiamo detto, astrae tutte le operazioni con cui leggiamo e scriviamo informazioni nel database, nascondendo la complessità delle query SQL e delle operazioni sui vector store dietro un'interfaccia uniforme.
 
 È una singola classe che gestisce sette tipi di memoria con lo stesso pattern read/write:
 
@@ -878,7 +881,7 @@ Restano le due tabelle SQL, dove le query le scriviamo noi:
         rows = self._recent_messages(thread_id, limit)
         body = "\n".join(
             f"[{ts:%Y-%m-%d %H:%M:%S}] {role}: {content}" for role, content, ts in rows
-        )
+        ) or "(no result)"
         return self._format("conversational", f"CONVERSATION HISTORY:\n{body}")
 
     def write_tool_log(self, thread_id, tool_name, tool_input=None, tool_output=None,
@@ -921,7 +924,7 @@ Restano le due tabelle SQL, dove le query le scriviamo noi:
             timing = f" in {duration} ms" if duration is not None else ""
             lines.append(f"[{ts:%H:%M:%S}] {name}({tool_input}) -> {status}{timing}\n    {detail}")
 
-        return self._format("tool_log", "TOOL EXECUTIONS:\n" + "\n".join(lines))
+        return self._format("tool_log", "TOOL EXECUTIONS:\n" + ("\n".join(lines) or "(no result)"))
 ```
 
 Le letture ordinano per `timestamp DESC` con `LIMIT` — cioè prendono i record *più recenti* — e poi invertono le righe in Python per restituirle in ordine cronologico: è il modo in cui usiamo gli indici creati nella sezione 4, compreso l'indice parziale su `status` quando chiediamo solo i fallimenti.
