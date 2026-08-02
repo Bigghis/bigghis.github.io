@@ -1,6 +1,6 @@
 ---
 title: "Agentic Memory"
-description: "Memoria agentica: funzionamento e implementazione."
+description: "Come costruire un sistema di memoria per agenti memory-aware, capaci di ricordare, recuperare informazioni e apprenderne di nuove durante la loro esecuzione. (PRIMA PARTE)"
 date: 2026-08-01 12:00:00 +0200
 categories: [Agentic Memory]
 tags: [Agentic Memory, Memory Manager, Memory Engineering, Context Engineering, Vector Store, PostgreSQL, pgvector, LangChain, Embedding, stateless, stateful]
@@ -953,7 +953,7 @@ memory_manager = MemoryManager(
 
 Proviamo ad usare il Memory Manager attraverso esecuzione di read e write.  
 Popoliamo la knowledge base di *ArxivScout* con dei **paper di arXiv** presi da Hugging Face. 
-Usiamo il dataset `nick007x/arxiv-papers`.
+Usiamo il dataset [`nick007x/arxiv-papers`](https://huggingface.co/datasets/nick007x/arxiv-papers){:target="_blank"}.
 
 ```python
 from datasets import load_dataset
@@ -1041,7 +1041,7 @@ In questo modo il context engineering viene applicato al retrieval.
 
 Abbiamo costruito l'infrastruttura di memoria che sta sotto a qualsiasi agente serio: memory store persistenti e differenziati per tipo di memoria, dati modellati per un recupero efficiente e un Memory Manager che orchestra lettura e scrittura durante l'esecuzione.
 
-I concetti da portarsi dietro sono pochi ma decisivi:
+I concetti da portarsi dietro sono i seguenti:
 
 - il **Memory Layer** sostituisce il Data Layer nell'agent stack e contiene Memory Core e Memory Manager;
 - il **Memory Manager** è un'astrazione CRUD sopra il database, e isola l'agente dai dettagli di storage;
@@ -1051,4 +1051,4 @@ I concetti da portarsi dietro sono pochi ma decisivi:
 - la **memory engineering** governa l'intero memory lifecycle ed è l'intersezione di discipline consolidate;
 - un agente **memory-aware** non si limita ad avere memoria: sa quali memorie possiede, sa interrogarle da solo e ragiona sul proprio ciclo di vita della memoria.
 
-Resta infine il lavoro meno visibile ma decisivo: **valutare i compromessi** di progettazione. Ogni scelta — quali campi vettorizzare, quale distance strategy adottare, quante operazioni rendere deterministiche — sposta l'equilibrio tra accuratezza del retrieval, latenza, costo e affidabilità dell'agente. Non esiste una configurazione ottimale in assoluto: esiste quella giusta per il caso d'uso che si sta costruendo.  
+Infine, ogni scelta di progettazione è un **compromesso** tra accuratezza, latenza, costo e affidabilità: non esiste la configurazione perfetta, esiste quella giusta per il proprio caso d'uso.  
