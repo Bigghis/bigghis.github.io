@@ -1,7 +1,7 @@
 ---
 title: "Agentic Memory"
 description: "Memoria dell'agente: come funziona e come si implementa."
-date: 2026-01-08 12:00:00 +0530
+date: 2026-08-01 12:00:00 +0530
 categories: [Agentic Memory]
 tags: [Agentic Memory, Memory Manager, Memory Engineering, Context Engineering, Vector Store, PostgreSQL, pgvector, LangChain, Embedding, stateless, stateful]
 comments: false
