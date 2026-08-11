@@ -1,7 +1,7 @@
 ---
 title: "Agentic Memory: consolidamento della memoria e gestione della context window"
 description: "Context summarization, context compaction e workflow memory: come trasformare conversazioni lunghe in conoscenza durevole e recuperabile. (TERZA PARTE)"
-date: 2026-08-11 12:00:00 +0200
+date: 2026-08-10 12:00:00 +0200
 categories: [Agentic Memory]
 tags: [Agentic Memory, Memory Manager, Context Engineering, Context Summarization, Context Compaction, Workflow Memory, Summary Memory, PostgreSQL, pgvector, LangChain, Embedding]
 comments: false
