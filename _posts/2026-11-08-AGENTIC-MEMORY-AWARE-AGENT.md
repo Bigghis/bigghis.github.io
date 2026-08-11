@@ -1,6 +1,6 @@
 ---
 title: "Agentic Memory: l'agente memory-aware"
-description: "L'agent loop, l'harness e le operazioni di memoria dentro e fuori dal ciclo: assembliamo tutti i pezzi in un agente stateful che persiste tra le sessioni. (QUARTA PARTE)"
+description: "L'agent loop, l'harness e le operazioni di memoria dentro e fuori dal ciclo: assembliamo tutti i pezzi in un agente stateful che persiste tra le sessioni. (QUARTA E ULTIMA PARTE)"
 date: 2026-08-11 12:00:00 +0200
 categories: [Agentic Memory]
 tags: [Agentic Memory, Agent Loop, Agent Harness, Memory Manager, Context Engineering, Tool Calling, JIT Retrieval, PostgreSQL, pgvector, OpenAI]
