@@ -183,6 +183,7 @@ Il Planner produce istruzioni e ogni step è la sotto-query più piccola possibi
 
 Se `replan_flag` è false, si genera un piano da zero. Se è true, il prompt aggiunge il motivo del blocco e il piano corrente, e chiede di modificare solo gli step che impediscono il successo di progressione del piano.  
 
+{% raw %}
 ```python
 def plan_prompt(state: State) -> HumanMessage:
     replan_flag = state.get("replan_flag", False)
@@ -260,6 +261,7 @@ def plan_prompt(state: State) -> HumanMessage:
 
     return HumanMessage(content=prompt)
 ```
+{% endraw %}
 
 ### Executor
 
@@ -367,6 +369,7 @@ L'executor produce un JSON in cui è specificato se ripianificare (`replan`), ch
 {: .prompt-info }
 
 
+{% raw %}
 ```python
 def executor_prompt(state: State) -> HumanMessage:
     step = int(state.get("current_step", 0))
@@ -435,6 +438,7 @@ def executor_prompt(state: State) -> HumanMessage:
 
     return HumanMessage(content=executor_prompt)
 ```
+{% endraw %}
 
 ### Sub-agent: pattern comune
 
