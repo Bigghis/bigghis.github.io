@@ -221,9 +221,9 @@ graph = workflow.compile()
 
 Costruiamo un mini dataset di eval, sottoponiamo l'agente a tre query progressive e valutiamo la risposta. Non serve che la risposta sia perfetta: l'obiettivo è **produrre trace e score** da cui diagnosticare i failure mode.
 
-1. *What are our top 3 client deals? Chart the deal value for each.*
-2. *Identify our pending deals, research if they may be experiencing regulatory changes, and using the meeting notes for each customer, provide a new value proposition for each given the regulatory changes.*
-3. *Identify our largest client deal, then find important topics in the meeting notes with that company, and find a news article related to the important topics discussed.*
+1. *Quali sono i nostri 3 deal clienti più importanti? Crea un grafico del valore di ciascun deal.*
+2. *Identifica i nostri deal in sospeso, verifica se potrebbero essere soggetti a cambiamenti regolamentari e, usando le note delle riunioni di ciascun cliente, proponi una nuova proposta di valore per ciascuno alla luce di tali cambiamenti.*
+3. *Identifica il nostro deal cliente più grande, poi trova gli argomenti importanti nelle note delle riunioni con quell'azienda e trova un articolo di news correlato agli argomenti discussi.*
 
 ```python
 from langchain.schema import HumanMessage
@@ -237,16 +237,17 @@ ENABLED = [
 ]
 
 QUERIES = [
-    "What are our top 3 client deals? Chart the deal value for each.",
+    "Quali sono i nostri 3 deal clienti più importanti? Crea un grafico del valore di ciascun deal.",
     (
-        "Identify our pending deals, research if they may be experiencing "
-        "regulatory changes, and using the meeting notes for each customer, "
-        "provide a new value proposition for each given the regulatory changes."
+        "Identifica i nostri deal in sospeso, verifica se potrebbero essere "
+        "soggetti a cambiamenti regolamentari e, usando le note delle riunioni "
+        "di ciascun cliente, proponi una nuova proposta di valore per ciascuno "
+        "alla luce di tali cambiamenti."
     ),
     (
-        "Identify our largest client deal, then find important topics in the "
-        "meeting notes with that company, and find a news article related to "
-        "the important topics discussed."
+        "Identifica il nostro deal cliente più grande, poi trova gli argomenti "
+        "importanti nelle note delle riunioni con quell'azienda e trova un "
+        "articolo di news correlato agli argomenti discussi."
     ),
 ]
 
@@ -291,20 +292,20 @@ results = mlflow.genai.evaluate(
 )
 ```
 
-> L'output di un LLM non è deterministico: ripetendo le stesse query puoi ottenere score diversi. Un fallimento (chart senza testo, deal “pending” non filtrati, sorgente dati non raggiungibile) **non** va ritentato a oltranza: è materiale di diagnosi.
+> L'output di un LLM non è deterministico: ripetendo le stesse query puoi ottenere score diversi. Un fallimento (grafico senza testo, deal in sospeso non filtrati, sorgente dati non raggiungibile) **non** va ritentato a oltranza: è materiale di diagnosi.
 {: .prompt-warning }
 
 ### Come leggere i fallimenti
 
 Nella UI MLflow trovi i **trace** (albero degli span: planner → executor → researcher → …) e la tabella di `evaluate` con score e rationale del judge. Vediamo alcuni casi tipici che possono verificarsi nel caso del Data Agent:
 
-**Query 1 — top 3 deals + chart.**  
+**Query 1 — top 3 deal + grafico.**  
 Spesso compare il grafico ma manca il riassunto testuale. **Answer Relevance** crolla verso zero: la risposta non affronta la richiesta in forma utile all'utente. Se i researcher non hanno portato deal pertinenti, anche **Context Relevance** resta bassa.
 
-**Query 2 — pending deals + regolamentazione + value proposition.**  
-La risposta può sembrare pertinente (**Answer Relevance** alta) ma **Groundedness** bassa: il synthesizer inferisce value proposition non supportate dai contesti recuperati. Spesso il filtro “solo deal pending” non è stato applicato: nel trace vedi un path lungo (planner → executor → cortex → replan → web → cortex → synthesizer) e puoi ispezionare input/output di ogni nodo.
+**Query 2 — deal in sospeso + regolamentazione + proposta di valore.**  
+La risposta può sembrare pertinente (**Answer Relevance** alta) ma **Groundedness** bassa: il synthesizer inferisce proposte di valore non supportate dai contesti recuperati. Spesso il filtro “solo deal in sospeso” non è stato applicato: nel trace vedi un path lungo (planner → executor → cortex → replan → web → cortex → synthesizer) e puoi ispezionare input/output di ogni nodo.
 
-**Query 3 — largest deal + meeting notes + news.**  
+**Query 3 — deal più grande + note riunioni + news.**  
 Se il retrieval sulla sorgente dati fallisce, a monte non c'è contesto sul deal più grande: Context Relevance e Groundedness riflettono un problema di **accesso ai dati**, non solo di prompting.
 
 Il punto della RAG Triad è proprio questo: tre score diversi isolano **tre failure mode** distinti.
