@@ -54,8 +54,8 @@ Quei passi si chiamano **span**, ovvero l'unità minima di lavoro all'interno de
 | Tool use | Chiamata a uno strumento (SQL, search, …) |
 | Generation | Synthesizer o chart summarizer |
 
+MlFlow mette a disposizione vari tipi di [span](https://mlflow.org/docs/latest/genai/concepts/span/#span-types){:target="_blank"}. Per questa valutazione prestiamo attenzione soprattutto a quelli di tipo **retrieval** (`RETRIEVER` in MLflow). Contengono la sotto-query e i documenti o/e i contesti recuperati che servono a calcolare Context Relevance e Groundedness.
 
-Tra tutti gli span, per questa valutazione prestiamo attenzione soprattutto a quelli di tipo **retrieval** (`RETRIEVER` in MLflow). Contengono la sotto-query e i documenti o/e i contesti recuperati che servono a calcolare Context Relevance e Groundedness.
 
 
 MLflow offre [autolog per LangGraph](https://mlflow.org/docs/latest/genai/flavors/langchain/autologging/){:target="_blank"}: `mlflow.langchain.autolog()` che registra automaticamente i nodi del grafo, le chiamate LLM e i tool. 
@@ -314,4 +314,5 @@ Il punto della RAG Triad è proprio questo: tre score diversi isolano **tre fail
 | Answer Relevance ↓ | Risposta fuori tema o incompleta (es. solo chart, niente testo) |
 | Groundedness ↓, Answer Relevance ↑ | Allucinazione / inferenza non supportata dal retrieval |
 | Context Relevance ↓ | Retrieval sbagliato o sotto-query mal formulata |
+
 
