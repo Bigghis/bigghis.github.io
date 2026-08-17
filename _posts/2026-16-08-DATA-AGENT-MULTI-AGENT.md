@@ -1,6 +1,6 @@
 ---
-title: "Struttura gerarchica di agenti e sub-agenti con LangGraph"
-description: "Perché un sistema multi-agente: specialisti con prompt e tool dedicati, stato condiviso, Planner, Executor e replan con LangGraph."
+title: "Struttura di agenti e sub-agenti con LangGraph"
+description: "Creazione di un sistema multi-agente con prompt e tool dedicati e uno stato condiviso."
 date: 2026-08-16 15:00:00 +0200
 categories: [LangGraph, LangChain, Multi-Agent]
 tags: [Multi-Agent, LangGraph, LangChain, ReAct, Planner, Executor, StateGraph, Replan]
