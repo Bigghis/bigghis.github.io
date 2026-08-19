@@ -9,9 +9,9 @@ protected: false
 mermaid: true
 ---
 
-Nel [post precedente]({% post_url 2026-17-08-DATA-AGENT-EVAL %}) abbiamo misurato Context Relevance, Groundedness e Answer Relevance. Qui guardiamo **perché** il Data Agent ha scelto un certo percorso — non solo se la risposta era grounded. 
+Nel [post precedente]({% post_url 2026-17-08-DATA-AGENT-EVAL %}) abbiamo misurato Context Relevance, Groundedness e Answer Relevance. Qui guardiamo **perché** il Data Agent ha scelto un certo percorso — non solo se la risposta era grounded.  
 
-La RAG Triad valuta ricerca e sintesi. Non dice se il piano è adatto all'obiettivo, se l'agente lo ha seguito, o se il percorso di esecuzione era efficiente.
+Nel caso specifico del sistema Data Agents, la RAG Triad valuta il lavoro di ricerca e sintesi prodotto dagli agenti, ma non dice se il piano è adatto all'obiettivo, se l'agente lo ha seguito, o se il percorso di esecuzione era efficiente.
 
 Per quello serve l'allineamento **Goal–Plan–Action** ([GPA](https://arxiv.org/abs/2510.08847){:target="_blank"}): un framework di valutazione in cui i fallimenti critici di un agente emergono alle intersezioni tra obiettivo, piano e azioni eseguite. GPA non giudica solo la risposta finale: suddivide il comportamento in tre oggetti (goal, plan, act) e misura se sono allineati valutando se il piano è adeguato al goal, se le azioni sono fedeli al piano, se il percorso è efficiente e se il ragionamento è coerente.  
 
