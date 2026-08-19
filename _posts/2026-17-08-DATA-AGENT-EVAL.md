@@ -1,5 +1,5 @@
 ---
-title: "Osservare e misurare le performance del Data Agent"
+title: "Misurazione delle performance del Data Agent"
 description: "Tracing con MLflow e RAG Triad con gli scorer TruLens: Context Relevance, Groundedness e Answer Relevance sul sistema multi-agente LangGraph."
 date: 2026-08-17 12:00:00 +0200
 categories: [LangGraph, MLflow, Evaluation]
