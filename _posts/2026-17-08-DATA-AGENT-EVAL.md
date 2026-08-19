@@ -1,6 +1,6 @@
 ---
 title: "Misurazione delle performance del Data Agent"
-description: "Tracing con MLflow e RAG Triad con gli scorer TruLens: Context Relevance, Groundedness e Answer Relevance sul sistema multi-agente LangGraph."
+description: "Tracing con MLflow e RAG Triad con gli scorer TruLens: Context Relevance, Groundedness e Answer Relevance sul sistema multi-agent."
 date: 2026-08-17 12:00:00 +0200
 categories: [LangGraph, MLflow, Evaluation]
 tags: [Data Agent, RAG Triad, TruLens, MLflow, Mlflow monitoring, Tracing, LLM-as-Judge, Groundedness, Context Relevance, Answer Relevance]
@@ -40,7 +40,7 @@ Queste metriche sono già definite in [TruLens](https://www.trulens.org/){:targe
 
 Per calcolare Groundedness e Context Relevance serve conoscere, dunque, **quali passi** l'agente ha compiuto e **quale contesto** ha recuperato lungo il percorso. Queste informazioni fanno parte del **tracing**.
 
-Una **trace** è il registro dell'intera esecuzione su una query: ogni nodo visitato, ogni tool chiamato, ogni output prodotto. In un Data Agent un percorso tipico può partire da un nodo di ricerca, passare da un chart, tornare a un altro researcher e chiudere con la sintesi. Dentro quella sequenza i passi di **retrieval** sono quelli che contengono i dati chiave per la RAG Triad.
+Una **trace** è il registro dell'intera esecuzione su una query: ogni nodo visitato, evntuali tool chiamate ai tool e output prodotti. In un Data Agent un percorso tipico può partire da un nodo di ricerca, produrre un chart, tornare a un altro researcher e chiudere con una sintesi. Dentro questa sequenza i passi di **retrieval** sono quelli che contengono i dati chiave per la RAG Triad.
 
 Il tracing che useremo è costruito su [OpenTelemetry](https://opentelemetry.io/){:target="_blank"}: un sistema di tracing distribuito **indipendente dal linguaggio**. TruLens e MLflow condividono questo modello: catturano ogni passo che l'agente compie per raggiungere l'obiettivo, senza legarsi a un runtime specifico.
 
@@ -112,10 +112,10 @@ from mlflow.genai.scorers.trulens import Groundedness, AnswerRelevance, ContextR
 
 eval_dataset = [
     {
-        "inputs": {"query": "What is MLflow?"},
-        "outputs": "MLflow is an open-source AI engineering platform.",
+        "inputs": {"query": "Cos'è MLflow?"},
+        "outputs": "MLflow è una piattaforma open-source per il ciclo di vita ML.",
         "expectations": {
-            "context": "MLflow is an ML platform for experiment tracking and model deployment."
+            "context": "MLflow è una piattaforma open-source per experiment tracking, model registry e deployment."
         },
     },
 ]
@@ -195,7 +195,7 @@ def web_research_node(
 
 Senza questa etichetta, MLflow vedrebbe comunque il nodo come generico chain/agent; gli scorer TruLens non troverebbero un retrieval strutturato da cui estrarre il contesto per Groundedness e Context Relevance.
 
-Ricostruiamo il grafo con i researcher instrumentati (Planner, Executor e gli altri nodi restano quelli del [post precedente]({% post_url 2026-16-08-DATA-AGENT-MULTI-AGENT %})):
+Ricostruiamo il grafo con i researcher configurati (Planner, Executor e gli altri nodi restano quelli del [post precedente]({% post_url 2026-16-08-DATA-AGENT-MULTI-AGENT %})):
 
 ```python
 from langgraph.graph import START, StateGraph
@@ -219,7 +219,7 @@ graph = workflow.compile()
 
 ### Dataset di eval
 
-Costruiamo un mini dataset di eval, sottoponiamo l'agente a tre query progressive e valutiamo la risposta. Non serve che la risposta sia perfetta: l'obiettivo è **produrre trace e score** da cui diagnosticare i failure mode.
+Costruiamo un mini dataset di eval, sottoponiamo l'agente a query progressive e valutiamo la risposta. L'obiettivo è **produrre trace e score** da cui diagnosticare i failure mode
 
 1. *Quali sono i nostri 3 deal clienti più importanti? Crea un grafico del valore di ciascun deal.*
 2. *Identifica i nostri deal in sospeso, verifica se potrebbero essere soggetti a cambiamenti regolamentari e, usando le note delle riunioni di ciascun cliente, proponi una nuova proposta di valore per ciascuno alla luce di tali cambiamenti.*
