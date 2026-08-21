@@ -117,7 +117,7 @@ Nel nostro grafo “tool” è anche la scelta del sub-agent: Testuale vs Web vs
 
 ### Scorer TruLens via MLflow
 
-Le evaluation GPA usano lo stesso `mlflow.langchain.autolog()` del [post precedente]({% post_url 2026-17-08-DATA-AGENT-EVAL %}): experiment già aperto, judge `openai:/gpt-4o`. Gli scorer si applicano ai **trace**, non a triple input,output e contesto. Non serve nuova instrumentation `SpanType.RETRIEVER`: GPA legge l'albero degli span (piano del Planner, sequenza Executor/tool).
+Le evaluation GPA usano lo stesso `mlflow.langchain.autolog()` del [post precedente]({% post_url 2026-17-08-DATA-AGENT-EVAL %}). Gli scorer si applicano all'intero **trace**, non a triple input/output/contesto. Non serve nuova instrumentation `SpanType.RETRIEVER`: GPA legge l'albero degli span (piano del Planner, sequenza Executor/tool).
 
 Lo score è tra **0 e 1**. Le trace GPA sono più lunghe e intricate delle triple input/output/contesto della RAG Triad: conviene un judge più performante, per esempio `openai:/gpt-4o` invece di un mini.
 
@@ -196,7 +196,7 @@ La differenza è *cosa* misuriamo sulla stessa esecuzione.
 
 ### Come leggere i fallimenti con GPA
 
-GPA evidenzia failure mode che la RAG Triad vede solo di sfuggita. Le due famiglie di metriche **non sostituiscono** l'un l'altra ma si **complementano**.
+GPA evidenzia failure mode che la RAG Triad vede solo di "sfuggita". Le due famiglie di metriche **non sostituiscono** l'un l'altra, ma si **completano**.
 
 Vediamo alcuni esempi tipici che possono verificarsi nel caso del Data Agent:
 
