@@ -1,6 +1,6 @@
 ---
 title: "Goal–Plan–Action (GPA) di un sistema multi-agent"
-description: "I fallimenti critici di un agente emergono alle intersezioni tra Goal, Plan e Action, non basta solo valutare groundness e context relevance (RAG Triad)"
+description: "I fallimenti più subdoli di un agente emergono alle intersezioni tra Goal, Plan e Action, non vengono evidenziati valutando groundness e context relevance (RAG Triad)"
 date: 2026-08-18 12:00:00 +0200
 categories: [LangGraph, MLflow, Evaluation]
 tags: [Data Agent, GPA, TruLens, MLflow, Tracing, Plan Quality, Plan Adherence, Execution Efficiency, Logical Consistency, Inline Evaluation, Prompt Engineering]
