@@ -101,7 +101,7 @@ Ragionamento, piano e azioni restano coerenti per tutta l'esecuzione? Il judge c
 | Decision maker «da definire» ma next step attivi | Next step solo dove il contesto lo consente |
 | Ranking per «engagement minimo» senza giustificare | Criterio di ranking esplicitato e stabile |
 
-Nel Data Agent: un replan che contraddice lo step precedente, un synthesizer che afferma il contrario di ciò che i sub agenti hanno trovato, un Executor che giustifica `goto` in un modo e poi ne fa un altro.
+esempio, nel caso del Data Agent: un replan che contraddice lo step precedente, un synthesizer che afferma il contrario di ciò che i sub agenti hanno trovato, un Executor che giustifica `goto` in un modo e poi ne fa un altro, sono tutti casi di incoerenza logica.
 
 Due scorer aggiuntivi, sempre su trace, coprono i tool:
 
