@@ -39,15 +39,15 @@ MLflow espone già questi giudizi come [scorer TruLens](https://mlflow.org/docs/
 
 ### Cosa misura GPA
 
-La RAG Triad guarda *cosa* è stato recuperato e *cosa* è stato scritto. GPA guarda *come* l'agente ha deciso di arrivarci. Per esempio: un Answer Relevance alto con un piano sbagliato è possibile: la risposta è pertinente, ma il percorso è un caso. GPA rende visibile quel caso.
+La RAG Triad giudica il *risultato*: cosa è stato recuperato e cosa è stato scritto. GPA giudica il *processo*: come l'agente ha deciso di arrivare a quel risultato. La differenza conta perché un buon risultato può nascere da un processo sbagliato: l'agente può produrre una risposta pertinente (Answer Relevance alta) pur avendo seguito un piano errato — in quel caso il successo è fortuito, e alla prossima query simile l'agente potrebbe fallire. L'allineamento GPA evidenzia questi casi, appunto perché valuta il percorso e non solo l'esito.
 
 
-> Come la RAG Triad, anche GPA è valutato con un **LLM-as-judge**. La differenza è l'input: questi scorer **richiedono un trace** completo, perché ispezionano l'albero degli span (piano dichiarato, tool chiamati, ordine dei nodi). Non bastano `inputs` / `outputs` / `context`.
+> Come la RAG Triad, anche GPA è valutato tramite un **LLM-as-judge**. La differenza è l'input: questi scorer **richiedono un trace** completo, perché ispezionano l'albero degli span (piano dichiarato, tool chiamati, ordine dei nodi). Non bastano `inputs` / `outputs` / `context`.
 {: .prompt-info }
 
 ### Le quattro intersezioni
 
-Prima di applicarle al Data Agent, conviene capire cosa cerca il judge su un esempio minimale. L'esempio sotto — *«Quali lead di vendita dovremmo priorizzare questa settimana, e quali azioni specifiche dobbiamo fare per ciascun lead?»* — è **solo illustrativo**: non fa parte del mini-dataset di tre query del grafo.
+Prima di applicarle al Data Agent, conviene capire cosa cerca il judge su un esempio minimale. Partiamo dall'esempio:*«Quali lead di vendita dovremmo priorizzare questa settimana, e quali azioni specifiche dobbiamo fare per ciascun lead?»* e ipotizziamo diversi piani che potrebbero essere creati e seguiti per rispondere a questa query.
 
 #### Plan Quality (Goal ∩ Plan)
 
@@ -61,7 +61,8 @@ Il piano è *teoricamente* adatto all'obiettivo, ancora prima di eseguirlo?
 | «Presenta le raccomandazioni in una sola tabella» senza colonne | Tabella con Nome, Valore, Stage, Urgenza, Prossima azione, Scadenza, Owner |
 | Nessun next step / owner | Next step specifici (demo, revisione proposta, escalation) con owner e scadenza |
 
-Nel Data Agent: per “top 3 deal clienti e un grafico” un piano di qualità assegna Cortex al retrieval e il chart generator (più summarizer) alla visualizzazione. Un piano che manda solo il web researcher, o che salta il filtro “in sospeso”, è un piano inadeguato anche se poi qualcuno recupera qualcosa di utile.
+> Nel Data Agent: per “top 3 deal clienti e un grafico” un piano di qualità assegna un subagente al retrieval e altri subagenti chart generator (più summarizer) alla visualizzazione. Un piano che manda solo il web researcher, o che salta il filtro “in sospeso”, è un piano inadeguato anche se poi qualcuno recupera qualcosa di utile.
+{ .prompt-info }
 
 #### Plan Adherence (Plan ∩ Act)
 
@@ -88,7 +89,8 @@ Il percorso verso l'obiettivo è ragionevole, *indipendentemente* dal piano scri
 | Filtro sul valore applicato due volte «per conferma» | Filtri combinati in un solo passaggio |
 | Export XLSX **e** CSV quando ne bastava uno | Solo il formato richiesto |
 
-Nel Data Agent: researcher chiamati due volte sulla stessa sotto-query, replan a catena, tool inutili. L'agente può comunque arrivare al goal, ma sprecando passi.
+> Nel Data Agent: researcher chiamati due volte sulla stessa sotto-query, replan a catena, tool inutili. L'agente può comunque arrivare al goal, ma sprecando passi.
+{ .prompt-info }
 
 #### Logical Consistency (Goal ∩ Plan ∩ Act)
 
@@ -101,7 +103,8 @@ Ragionamento, piano e azioni restano coerenti per tutta l'esecuzione? Il judge c
 | Decision maker «da definire» ma next step attivi | Next step solo dove il contesto lo consente |
 | Ranking per «engagement minimo» senza giustificare | Criterio di ranking esplicitato e stabile |
 
-esempio, nel caso del Data Agent: un replan che contraddice lo step precedente, un synthesizer che afferma il contrario di ciò che i sub agenti hanno trovato, un Executor che giustifica `goto` in un modo e poi ne fa un altro, sono tutti casi di incoerenza logica.
+>  Esempio, nel caso del Data Agent: un replan che contraddice lo step precedente, un synthesizer che afferma il contrario di ciò che i sub agenti hanno trovato, un Executor che giustifica `goto` in un modo e poi ne fa un altro, sono tutti casi di incoerenza logica.
+{ .prompt-info }
 
 Due scorer aggiuntivi, sempre su trace, coprono i tool:
 
