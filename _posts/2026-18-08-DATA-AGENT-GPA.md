@@ -9,7 +9,7 @@ protected: false
 mermaid: true
 ---
 
-Nel [post precedente]({% post_url 2026-17-08-DATA-AGENT-EVAL %}) abbiamo misurato Context Relevance, Groundedness e Answer Relevance. Qui guardiamo **perché** il Data Agent ha scelto un certo percorso — non solo se la risposta era grounded.  
+Nel [post precedente]({% post_url 2026-17-08-DATA-AGENT-EVAL %}) abbiamo misurato Context Relevance, Groundedness e Answer Relevance. Adesso valutiamo **perché** il Data Agent ha scelto un certo percorso — non solo se la risposta era grounded.  
 
 Nel caso specifico del sistema Data Agents, la RAG Triad valuta il lavoro di ricerca e sintesi prodotto dagli agenti, ma non dice se il piano è adatto all'obiettivo, se l'agente lo ha seguito, o se il percorso di esecuzione era efficiente.
 
@@ -53,13 +53,6 @@ Prima di applicarle al Data Agent, conviene capire cosa cerca il judge su un ese
 
 Il piano è *teoricamente* adatto all'obiettivo, ancora prima di eseguirlo?
 
-| Cosa cerca il judge | Domanda |
-|:---|:---|
-| Allineamento al goal | Gli step rispondono davvero alla richiesta? |
-| Criteri misurabili | Filtri, soglie, vincoli di urgenza espliciti? |
-| Ordine e ownership | Sequenza logica; owner quando servono? |
-| Output concreto | Schema/colonne o formato di successo definito? |
-| Agenti/tool giusti | Ogni step usa lo specialista corretto? |
 
 | Inadeguato | Adeguato |
 |:---|:---|
@@ -74,13 +67,6 @@ Nel Data Agent: per “top 3 deal clienti e un grafico” un piano di qualità a
 
 Le azioni seguono il piano dichiarato? L'Executor può ignorare uno step, chiamare l'agente sbagliato, o ripianificare senza necessità.
 
-| Cosa cerca il judge | Domanda |
-|:---|:---|
-| Copertura degli step | Ogni requisito del piano appare nella trace? |
-| Filtri completi | Nessuna omissione o filtro “parziale”? |
-| Ordine | Passi eseguiti nell'ordine previsto? |
-| Output | Stesso schema richiesto dal piano? |
-| Replan | Se c'è un cambio di piano, è giustificato e poi seguito? |
 
 | Fuori piano | Conforme |
 |:---|:---|
@@ -95,11 +81,6 @@ Adherence bassa con Quality alta: il piano è corretto ma l'esecuzione non l'ha 
 
 Il percorso verso l'obiettivo è ragionevole, *indipendentemente* dal piano scritto? Anche con piano buono e azioni “logiche” si può essere inefficienti: retrieval duplicati, filtri riapplicati, export non richiesti, retry difensivi.
 
-| Cosa cerca il judge | Domanda |
-|:---|:---|
-| Lavoro ridondante | Stesso filtro / stesso retrieval ripetuto? |
-| Output extra | Formati o artefatti non richiesti? |
-| Retry proporzionati | Error handling eccessivo rispetto al fallimento? |
 
 | Inefficiente | Efficiente |
 |:---|:---|
@@ -113,12 +94,6 @@ Nel Data Agent: researcher chiamati due volte sulla stessa sotto-query, replan a
 
 Ragionamento, piano e azioni restano coerenti per tutta l'esecuzione? Il judge cerca contraddizioni, assunzioni non giustificate e stati impossibili.
 
-| Cosa cerca il judge | Domanda |
-|:---|:---|
-| Sanity numerica | I conteggi dopo un filtro diminuiscono (o restano), non crescono? |
-| Stato vs azione | Le azioni sono compatibili con i fatti già osservati? |
-| Grounding del ragionamento | Le assunzioni sono tracciabili al retrieval, non solo parametriche? |
-| Replan coerente | Un cambio di piano contraddice lo step precedente senza giustificazione? |
 
 | Incoerente | Coerente |
 |:---|:---|
@@ -215,8 +190,6 @@ results = mlflow.genai.evaluate(
 `QUERIES` nell'esempio è lo stesso [mini-dataset]({% post_url 2026-17-08-DATA-AGENT-EVAL %}#dataset-di-eval) del post sulla RAG Triad. 
 La differenza è *cosa* misuriamo sulla stessa esecuzione.
 
-> Gli scorer RAG (`Groundedness`, `ContextRelevance`, `AnswerRelevance`) accettano dati espliciti **oppure** un trace. Gli scorer GPA accettano **solo** il trace: senza albero degli span non c'è piano da giudicare né sequenza di azioni.
-{: .prompt-warning }
 
 ### Come leggere i fallimenti con GPA
 
