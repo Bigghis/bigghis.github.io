@@ -3,7 +3,7 @@ title: "Goal–Plan–Action (GPA) di un sistema multi-agent"
 description: "I fallimenti critici di un agente emergono alle intersezioni tra Goal, Plan e Action, non basta solo valutare groundness e context relevance (RAG Triad)"
 date: 2026-08-18 12:00:00 +0200
 categories: [LangGraph, MLflow, Evaluation]
-tags: [Data Agent, GPA, TruLens, MLflow, Tracing, Plan Quality, Plan Adherence, Execution Efficiency, Logical Consistency]
+tags: [Data Agent, GPA, TruLens, MLflow, Tracing, Plan Quality, Plan Adherence, Execution Efficiency, Logical Consistency, Inline Evaluation, Prompt Engineering]
 comments: false
 protected: false
 mermaid: true
@@ -242,9 +242,218 @@ Se la sorgente dati non risponde, Context Relevance va a zero. Sul lato GPA, un 
 | ToolSelection ↓ | Researcher o tool sbagliato per lo step |
 | GPA ↑, Groundedness / Context Relevance ↓ | Comportamento ok, retrieval/sintesi deboli — serve la RAG Triad |
 
+### Migliorare il GPA dell'agente
+
+Un failure mode ricorrente che è stato rilevato è **Plan Adherence bassa**.In sostanza l'Executor non segue il piano. 
+
+In genere per migliorare il GPA si possono applicare le seguenti leve:
+
+- **Prompt**: arricchire il planning prompt con sub-goal espliciti, pre-condizioni e post-condizioni
+- **Inline evaluation**: feedback in tempo reale nello stato, così l'agente valuta uno step prima di passare al successivo
+- Tuning del retriever o cambio modello
+- Validare sempre le modifiche con evaluation **offline** sulle stesse query
+
+Qui applichiamo due modifiche di prova: inline evals sui researcher e planning prompt arricchito.
+
+>Prima di modificare qualsiasi aspetto del grafo, conviene ragionare per **versioni**: ogni variante del grafo viene eseguita sulle stesse query e registrata come run separata. Ciò agevola il confronto tra run differenti e permette di capire subito se un cambiamento ha migliorato o peggiorato l'agente.
+{: .prompt-info }
+
+#### Inline evaluation sui researcher
+
+Dopo ogni retrieval proviamo a valutare subito il contesto recuperato e scrivere score + spiegazione nei `messages` dello stato. L'Executor legge quel feedback e decide se fare ricerca aggiuntiva o ripianificare.
+
+> TruLens espone un decorator `inline_evaluation` specifico per LangGraph. Qui riusiamo lo stesso scorer `ContextRelevance` della [RAG Triad]({% post_url 2026-17-08-DATA-AGENT-EVAL %}): non lo passiamo a `mlflow.genai.evaluate`, ma lo invochiamo direttamente dentro il nodo researcher e appendiamo score + spiegazione allo stato.
+{: .prompt-info }
+
+Partiamo dai researcher instrumentati del [post sulla RAG Triad]({% post_url 2026-17-08-DATA-AGENT-EVAL %}):
+
+```python
+from typing import Literal
+
+import mlflow
+from mlflow.entities import SpanType, Document
+from mlflow.genai.scorers.trulens import ContextRelevance
+from langchain.schema import HumanMessage
+from langgraph.types import Command
+
+from helper import State, cortex_agent, web_search_agent
+
+inline_judge = ContextRelevance(model="openai:/gpt-4o-mini")
+
+
+@mlflow.trace(span_type=SpanType.RETRIEVER, name="cortex_researcher")
+def cortex_agents_research_node(
+    state: State,
+) -> Command[Literal["executor"]]:
+    query = state.get("agent_query") or state.get("user_query", "")
+    agent_response = cortex_agent.invoke({"messages": query})
+    content = agent_response["messages"][-1].content
+
+    span = mlflow.get_current_active_span()
+    if span is not None:
+        span.set_inputs({"query": query})
+        span.set_outputs([Document(page_content=content)])
+
+    feedback = inline_judge(
+        inputs={"query": query},
+        expectations={"context": content},
+    )
+    score = feedback.metadata["score"]
+    rationale = getattr(feedback, "rationale", "") or ""
+
+    new_message = HumanMessage(content=content, name="cortex_researcher")
+    eval_msg = HumanMessage(
+        content=f"[inline eval] context_relevance={score}: {rationale}",
+        name="inline_evaluator",
+    )
+    return Command(
+        update={"messages": [new_message, eval_msg]},
+        goto="executor",
+    )
+
+
+@mlflow.trace(span_type=SpanType.RETRIEVER, name="web_researcher")
+def web_research_node(
+    state: State,
+) -> Command[Literal["executor"]]:
+    agent_query = state.get("agent_query")
+    result = web_search_agent.invoke({"messages": agent_query})
+    content = result["messages"][-1].content
+
+    span = mlflow.get_current_active_span()
+    if span is not None:
+        span.set_inputs({"query": agent_query})
+        span.set_outputs([Document(page_content=content)])
+
+    feedback = inline_judge(
+        inputs={"query": agent_query},
+        expectations={"context": content},
+    )
+    score = feedback.metadata["score"]
+    rationale = getattr(feedback, "rationale", "") or ""
+
+    result["messages"][-1] = HumanMessage(
+        content=content, name="web_researcher"
+    )
+    eval_msg = HumanMessage(
+        content=f"[inline eval] context_relevance={score}: {rationale}",
+        name="inline_evaluator",
+    )
+    return Command(
+        update={"messages": result["messages"] + [eval_msg]},
+        goto="executor",
+    )
+```
+
+Dopo ogni ricerca, lo stato contiene anche il giudizio inline. L'Executor lo usa per capire se mancano dettagli chiave prima di andare avanti.
+
+#### Sub-goal espliciti nel planning prompt
+
+Aggiungiamo agli step delle precondizioni e postcondizioni e un obiettivo esplicito.  
+Ogni step del piano riceve `pre_conditions`, `post_conditions` e `goal`. L'Executor capisce meglio l'obiettivo di ciascun passo: migliorano tool calling e decisioni di routing.
+
+```python
+import helper
+import prompts
+from langchain.schema import HumanMessage
+
+
+def patched_plan_prompt(state):
+    base = prompts.plan_prompt(state).content
+    insertion = (
+        '"action": "string",\n'
+        '            "pre_conditions": ["string", ...],\n'
+        '            "post_conditions": ["string", ...],\n'
+        '            "goal": "string",'
+    )
+    return HumanMessage(content=base.replace('"action": "string",', insertion))
+
+
+helper.plan_prompt = patched_plan_prompt
+```
+
+Il template di output del Planner passa da `{agent, action}` a `{agent, action, pre_conditions, post_conditions, goal}`. A runtime il Planning LLM lo popola per ogni step.
+
+#### Ricostruire il grafo e versionare l'agente
+
+Ricostruiamo il grafo con i researcher modificati (Planner, Executor e gli altri nodi restano quelli del [post multi-agent]({% post_url 2026-16-08-DATA-AGENT-MULTI-AGENT %})):
+
+```python
+from langgraph.graph import START, StateGraph
+from helper import (
+    State, planner_node, executor_node,
+    chart_node, chart_summary_node, synthesizer_node,
+)
+
+workflow = StateGraph(State)
+workflow.add_node("planner", planner_node)
+workflow.add_node("executor", executor_node)
+workflow.add_node("web_researcher", web_research_node)
+workflow.add_node("cortex_researcher", cortex_agents_research_node)
+workflow.add_node("chart_generator", chart_node)
+workflow.add_node("chart_summarizer", chart_summary_node)
+workflow.add_node("synthesizer", synthesizer_node)
+
+workflow.add_edge(START, "planner")
+graph = workflow.compile()
+```
+Per capire che impatto hanno avuto le modifiche, bisogna eseguire le due versioni sulle stesse query e confrontare i risultati.
+
+
+```python
+from mlflow.genai.scorers.trulens import (
+    PlanQuality,
+    PlanAdherence,
+    ExecutionEfficiency,
+    LogicalConsistency,
+    Groundedness,
+    AnswerRelevance,
+    ContextRelevance,
+)
+
+judge = "openai:/gpt-4o"
+
+with mlflow.start_run(run_name="v2: inline evals + sub-goals nel piano"):
+    results_v2 = mlflow.genai.evaluate(
+        data=[{"inputs": {"query": q}} for q in QUERIES],
+        predict_fn=run_data_agent,
+        scorers=[
+            PlanQuality(model=judge),
+            PlanAdherence(model=judge),
+            ExecutionEfficiency(model=judge),
+            LogicalConsistency(model=judge),
+            Groundedness(model=judge),
+            AnswerRelevance(model=judge),
+            ContextRelevance(model=judge),
+        ],
+    )
+```
+
+`QUERIES` e `run_data_agent` sono gli stessi del [post sulla RAG Triad]({% post_url 2026-17-08-DATA-AGENT-EVAL %}#dataset-di-eval) e della sezione GPA sopra. Cambia solo il grafo wrappato.
+
+#### Leggere i risultati del confronto
+
+Confrontando la versione base con la `v2` abbiamo i seguenti risultati:
+
+| Metrica | Direzione | Perché |
+|:---|:---|:---|
+| Plan Adherence | ↑ netto | Ogni step del piano (e dei replan) viene eseguito; le deviazioni sono giustificate |
+| Groundedness / Answer Relevance | ↑ | Ricerche aggiuntive colmano i gap segnalati dall'inline eval |
+| Context Relevance | ≈ | Il retrieval base non cambia; migliora la *copertura* del piano |
+| Execution Efficiency | ↓ lieve | Trace più lunghe: research extra innescato dall'inline eval |
+| Logical Consistency | ↓ lieve | Più passi → più superficie per piccole incoerenze |
+
+Nell'esempio, Plan Adherence passa da 0 a 1: nella base molti step del piano erano omessi; in `v2` nessun passo è saltato e ogni scostamento è motivato (es. limiti di accesso ai dati esterni).
+
+È un **trade-off esplicito**: si sacrifica un po' di efficienza per completare il goal. Nelle trace di `v2` si vedono chiamate extra a web researcher proprio dove l'inline eval ha segnalato contesto insufficiente, e i sub-goal del piano arricchito guidano l'Executor.
+
 ### Conclusioni
 
 GPA non sostituisce la RAG Triad: la completa. La prima giudica il *contenuto* (retrieval e sintesi), la seconda il *comportamento* (piano, aderenza, efficienza, coerenza). Insieme isolano se il problema è nel Planner, nell'Executor o nei dati recuperati.
 
-In produzione gli scorer indicano *dove* Goal, Plan e Act si disallineano.
+Una volta individuato il failure mode, le modifiche da effettuare sono mirate e validate offline confrontando versioni sullo stesso dataset. 
+E' possibile anche, per esempio, valutare i singoli agenti specializzati, sperimentare altre metriche inline, aggiornare i prompt etc.
+
+In definitiva, un agente affidabile non nasce assolutamente dal primo prompt definito, ma da un ciclo continuo di tracing, valutazione e iterazione: si misura dove Goal, Plan e Act si disallineano, si interviene in modo mirato e si lascia che siano i numeri a dire se il sistema è davvero migliorato.
+
 
