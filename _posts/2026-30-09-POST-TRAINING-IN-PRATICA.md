@@ -248,6 +248,10 @@ Per mettere in pratica queste idee c'è un notebook nel blog, ispirato al lab de
 
 [assets/notebooks/post-training-base-sft-rl.ipynb](/assets/notebooks/post-training-base-sft-rl.ipynb)
 
+Puoi aprirlo direttamente nel browser: Binder per il backend `demo` (solo CPU), Colab se vuoi una GPU per provare i modelli veri.
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Bigghis/bigghis.github.io/main?labpath=assets%2Fnotebooks%2Fpost-training-base-sft-rl.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Bigghis/bigghis.github.io/blob/main/assets/notebooks/post-training-base-sft-rl.ipynb)
+
 In sintesi fa tre cose:
 
 1. **Confronta base / SFT / RL** sugli stessi prompt di matematica, con uno scoring grezzo per keyword — per vedere il salto di comportamento dopo il post-training.
