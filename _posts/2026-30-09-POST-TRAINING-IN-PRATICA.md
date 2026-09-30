@@ -122,7 +122,7 @@ flowchart TD
   RL --> Aligned[Modello allineato]
 ```
 
-Il vantaggio è la scalabilità: serve un input umano per scrivere una accurata costituzione, ma non migliaia e migliaia di label precedentemente etichettate da lavoro di annotazione umana. Per approfondimenti su allineamento e preferenze, vedi anche [Alignment con KTO](https://bigghis.github.io/posts/ALIGNMENT-KTO/) e la panoramica su [LLM as a Judge](https://bigghis.github.io/posts/EVAL-SUMMARY/); per le basi dell'RL, [Reinforcement Learning](https://bigghis.github.io/posts/REINFORCEMENT-LEARNING/).
+Il vantaggio è la scalabilità: serve un input umano per scrivere una accurata costituzione, ma non migliaia e migliaia di label precedentemente etichettate da lavoro di annotazione manuale. Per approfondimenti su allineamento e preferenze, vedi anche [Alignment con KTO](https://bigghis.github.io/posts/ALIGNMENT-KTO/) e la panoramica su [LLM as a Judge](https://bigghis.github.io/posts/EVAL-SUMMARY/); per le basi dell'RL, [Reinforcement Learning](https://bigghis.github.io/posts/REINFORCEMENT-LEARNING/).
 
 Nei risultati di Anthropic, il modello con Constitutional AI resta comparabile in helpfulness rispetto a un modello ottimizzato solo per essere utile, ma diventa sensibilmente più *harmless* (rifiuta meglio le richieste dannose):
 
@@ -173,7 +173,7 @@ Dopo pre-training → mid-training → post-training, un modello tipicamente:
 - viene esposto come **API ospitata** (ChatGPT, Claude, …), oppure
 - viene rilasciato come **pesi open source** (DeepSeek-R1, Qwen, Llama…).
 
-Sopra a entrambi costruisci agenti, RAG e prodotti SaaS. Sugli open source la community continua a fare post-training: codice, contesto lunghissimo, medicina, e così via.
+Sopra a entrambi costruisci agenti, RAG e prodotti SaaS. Sugli open source la community continua a fare post-training: codice, contesto lunghissimo, ambiti specifici come la medicina, e così via.
 
 Esempio Qwen2.5-7B:
 
@@ -260,7 +260,7 @@ In sintesi fa tre cose:
 
 ### Cosa portare a casa
 
-Il post-training non è un singolo switch. È una pipeline:
+Il post-training, in sintesi, è una pipeline:
 
 1. **Dati buoni** per il fine-tuning (dialogo, CoT, guardrail, recovery da RAG miss).
 2. **Grader buoni** (e ambienti realistici) per l'RL, con attenzione al reward hacking.
