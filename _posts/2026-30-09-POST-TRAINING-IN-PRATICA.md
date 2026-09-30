@@ -242,15 +242,15 @@ Answer: ... 11/18*162 = <<11/18*162=99>>99
 
 Il modello deve capire il testo, estrarre relazioni, pianificare i passaggi, calcolare e formattare. È un buon banco di prova per vedere se il post-training ha davvero cambiato il comportamento.
 
-#### Notebook: prova tu stesso
+#### Lab 
 
-Per mettere in pratica queste idee c'è un notebook nel blog, ispirato al lab del corso ma riscritto per girare in autonomia (backend `demo` senza GPU, oppure Hugging Face se hai risorse):
+Per mettere in pratica queste idee c'è un notebook (backend `demo` senza GPU, oppure Hugging Face se hai risorse):
 
 [assets/notebooks/post-training-base-sft-rl.ipynb](/assets/notebooks/post-training-base-sft-rl.ipynb)
 
-Puoi aprirlo direttamente nel browser: Binder per il backend `demo` (solo CPU), Colab se vuoi una GPU per provare i modelli veri.
+Puoi eseguire il notebook su Binder per il backend `demo` (solo CPU), oppure su Colab se vuoi una GPU.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Bigghis/bigghis.github.io/main?labpath=assets%2Fnotebooks%2Fpost-training-base-sft-rl.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Bigghis/bigghis.github.io/blob/main/assets/notebooks/post-training-base-sft-rl.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Bigghis/bigghis.github.io/main?labpath=assets%2Fnotebooks%2Fpost-training-base-sft-rl.ipynb){:target="_blank"} [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Bigghis/bigghis.github.io/blob/main/assets/notebooks/post-training-base-sft-rl.ipynb){:target="_blank"}
 
 In sintesi fa tre cose:
 
