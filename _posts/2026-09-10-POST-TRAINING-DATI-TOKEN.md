@@ -72,9 +72,9 @@ Bisogna dividere i dati in **split** separati, altrimenti non sapremo mai se il 
 
 Lo schema classico prevede tre insiemi:
 
-- **train**: i dati su cui il modello viene effettivamente addestrato, di solito la parte più grande;
-- **validation**: dati usati durante lo sviluppo per scegliere gli iperparametri (learning rate, numero di epoche…), 
-- **test** (o eval): dati tenuti davvero da parte. Non si usano per scegliere nulla; servono solo alla fine, per misurare quanto è buono il modello.
+- **train**: i dati su cui il modello viene effettivamente addestrato, corrispondente alla parte più grande del dataset;
+- **validation**: dati usati durante lo sviluppo per scegliere gli iperparametri; 
+- **test** (o eval): dati che servono dopo che il training è terminato, per misurare quanto è buono il modello.
 
 Molti dataset pubblici arrivano già divisi in train e test. GSM8K, per esempio, ha circa 7.500 problemi di train e 1.300 di test. La validation si ricava di solito da una porzione del train:
 
