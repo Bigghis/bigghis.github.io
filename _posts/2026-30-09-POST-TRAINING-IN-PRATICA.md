@@ -124,10 +124,7 @@ flowchart TD
 
 Il vantaggio è la scalabilità: serve un input umano per scrivere una accurata costituzione, ma non migliaia e migliaia di label precedentemente etichettate da lavoro di annotazione manuale. Per approfondimenti su allineamento e preferenze, vedi anche [Alignment con KTO](https://bigghis.github.io/posts/ALIGNMENT-KTO/) e la panoramica su [LLM as a Judge](https://bigghis.github.io/posts/EVAL-SUMMARY/); per le basi dell'RL, [Reinforcement Learning](https://bigghis.github.io/posts/REINFORCEMENT-LEARNING/).
 
-Nei risultati di Anthropic, il modello con Constitutional AI resta comparabile in helpfulness rispetto a un modello ottimizzato solo per essere utile, ma diventa sensibilmente più *harmless* (rifiuta meglio le richieste dannose):
-
-![Risultati Constitutional AI: helpfulness e harmlessness](/assets/images/post-training/constitutional-ai-anthropic.png)
-_Da "Constitutional AI: Harmlessness from AI Feedback", Bai et al., 2022 — slide del corso_
+Nei risultati di Anthropic, il modello con Constitutional AI resta comparabile in helpfulness rispetto a un modello ottimizzato solo per essere utile, ma diventa sensibilmente più *harmless* (rifiuta meglio le richieste dannose). I grafici con i punteggi di helpfulness e harmlessness sono nel paper ["Constitutional AI: Harmlessness from AI Feedback"](https://arxiv.org/abs/2212.08073){:target="_blank"} (Bai et al., 2022).
 
 ### Post-training nei frontier lab
 
@@ -144,8 +141,17 @@ Pipeline semplificata:
 5. Nuovo fine-tuning mescolando reasoning e non-reasoning
 6. Ulteriore RL → DS-R1
 
-![Pipeline post-training di DeepSeek-R1](/assets/images/post-training/deepseek-r1-pipeline.png)
-_Fonte: slide del corso / sintesi della pipeline DeepSeek-R1_
+```mermaid
+flowchart LR
+  Base[DeepSeek-V3-Base] --> SFT1["Fine-tuning su long CoT"]
+  SFT1 --> RL1["RL per reasoning, reward rule-based"]
+  RL1 --> Filter["Filtro di nuovi dati CoT dal checkpoint"]
+  Filter --> SFT2["Fine-tuning reasoning + non-reasoning"]
+  SFT2 --> RL2[RL finale]
+  RL2 --> R1[DeepSeek-R1]
+```
+
+_Sintesi da ["DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning"](https://arxiv.org/abs/2501.12948){:target="_blank"} (DeepSeek-AI, 2025)_
 
 #### Qwen3
 
@@ -156,15 +162,34 @@ Schema simile, con enfasi sul reasoning e poi su un RL più generale:
 3. Thinking mode fusion (altro fine-tuning)
 4. General RL → modelli di frontiera, es.: Qwen3
 
-![Pipeline post-training di Qwen3](/assets/images/post-training/qwen-pipeline.png)
-_Fonte: [blog Qwen3](https://qwenlm.github.io/blog/qwen3/){:target="_blank"}, slide del corso_
+```mermaid
+flowchart LR
+  Base[Base model] --> S1["Long-CoT cold start"]
+  S1 --> S2[Reasoning RL]
+  S2 --> S3["Thinking mode fusion"]
+  S3 --> S4[General RL]
+  S4 --> Q3[Qwen3]
+```
+
+_Sintesi dal [blog di Qwen3](https://qwenlm.github.io/blog/qwen3/){:target="_blank"}_
 
 #### Llama
 
 Nella pipeline Llama il **reward model** non serve solo all'RL: guida anche il **rejection sampling**. Il modello genera molte risposte per prompt, ne scarta la maggior parte e tiene le migliori come dati SFT di qualità. Poi si fa SFT specializzato per capability e RL tipicamente con **DPO** (*Direct Preference Optimization*), scegliendo i migliori checkpoint e reiterando.
 
-![Pipeline post-training di Llama](/assets/images/post-training/llama-pipeline.png)
-_Fonte: "The Llama herd of models", Meta 2024 — slide del corso_
+```mermaid
+flowchart LR
+  Pref[Dati di preferenza] --> RM[Reward model]
+  Prompts[Prompt] --> RS[Rejection sampling]
+  RM --> RS
+  RS --> SFT[SFT]
+  SFT --> DPO[DPO]
+  Pref --> DPO
+  DPO --> Best["Scelta dei checkpoint migliori"]
+  Best -->|"round successivo"| RS
+```
+
+_Sintesi da ["The Llama 3 Herd of Models"](https://arxiv.org/abs/2407.21783){:target="_blank"} (Meta, 2024)_
 
 ### Dove finisce il modello (e cosa puoi farci tu)
 
@@ -183,15 +208,9 @@ Esempio Qwen2.5-7B:
 | Qwen2.5-7B-Instruct-1M | contesto fino a ~1M token |
 | Qwen2.5-Aloe-Beta-7B | testo medico e supporto clinico |
 
-Con Llama la ramificazione è ancora più ampia: Alpaca, Vicuna, varianti per lingue e domini, modelli multimodali…
+Con Llama la ramificazione è ancora più ampia: Alpaca, Vicuna, varianti per lingue e domini, modelli multimodali… Un albero di queste varianti è nel survey ["A Survey of Large Language Models"](https://arxiv.org/abs/2303.18223){:target="_blank"} (Zhao et al., 2023).
 
-![Albero delle varianti di Llama](/assets/images/post-training/llama-variants.png)
-_Da "A Survey of Large Language Models", Zhao et al. 2023 — slide del corso_
-
-Per farlo in pratica esistono librerie e servizi dedicati (Unsloth, Hugging Face TRL, LLaMA-Factory, torchtune, MLX, Together, Tunix, e altri):
-
-![Librerie e servizi per il post-training](/assets/images/post-training/libraries-post-training.png)
-_Slide del corso DeepLearning.AI / AMD_
+Per farlo in pratica esistono librerie e servizi dedicati (Unsloth, Hugging Face TRL, LLaMA-Factory, torchtune, MLX, Together, Tunix, e altri).
 
 Lo spettro di compute va da cluster GPU pesanti fino a fine-tuning leggeri su AI PC: i moduli successivi del corso scendono in quei dettagli.
 

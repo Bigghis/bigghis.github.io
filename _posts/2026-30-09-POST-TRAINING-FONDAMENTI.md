@@ -131,7 +131,7 @@ Nell'**RL** non conta (quasi) affatto *quale* testo esce, purché alla fine il *
 | **Compute** | Meno, soprattutto con metodi efficienti (es. LoRA) | Di più |
 | **Upside** | "Funziona e basta": imita i tuoi dati | Può sviluppare capacità oltre gli esempi umani |
 
-I frontier lab combinano i due mondi: prima fine-tuning per imparare i pattern, poi RL per migliorare ulteriormente. Negli ultimi anni la ricerca sull'RL applicato agli LLM è cresciuta in modo evidente:
+I frontier lab combinano i due mondi: prima fine-tuning per imparare i pattern, poi RL per migliorare ulteriormente. Negli ultimi anni la ricerca sull'RL applicato agli LLM è cresciuta in modo evidente.
 
 ### Il fine-tuning funziona grazie ai dati
 

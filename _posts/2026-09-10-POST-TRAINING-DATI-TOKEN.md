@@ -195,10 +195,10 @@ Gli LLM lavorano su **token**, pezzi di testo di lunghezza variabile ottenuti co
 
 L'insieme di tutti i token che un modello conosce è il suo **vocabolario**. GPT-3, per esempio, ne ha circa 50.000.
 
-Il guadagno in efficienza è notevole rispetto alla tokenizzazione per caratteri. Il grafico seguente confronta, sullo stesso dataset, il numero di token per sequenza con BPE (in blu) e con la tokenizzazione per caratteri (in verde): con BPE le sequenze sono molto più corte.
+Il guadagno in efficienza è notevole rispetto alla tokenizzazione per caratteri. Il grafico seguente confronta, sui circa 7.500 problemi di train di GSM8K (domanda e soluzione), il numero di token per sequenza con il tokenizer BPE di GPT-2 (in blu) e con la tokenizzazione per caratteri (in verde): con BPE le sequenze sono circa 3,5 volte più corte.
 
 ![Distribuzione dei token per sequenza: BPE contro caratteri](/assets/images/post-training/bpe-vs-caratteri.png)
-_Fonte: DeepLearning.AI / AMD, grafico da ResearchGate_
+_Lunghezza delle sequenze di GSM8K: mediana di 141 token con BPE contro 485 caratteri._
 
 #### Il problema delle "r" in strawberry
 
@@ -273,7 +273,7 @@ $$
 In parole: con $$T$$ basso le differenze tra i token si amplificano e la distribuzione si concentra sui più probabili; con $$T$$ alto le differenze si appiattiscono e anche i token meno probabili hanno una possibilità. Con $$T \to 0$$ il sampling diventa di fatto uguale al greedy.
 
 ![Effetto della temperatura sulla distribuzione dei token](/assets/images/post-training/temperatura-sampling.png)
-_Con temperatura 0,25 esce quasi sempre "Vanilla"; con temperatura 2 la scelta si distribuisce su molti gusti. Fonte: DeepLearning.AI / AMD_
+_Stessi punteggi, tre temperature: con 0,25 esce quasi sempre "Vaniglia", con 2 la scelta si distribuisce su molti gusti._
 
 ```python
 model.generate(**ids, do_sample=True, temperature=0.7)
