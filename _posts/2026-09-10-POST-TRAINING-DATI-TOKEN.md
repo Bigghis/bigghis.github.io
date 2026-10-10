@@ -11,7 +11,7 @@ math: true
 ---
 
 I **dati** con cui addestriamo il modello e i **token** creati a partire da essi sono alla base dei processi di training e RL, e rappresentano la forma con cui le informazioni entrano ed escono dal modello.  
-Sono argomenti fondamentali perché identificano il punto in cui si decide gran parte del risultato finale di post-training. Difatti un dataset sporco o diviso male rende inutile anche l'algoritmo più raffinato, e un tokenizer gestito male può far fallire un fine-tuning in modi poi difficili da diagnosticare.
+Sono argomenti fondamentali perché identificano il punto in cui si decide gran parte del risultato finale di post-training. Difatti un dataset sporco o diviso male rende inutile qualsiasi algoritmo eseguito successivamente su questi dati, e un tokenizer gestito male può far fallire un fine-tuning in modi poi difficili da diagnosticare.
 
 Fine-tuning e RL hanno bisogno di dati con forme diverse. 
 
@@ -239,7 +239,13 @@ text = tokenizer.decode(input_ids)
 
 #### Gli embedding
 
-Gli ID sono indici: il numero 3221 non dice nulla sul significato del token. Il primo strato del modello è la matrice degli **embedding**, che ha una riga per ogni token del vocabolario. Ogni ID serve a trovare la sua riga, cioè un vettore di numeri che rappresenta il token in modo semantico.
+I token ID prodotti dal tokenizer sono indici del vocabolario, e di per sé non dicono nulla sul significato del token che rappresentano. Per dare al modello questa informazione, a ogni token si associa un **vettore** di numeri, chiamato **embedding**.
+
+Questi vettori vivono in uno spazio multidimensionale, lo **spazio degli embedding**. Semplificando, lo si può immaginare come un piano cartesiano in cui ogni token è un punto: token con significato simile stanno vicini, token con significato diverso stanno lontani. *Gatto* e *cane* sono più vicini tra loro di quanto lo siano *gatto* e *casa*. La distanza tra i punti esprime la similarità.
+
+L'idea si è affermata nel 2013 con **Word2Vec** ([Mikolov et al.](https://arxiv.org/abs/1301.3781){:target="_blank"}), che parte da un principio semplice: parole simili compaiono in frasi simili. *Forchetta* e *coltello* sono utensili da cucina e si trovano negli stessi contesti. Una rete addestrata a indovinare la parola mancante in milioni di frasi impara così un vettore per ogni parola del vocabolario (300 numeri nel caso di Word2Vec) che ne cattura le relazioni semantiche. Quei vettori non sono altro che i pesi della rete dopo l'addestramento.
+
+Negli LLM gli embedding sono il primo strato del modello: una matrice con una riga per ogni token del vocabolario. Ogni ID serve a trovare la sua riga:
 
 ```text
 Token ID 2640 → [ 0.038, -0.046,  0.440, … ]
@@ -247,6 +253,8 @@ Token ID 3073 → [ 0.002,  0.365,  0.443, … ]
 ```
 
 La matrice ha quindi dimensione *dimensione del vocabolario × dimensione dell'embedding*, ed è addestrata insieme al resto del modello. DeepSeek Math 7B, per esempio, ha un vocabolario di oltre 100.000 token, ciascuno rappresentato da un vettore di 4.096 numeri: centinaia di milioni di parametri solo nel primo strato.
+
+L'embedding di un token è sempre lo stesso, qualunque sia il contesto. *Riso* ha lo stesso vettore in "mangia il riso" e in "le sfuggì un riso". **Sono gli strati successivi del modello, attraverso l'attention, a trasformare quel vettore in base alle parole vicine**, nel primo caso lo avvicinano al concetto di cereale, nel secondo a quello di risata.
 
 #### Dalle probabilità al token successivo
 
@@ -348,13 +356,34 @@ Prima di un fine-tuning conviene verificare da vicino come il modello vede i dat
 ```python
 for token_id in tokenizer.encode(prompt):
     print(token_id, repr(tokenizer.decode([token_id])))
+
+# Con il tokenizer di DeepSeek Math:
+# 100000 '<｜begin▁of▁sentence｜>'
+# 549 'The'
+# 12667 ' integral'
+# 280 ' of'
+# 1376 ' x'
+# 61 '^'
+# 17 '2'
+# 473 ' from'
+# 207 ' '
+# 15 '0'
+# ...
 ```
+
+Il tokenizer aggiunge da sé un token speciale di inizio sequenza. Lo spazio prima di una parola fa parte del token (`' integral'`), mentre prima di una cifra diventa un token a parte (`' '` seguito da `'0'`): DeepSeek spezza i numeri in singole cifre.
 
 La forma della matrice degli embedding dà direttamente la dimensione del vocabolario e quella dei vettori:
 
 ```python
 vocab_size, embedding_dim = model.get_input_embeddings().weight.shape
+print(vocab_size, embedding_dim, vocab_size * embedding_dim)
+
+# Con DeepSeek Math 7B:
+# 102400 4096 419430400
 ```
+
+La matrice ha 102.400 righe da 4.096 numeri: circa 420 milioni di parametri. Le righe sono un po' più dei token che il tokenizer conosce davvero (circa 100.000): la matrice viene arrotondata a una dimensione più comoda per la GPU, e le righe in eccesso restano inutilizzate.
 
 Per un batch di prompt di lunghezza diversa, `input_ids` e `attention_mask` devono avere la stessa forma, e la lunghezza deve essere quella del prompt più lungo:
 
@@ -365,9 +394,9 @@ assert batch["input_ids"].shape == batch["attention_mask"].shape
 
 Sono operazioni che le librerie di training svolgono in automatico, ma vederle una volta da vicino aiuta a capire cosa succede quando qualcosa va storto: un modello che genera spazzatura dopo il padding, o un tag speciale spezzato in cinque token.
 
-### Dove siamo arrivati
+### Riassunto
 
-Ricapitolando il percorso: fine-tuning, RL e reward model si nutrono di dati con forme diverse, e ciascuno va diviso con cura in train, validation e test. Il caso dell'RL richiede un reward model nuovo in fase di test, e tutto va completato con una valutazione finale su input mai visti. La difficoltà vera è evitare il leakage, che si nasconde nei duplicati quasi identici, nelle parafrasi e negli split casuali. Deduplicazione e split temporali sono gli strumenti per tenerlo sotto controllo.
+Ricapitolando il percorso: fine-tuning, RL e reward model si nutrono di dati con forme diverse, e ciascuno va diviso con cura in train, validation e test. Il caso dell'RL richiede un reward model nuovo in fase di test, e tutto va completato con una valutazione finale su input mai visti. La difficoltà è evitare il leakage, che si nasconde nei duplicati quasi identici, nelle parafrasi e negli split casuali. Deduplicazione e split temporali sono gli strumenti per tenerlo sotto controllo.
 
 Sull'altro versante, i token sono il ponte tra il testo e la matematica del modello. Il tokenizer li produce, gli embedding danno loro un significato, e una strategia di decoding (greedy, sampling con temperatura, beam search) sceglie il prossimo. Durante il post-training, questo ponte di solito resta fermo, ma va allargato quando il modello deve imparare parole o tag nuovi.
 
