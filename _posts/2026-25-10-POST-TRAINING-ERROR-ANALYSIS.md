@@ -356,4 +356,4 @@ Un singolo esempio non basta per una diagnosi. Gli errori si raggruppano con gli
 
 Gli eval vanno costruiti partendo **in piccolo** e facendoli crescere in modo esponenziale, tenendo l'accuratezza intorno all'80%. Devono essere **rappresentativi** dell'uso reale, **azionabili**, cioè collegati a un intervento concreto, e **affidabili**, con abbastanza esempi e verifiche statistiche per fidarsi delle differenze tra un esperimento e l'altro.
 
-Nel prossimo articolo metteremo in pratica tutto il ciclo: valuteremo un modello di matematica, classificheremo i suoi errori, sceglieremo dati di training mirati e misureremo se il fine-tuning ha davvero migliorato il modello.
+Nel [prossimo articolo](https://bigghis.github.io/posts/POST-TRAINING-EVAL-LAB/) metteremo in pratica tutto il ciclo: valuteremo un modello di matematica, classificheremo i suoi errori, sceglieremo dati di training mirati e misureremo se il fine-tuning ha davvero migliorato il modello.
