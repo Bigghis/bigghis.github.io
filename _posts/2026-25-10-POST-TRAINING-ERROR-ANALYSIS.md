@@ -350,7 +350,7 @@ L'affidabilità però non dipende solo dal numero di esempi, ma dalla **stabilit
 
 ### Cosa portare a casa
 
-Un punteggio dice quanto è buono un modello, non cosa fare per migliorarlo. L'**error analysis** colma questo vuoto: scompone gli errori, li raggruppa e collega ogni gruppo a un intervento. È un processo ricorsivo, fatto di esperimenti piccoli e veloci, e la sua qualità decide quanti esperimenti servono per arrivare al modello migliore.
+L'**error analysis** aiuta a capire come il modello sbaglia e a trovare i dati e le preferenze per correggerlo. Scompone gli errori, li raggruppa e collega ogni gruppo a un intervento. È un processo ricorsivo, fatto di esperimenti piccoli e veloci, e la sua qualità decide quanti esperimenti servono per arrivare al modello migliore.
 
 Un singolo esempio non basta per una diagnosi. Gli errori si raggruppano con gli **embedding e il k-means**, che li dividono per argomento, e con un **LLM**, che li classifica per tipo di errore. Ogni categoria di errore ha cause tipiche e correzioni specifiche, nei dati di fine-tuning o nei segnali del RL, e un errore che non si presenta non va corretto.
 
