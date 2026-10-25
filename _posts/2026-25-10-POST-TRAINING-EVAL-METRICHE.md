@@ -428,4 +428,4 @@ Prima o poi anche GDPval sarà **saturo**, cioè i modelli otterranno punteggi c
 - **Latenza, throughput, costo ed efficienza in token** fanno parte della valutazione quanto l'accuratezza.
 - Le suite **olistiche** come HELM e i benchmark sul **lavoro reale** come GDPval mostrano dove si sta spostando la valutazione.
 
-Nel prossimo articolo vedremo cosa succede quando un test set non basta più: gli ambienti di test congelati per l'RL, le grandezze da monitorare durante l'addestramento, il reward hacking e il red teaming.
+Nel [prossimo articolo](https://bigghis.github.io/posts/POST-TRAINING-EVAL-RL-RED-TEAMING/) vedremo cosa succede quando un test set non basta più: gli ambienti di test congelati per l'RL, le grandezze da monitorare durante l'addestramento, il reward hacking e il red teaming.
