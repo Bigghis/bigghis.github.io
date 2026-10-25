@@ -1,7 +1,7 @@
 ---
 title: "Post-training degli LLM in pratica: error analysis e costruzione degli eval"
 description: "Dalla teoria degli eval al lavoro di tutti i giorni: come leggere gli errori di un modello, raggrupparli con embedding, k-means e LLM, scegliere la correzione giusta per fine-tuning e RL, e costruire passo passo eval piccoli, rappresentativi, azionabili e affidabili."
-date: 2026-10-25 18:00:00 +0100
+date: 2026-10-25 17:00:00 +0100
 categories: [LLM, Post-Training]
 tags: [Post-Training, Evaluation, Error Analysis, Clustering, Embedding, K-Means, LLM as a Judge, Catastrophic Forgetting, Confidence Interval, Bootstrap]
 comments: false
