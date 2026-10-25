@@ -235,7 +235,7 @@ def reward_brevita(risposta, atteso):
 
 Con un reward model il problema è più subdolo. Vogliamo un assistente gentile ed empatico, e le persone che etichettano le preferenze tendono a preferire le risposte che danno loro ragione. Il reward model impara questa preferenza, e il modello addestrato con il RL diventa **sycophantic** (accondiscendente): asseconda l'utente anche quando ha torto.
 
-#### L'effetto wack a mole (acchiappa la talpa)
+#### L'effetto whack-a-mole (acchiappa la talpa)
 
 L'unica strada è **iterare**: guardare le risposte del modello, trovare i comportamenti sbagliati e rendere più precisi i criteri, sia nei verifier (regole più sfumate) sia nei reward model (preferenze raccolte con istruzioni più dettagliate).
 
@@ -302,7 +302,7 @@ Si parla di **prompt injection indiretta**. Gli eval di sicurezza devono quindi 
 
 #### Generare gli attacchi in automatico
 
-Scrivere a mano migliaia di attacchi non è pratico. Si usano allora gli LLM stessi per generarli, in un ciclo in  fasi.
+Scrivere a mano migliaia di attacchi non è pratico. Si usano allora gli LLM stessi per generarli, in un ciclo in tre fasi.
 
 ```mermaid
 flowchart LR
@@ -313,7 +313,7 @@ flowchart LR
   Judge --> Eval["Attacchi riusciti → nuovi eval e dati di training"]
 ```
 
-in codice:
+In codice:
 
 ```python
 def red_teaming_automatico(attaccante, bersaglio, giudice, attacchi_iniziali, giri=5, varianti=10):
@@ -392,4 +392,4 @@ Il **reward hacking** non si elimina una volta per tutte. Si riduce iterando su 
 
 Il **red teaming** porta il test fuori dal laboratorio: jailbreak, prompt injection indiretta, attacchi generati in automatico e scenari agentici. Ogni attacco riuscito diventa un eval e un dato di training. Dove gli eval non arrivano, intervengono i monitor a runtime e il system prompt.
 
-Nel prossimo articolo vedremo come trasformare i fallimenti del modello in interventi concreti: l'**error analysis**, il clustering degli errori e le caratteristiche che rendono un eval davvero utile.
+Nel [prossimo articolo](https://bigghis.github.io/posts/POST-TRAINING-ERROR-ANALYSIS/) vedremo come trasformare i fallimenti del modello in interventi concreti: l'**error analysis**, il clustering degli errori e le caratteristiche che rendono un eval davvero utile.
