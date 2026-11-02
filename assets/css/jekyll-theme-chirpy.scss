@@ -1,0 +1,37 @@
+---
+---
+
+@use 'abstracts/variables' with (
+  $theme: '{{ site.theme_mode }}'
+);
+
+/* prettier-ignore */
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* append your custom style below */
+
+#sidebar {
+  .profile-wrapper {
+    margin-bottom: 0.35rem;
+  }
+
+  .pinned-note {
+    align-self: stretch;
+    margin: 0 0.65rem 0.1rem 1.25rem;
+
+    @media (min-width: 1650px) {
+      margin-left: 2rem;
+      margin-right: 1.1rem;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+}

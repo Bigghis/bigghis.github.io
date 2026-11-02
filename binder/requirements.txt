@@ -1,3 +1,6 @@
 pandas
 tqdm
 datasets
+scikit-learn
+scipy
+matplotlib
