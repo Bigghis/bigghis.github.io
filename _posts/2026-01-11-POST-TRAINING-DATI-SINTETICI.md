@@ -1,6 +1,6 @@
 ---
 title: "Post-training degli LLM: costruire un dataset sintetico"
-description: "Guida pratica a generare, filtrare, trasformare e valutare dati sintetici per il post-training: rejection sampling, template engineering, strumenti e controlli anti-rumore."
+description: "Guida pratica per generare e valutare dati sintetici."
 date: 2026-11-01 14:00:00 +0100
 categories: [LLM, Post-Training]
 tags: [Post-Training, Synthetic Datasets, Rejection Sampling, Template Engineering, LLM as a Judge, Deduplication, Distilabel, vLLM]
