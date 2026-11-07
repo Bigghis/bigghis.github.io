@@ -12,7 +12,7 @@ math: true
 
 ### Perché i dati sintetici
 
-Le persone sono brave a giudicare e a scrivere regole ma il loro apporto è lento e costoso. Gli LLM sono l’opposto: veloci, economici e facili da scalare. Tuttavia l'output prodotto è rumoroso e va filtrato per poter essere utilizzato efficacemente.
+Le persone sono brave a giudicare e a scrivere regole ma il loro apporto è lento e costoso. Gli LLM sono l’opposto: veloci, economici e facili da scalare e possono quindi essere utilizzati per creare dataset di addestramento. Tuttavia l'output prodotto da un LLM è rumoroso e va filtrato per poter essere utilizzato efficacemente.
 
 Quindi alla **generazione** seguiranno il **filtro** e la **trasformazione** dei dati.
 
