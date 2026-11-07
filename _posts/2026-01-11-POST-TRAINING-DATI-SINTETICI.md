@@ -188,16 +188,16 @@ Tre modi complementari:
 
 ### Template engineering
 
-Invece di correggere migliaia di esempi a mano, si lavora su diverse **varianti di template**. Si corregge il template quando l’error analysis mostra un pattern; il template genera poi molti esempi coerenti.
+Invece di correggere migliaia di esempi a mano, si lavora su diverse **varianti di template**. Si corregge il template quando l’error analysis mostra un pattern da correggere.
 
-Esempio “mad-lib” per il supporto clienti:
+Esempio per il supporto clienti con placeholder:
 
 ```text
-Ciao {{customer_name}}, capisco il problema con {{product_name}}:
-{{specific_issue}}. Ho provveduto a {{resolution_step}}.
+Ciao [customer_name], capisco il problema con [product_name]:
+[specific_issue]. Ho provveduto a [resolution_step].
 ```
 
-Con liste di valori per ogni slot si ottengono combinazioni diverse senza riscrivere ogni messaggio.
+Con liste di valori per ogni placeholder si ottengono combinazioni diverse senza riscrivere ogni messaggio.
 Versionare i template nei metadati del JSONL può essere utile per sperimentarne diverse varianti di  senza doverne riscrivere ogni volta da capo.
 
 Quando il modello è in produzione e gli utenti forniscono un certo feedback, avendo a disposizione i template, questi si possono modificare per adattarli ai feedback ricevuti.
