@@ -33,7 +33,8 @@ Ogni fase può usare un LLM, regole programmatiche, o entrambe. L’ordine è im
 
 1. **Obiettivo dagli errori.** Il dataset sintetico risponde a un pattern emerso dall’[error analysis](https://bigghis.github.io/posts/POST-TRAINING-ERROR-ANALYSIS/), non a un generico “ci servono più dati”!
 2. **Seed reali.** Un seed è un esempio vero (una domanda, un ticket, un log, un problema): ne bastano pochi. Con i **template**, poi, vengono generate varianti intorno a questi casi reali. Senza seed, il modello inventa casi facili e poco utili.
-3. **Schema del record.** Un JSONL con provenienza tracciabile, per poterlo filtrare e riprodurre:
+3. **Schema del record.** Un JSONL con provenienza tracciabile, per poterlo filtrare e riprodurre.
+Nell'esempio, assieme all'input e all'output, si mantengono i metadati del processo di generazione.
 
 ```json
 {
@@ -53,8 +54,8 @@ Ogni fase può usare un LLM, regole programmatiche, o entrambe. L’ordine è im
 }
 ```
 
-4. **Holdout e contaminazione.** Tieni un pezzo mai usato per decidere template o filtri, e controlla che i sintetici non siano near-duplicate del test set ([MinHash e leakage](https://bigghis.github.io/posts/POST-TRAINING-DATI-TOKEN/)).
-5. **Licenze e ToS.** Verifica se il modello generatore consente l’uso degli output per addestrare altri modelli; non tutti lo permettono allo stesso modo.
+4. **Holdout e contaminazione.** E' utile mantenere da parte porzioni di dataset mai usato per decidere template o filtri, e controllare che i sintetici non siano near-duplicate del test set ([MinHash e leakage](https://bigghis.github.io/posts/POST-TRAINING-DATI-TOKEN/)).
+5. **Licenze e ToS.** Verificare se il modello generatore consente l’uso degli output per addestrare altri modelli; non tutti lo permettono!
 
 ### Generare
 
